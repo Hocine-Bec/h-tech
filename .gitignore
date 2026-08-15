@@ -11,6 +11,9 @@
 # Test binary, built with `go test -c`
 *.test
 
+# Env variables
+.env
+
 # Code coverage profiles and other test artifacts
 *.out
 coverage.*
@@ -30,3 +33,6 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+plans/h-tech-program.md
+my-plan.md
+docs/personal/postgres-docker-reference.md
