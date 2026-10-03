@@ -1,0 +1,127 @@
+/* ─── Fonts must precede all other rules ───────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Instrument+Serif:ital,wght@0,400;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+/* ─── Dark mode tokens ─────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  --brand-green: #00d4a4;
+  --brand-green-deep: #00b48a;
+  --brand-green-soft: rgba(0, 212, 164, 0.14);
+  --brand-warn: #c88a3a;
+  --brand-warn-soft: rgba(200, 138, 58, 0.14);
+  --brand-error: #e26060;
+  --brand-error-soft: rgba(226, 96, 96, 0.14);
+  --brand-tag: #5a9ff2;
+  --brand-tag-soft: rgba(90, 159, 242, 0.14);
+
+  --canvas: #000000;
+  --canvas-elev: #0a0a0a;
+  --surface: #111113;
+  --surface-2: #17171a;
+  --surface-3: #1c1c1e;
+  --hairline: #1f1f22;
+  --hairline-soft: #17171a;
+  --hairline-strong: #2a2a2e;
+
+  --ink: #ffffff;
+  --slate: #d4d4d6;
+  --steel: #a8a8aa;
+  --stone: #7a7a7c;
+  --muted: #5a5a5c;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+  --shadow-mockup: 0 40px 80px -20px rgba(0, 212, 164, 0.1), 0 24px 48px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Light mode tokens ────────────────────────────────────────────────────── */
+
+[data-theme="light"] {
+  --brand-green: #00d4a4;
+  --brand-green-deep: #00b48a;
+  --brand-green-soft: rgba(0, 180, 138, 0.1);
+  --brand-warn: #8a5c1a;
+  --brand-warn-soft: rgba(138, 92, 26, 0.1);
+  --brand-error: #b83e3e;
+  --brand-error-soft: rgba(184, 62, 62, 0.1);
+  --brand-tag: #2a6db8;
+  --brand-tag-soft: rgba(42, 109, 184, 0.1);
+
+  --canvas: #faf9f6;
+  --canvas-elev: #ffffff;
+  --surface: #f3f2ec;
+  --surface-2: #eceae2;
+  --surface-3: #e2dfd4;
+  --hairline: #dcdad0;
+  --hairline-soft: #eeece5;
+  --hairline-strong: #c6c3b6;
+
+  --ink: #0a0a08;
+  --slate: #2a2926;
+  --steel: #5a5852;
+  --stone: #82807a;
+  --muted: #a8a5a0;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px -6px rgba(0, 0, 0, 0.08);
+  --shadow-mockup: 0 40px 80px -20px rgba(0, 180, 138, 0.08), 0 24px 48px -8px rgba(0, 0, 0, 0.12);
+}
+
+/* ─── Base reset ───────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--canvas);
+  color: var(--ink);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Focus rings ──────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+}
+
+/* ─── Keyframes ────────────────────────────────────────────────────────────── */
+
+@keyframes live-pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
