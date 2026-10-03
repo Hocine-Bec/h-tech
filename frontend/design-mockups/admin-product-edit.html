@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Edit product · H-Tech Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --surface-3:#1c1c1e; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-error-soft:rgb(226 96 96/.14); --brand-tag-soft:rgb(90 159 242/.14); --shadow-card:0 1px 2px rgb(0 0 0/.4); --shadow-hover:0 1px 2px rgb(0 0 0/.4),0 8px 24px -6px rgb(0 0 0/.5); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --surface-3:#e2dfd4; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-error-soft:rgb(184 62 62/.10); --brand-tag-soft:rgb(42 109 184/.10); --shadow-card:0 1px 2px rgb(0 0 0/.04); --shadow-hover:0 1px 2px rgb(0 0 0/.05),0 8px 24px -6px rgb(0 0 0/.08); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--font-ui); font-size: 14px; line-height: 1.5; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+    :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); border-radius: 4px; }
+    @keyframes live-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.4); opacity: 0; } }
+    @keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modal-in { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* Admin shell (identical tokens) */
+    .admin-app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .admin-app.has-topnav { grid-template-rows: 56px 1fr; grid-template-columns: 240px 1fr; }
+    .admin-topnav { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--canvas-elev); border-bottom: 1px solid var(--hairline); position: sticky; top: 0; z-index: 30; height: 56px; }
+    .topnav-left { display: flex; align-items: center; gap: 12px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; letter-spacing: -0.3px; color: var(--ink); }
+    .brand-glyph { width: 20px; height: 20px; border-radius: 5px; background: var(--brand-green); color: #000; display: grid; place-items: center; }
+    .brand .admin-label { color: var(--stone); font-weight: 500; margin-left: 4px; }
+    .env-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; background: var(--brand-green-soft); border: 1px solid var(--brand-green); border-radius: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.08em; }
+    .env-pill .dot { position: relative; width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-green); }
+    .env-pill .dot::after { content: ''; position: absolute; inset: 0; border-radius: 9999px; background: var(--brand-green); animation: live-pulse 2s ease-in-out infinite; }
+
+    .cmd-k-search { flex: 1; max-width: 480px; margin: 0 24px; display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px; font-size: 13px; color: var(--stone); cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .cmd-k-search:hover { border-color: var(--brand-green); }
+    .cmd-k-search .kbd { display: inline-flex; align-items: center; justify-content: center; padding: 1px 5px; min-width: 18px; height: 18px; border-radius: 4px; background: var(--canvas-elev); border: 1px solid var(--hairline); font-family: var(--font-mono); font-size: 10px; color: var(--slate); font-weight: 500; }
+    .cmd-k-search .placeholder { flex: 1; }
+    .topnav-right { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { position: relative; width: 32px; height: 32px; border-radius: 8px; display: inline-grid; place-items: center; cursor: pointer; background: transparent; color: var(--slate); border: 1px solid transparent; transition: color 150ms, background 150ms, border-color 150ms; }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface-2); }
+    .icon-btn .notif-dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 9999px; background: var(--brand-error); border: 2px solid var(--canvas-elev); }
+    .admin-profile { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px 4px 4px; background: transparent; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms; }
+    .admin-profile:hover { background: var(--surface-2); border-color: var(--hairline); }
+    .admin-profile .avatar { width: 24px; height: 24px; border-radius: 9999px; background: var(--brand-green-soft); color: var(--brand-green); display: grid; place-items: center; font-size: 10px; font-weight: 700; }
+    .admin-profile .name { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .admin-profile .chev { color: var(--stone); }
+
+    /* Sidebar */
+    .admin-sidebar { background: var(--canvas-elev); border-right: 1px solid var(--hairline); padding: 16px 12px; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar-section + .sidebar-section { margin-top: 20px; }
+    .sidebar-section-label { padding: 8px 12px 6px; font-size: 10px; font-weight: 600; color: var(--stone); text-transform: uppercase; letter-spacing: 0.1em; }
+    .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--slate); cursor: pointer; transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms; }
+    .sidebar-item:hover { color: var(--brand-green); background: var(--surface); }
+    .sidebar-item.is-active { color: var(--brand-green); background: var(--brand-green-soft); }
+    .sidebar-item.is-sub { padding-left: 34px; font-size: 12px; }
+    .sidebar-item .badge { margin-left: auto; font-family: var(--font-mono); font-size: 10px; font-weight: 500; background: var(--surface); border: 1px solid var(--hairline); color: var(--stone); padding: 1px 6px; border-radius: 9999px; min-width: 20px; text-align: center; }
+    .sidebar-item.is-active .badge { background: var(--brand-green); color: #000; border-color: var(--brand-green); }
+    .sidebar-item.is-sub .badge.warn { background: var(--brand-warn-soft); color: var(--brand-warn); border-color: var(--brand-warn); }
+    .sidebar-item.is-sub .badge.error { background: var(--brand-error-soft); color: var(--brand-error); border-color: var(--brand-error); }
+    .sidebar-item.is-phase2 { color: var(--muted); cursor: not-allowed; }
+    .sidebar-item.is-phase2:hover { color: var(--muted); background: transparent; }
+    .sidebar-item .phase2-tag { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--stone); text-transform: uppercase; letter-spacing: 0.06em; }
+    .sidebar-item svg { flex: none; color: currentColor; }
+
+    /* Main */
+    .admin-main { padding: 0 0 96px; min-width: 0; display: flex; flex-direction: column; }
+
+    /* Breadcrumb strip */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 28px 0;
+      font-size: 12px; color: var(--stone);
+    }
+    .breadcrumb a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .breadcrumb a:hover { color: var(--brand-green); }
+    .breadcrumb .sep { color: var(--muted); }
+    .breadcrumb .current { color: var(--ink); font-weight: 500; }
+
+    /* Page header — different from list; has state + subhead metadata */
+    .edit-header {
+      padding: 12px 28px 20px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .edit-header .title-block { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .edit-header .eyebrow-row {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+    }
+    .edit-header .eyebrow-row .status-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-ui); font-size: 11px; font-weight: 500; line-height: 1;
+      padding: 4px 8px; border-radius: 9999px;
+    }
+    .edit-header .eyebrow-row .status-chip.live { background: var(--brand-green-soft); color: var(--brand-green); }
+    .edit-header .eyebrow-row .status-chip .dot { width: 5px; height: 5px; border-radius: 9999px; background: currentColor; }
+    .edit-header .eyebrow-row .sku { color: var(--slate); font-weight: 500; }
+    .edit-header .eyebrow-row .updated { color: var(--stone); }
+    .edit-header h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 26px; letter-spacing: -0.4px;
+      color: var(--ink); margin: 0;
+    }
+    .edit-header .head-actions {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; line-height: 1; padding: 8px 14px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms; white-space: nowrap; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 6px 10px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-danger { background: transparent; color: var(--brand-error); border-color: transparent; }
+    .btn-danger:hover { background: var(--brand-error-soft); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .btn-kbd {
+      font-family: var(--font-mono); font-size: 10px; opacity: 0.5;
+      margin-left: 4px;
+    }
+
+    /* Unsaved changes indicator on header */
+    .unsaved-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--brand-warn);
+      padding: 3px 8px; border-radius: 9999px;
+      background: var(--brand-warn-soft); border: 1px solid var(--brand-warn);
+    }
+    .unsaved-tag .dot { width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-warn); }
+
+    /* Two-column form layout */
+    .edit-grid {
+      display: grid; grid-template-columns: 1fr 320px;
+      gap: 20px;
+      padding: 0 28px;
+      align-items: flex-start;
+    }
+
+    /* Card */
+    .card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 20px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .card-head h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 14px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0;
+    }
+    .card-head .foot-hint { font-size: 11px; color: var(--stone); font-family: var(--font-mono); }
+    .card-body { padding: 18px 20px 20px; }
+    .card + .card { margin-top: 16px; }
+
+    /* Form primitives */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 12px; font-weight: 500; color: var(--slate); display: inline-flex; align-items: center; gap: 6px; }
+    .form-field label .opt { color: var(--stone); font-weight: 400; }
+    .form-field label .req { color: var(--brand-error); font-weight: 400; }
+    .form-field .help { font-size: 11px; color: var(--stone); }
+    .form-field .err { font-size: 11px; color: var(--brand-error); font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+
+    .input, .select, .textarea {
+      background: var(--canvas); border: 1px solid var(--hairline);
+      color: var(--ink); font-size: 13px;
+      padding: 9px 12px; border-radius: 8px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%; outline: none;
+    }
+    .input:hover, .select:hover, .textarea:hover { border-color: var(--hairline-strong); }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--brand-green); }
+    .input.is-error { border-color: var(--brand-error); }
+    .input.is-error:focus { border-color: var(--brand-error); box-shadow: 0 0 0 3px var(--brand-error-soft); }
+    .textarea { resize: vertical; font-family: inherit; min-height: 90px; }
+    .input.numeric { font-family: var(--font-mono); text-align: right; }
+    .input.mono { font-family: var(--font-mono); }
+    .char-counter { font-family: var(--font-mono); font-size: 10px; color: var(--stone); text-align: right; margin-top: 2px; }
+    .char-counter .used { color: var(--slate); }
+
+    .input-group {
+      display: flex; align-items: stretch;
+      background: var(--canvas); border: 1px solid var(--hairline);
+      border-radius: 8px; overflow: hidden;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .input-group:hover { border-color: var(--hairline-strong); }
+    .input-group:focus-within { border-color: var(--brand-green); }
+    .input-group input { flex: 1; background: transparent; border: 0; outline: none; padding: 9px 12px; color: var(--ink); font-family: var(--font-mono); text-align: right; font-size: 13px; }
+    .input-group .prefix, .input-group .suffix {
+      display: inline-flex; align-items: center; padding: 0 12px;
+      background: var(--surface); color: var(--stone);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    }
+    .input-group .prefix { border-right: 1px solid var(--hairline); }
+    .input-group .suffix { border-left: 1px solid var(--hairline); }
+
+    /* Combobox — brand with autocomplete */
+    .combobox {
+      position: relative;
+    }
+    .combobox .cb-input {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--canvas); border: 1px solid var(--hairline);
+      border-radius: 8px; padding: 5px 8px 5px 12px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .combobox .cb-input:hover { border-color: var(--hairline-strong); }
+    .combobox .cb-input:focus-within { border-color: var(--brand-green); }
+    .combobox .cb-input input {
+      flex: 1; background: transparent; border: 0; outline: none;
+      color: var(--ink); font-size: 13px;
+      padding: 4px 0;
+    }
+    .combobox .cb-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 4px 3px 9px;
+      background: var(--brand-green-soft); color: var(--brand-green);
+      border-radius: 6px; font-size: 12px; font-weight: 500;
+    }
+    .combobox .cb-chip button {
+      background: transparent; border: 0; cursor: pointer;
+      color: var(--brand-green); padding: 2px;
+      display: grid; place-items: center; border-radius: 3px;
+    }
+    .combobox .cb-chip button:hover { background: var(--brand-green); color: #000; }
+
+    /* Segmented radio (used for Status) */
+    .seg-group {
+      display: inline-flex; align-items: center;
+      background: var(--surface); border: 1px solid var(--hairline);
+      border-radius: 8px; padding: 2px;
+      width: 100%;
+    }
+    .seg-group label {
+      flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 6px 10px; border-radius: 6px;
+      font-size: 12px; font-weight: 500; color: var(--slate);
+      cursor: pointer; font-family: var(--font-ui);
+      transition: background 150ms, color 150ms;
+    }
+    .seg-group label:hover { color: var(--brand-green); }
+    .seg-group input[type="radio"] { display: none; }
+    .seg-group label.is-selected {
+      background: var(--canvas-elev); color: var(--brand-green);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+    }
+    .seg-group label .status-dot { width: 6px; height: 6px; border-radius: 9999px; background: currentColor; opacity: 0.6; }
+    .seg-group label.is-selected .status-dot { opacity: 1; }
+
+    /* Images uploader */
+    .images-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 4px; }
+    .img-thumb { position: relative; aspect-ratio: 1; border-radius: 8px; background: var(--surface); border: 1px solid var(--hairline); overflow: hidden; display: grid; place-items: center; color: var(--stone); }
+    .img-thumb.is-primary { border-color: var(--brand-green); box-shadow: 0 0 0 1px var(--brand-green); }
+    .img-thumb .primary-tag { position: absolute; top: 6px; left: 6px; background: var(--brand-green); color: #000; font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .img-thumb .remove { position: absolute; top: 6px; right: 6px; background: rgb(0 0 0 / 0.6); color: #fff; border: 0; border-radius: 4px; cursor: pointer; width: 20px; height: 20px; display: grid; place-items: center; transition: background 150ms; }
+    .img-thumb .remove:hover { background: var(--brand-error); }
+    .img-thumb .drag-handle { position: absolute; bottom: 6px; left: 6px; background: rgb(0 0 0 / 0.6); color: #fff; padding: 2px 4px; border-radius: 4px; font-family: var(--font-mono); font-size: 9px; }
+    .img-add { aspect-ratio: 1; border-radius: 8px; background: transparent; border: 1.5px dashed var(--hairline-strong); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--stone); cursor: pointer; text-align: center; font-size: 11px; padding: 8px; gap: 4px; transition: border-color 150ms, color 150ms, background 150ms; }
+    .img-add:hover { border-color: var(--brand-green); color: var(--brand-green); background: var(--brand-green-soft); }
+    .img-hint { display: flex; gap: 12px; margin-top: 12px; padding: 10px 12px; background: var(--surface); border-radius: 6px; font-size: 11px; color: var(--stone); font-family: var(--font-mono); }
+    .img-hint .n { color: var(--slate); font-weight: 500; }
+
+    /* Specs repeater (category-specific attributes) */
+    .specs-list { display: flex; flex-direction: column; gap: 8px; }
+    .spec-row {
+      display: grid; grid-template-columns: 180px 1fr auto; gap: 8px; align-items: center;
+    }
+    .spec-row .key {
+      background: var(--surface); border: 1px solid var(--hairline);
+      color: var(--slate); font-size: 12px; font-weight: 500;
+      padding: 8px 10px; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .spec-row .key .lock {
+      color: var(--stone); flex: none;
+    }
+    .spec-row .val { padding: 7px 10px; font-size: 12px; }
+    .spec-row .remove-spec {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: transparent; border: 1px solid transparent;
+      color: var(--stone); cursor: pointer;
+      display: grid; place-items: center;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .spec-row .remove-spec:hover { color: var(--brand-error); background: var(--brand-error-soft); }
+    .add-spec {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; border: 1px dashed var(--hairline-strong);
+      color: var(--stone); font-size: 12px; font-weight: 500;
+      padding: 7px 12px; border-radius: 6px; cursor: pointer;
+      margin-top: 4px;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .add-spec:hover { color: var(--brand-green); border-color: var(--brand-green); background: var(--brand-green-soft); }
+
+    /* Right sidebar cards */
+    .side-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .side-card + .side-card { margin-top: 12px; }
+    .side-card h3 {
+      font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone); margin: 0 0 10px;
+    }
+    .kv-list { display: flex; flex-direction: column; gap: 8px; }
+    .kv { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .kv .k { color: var(--stone); }
+    .kv .v { color: var(--ink); font-weight: 500; text-align: right; font-family: var(--font-mono); }
+    .kv .v.link { color: var(--brand-green); cursor: pointer; }
+    .kv .v.link:hover { text-decoration: underline; }
+    .kv .v.warn { color: var(--brand-warn); }
+
+    .side-toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; padding: 4px 0;
+    }
+    .side-toggle-row .lbl { font-size: 12px; color: var(--slate); }
+    .side-toggle-row .lbl .sub { display: block; font-size: 11px; color: var(--stone); font-weight: 400; margin-top: 2px; }
+    .toggle {
+      position: relative; width: 34px; height: 20px;
+      background: var(--surface-3); border-radius: 9999px;
+      cursor: pointer; flex: none;
+      transition: background 150ms;
+    }
+    .toggle::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 16px; height: 16px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+    }
+    .toggle.is-on { background: var(--brand-green); }
+    .toggle.is-on::after { transform: translateX(14px); background: #fff; }
+
+    /* Sticky bottom save bar */
+    .save-bar {
+      position: fixed; left: 240px; right: 0; bottom: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      padding: 12px 28px;
+      background: var(--canvas-elev);
+      border-top: 1px solid var(--hairline);
+      z-index: 20;
+      box-shadow: 0 -8px 24px -12px rgb(0 0 0 / 0.4);
+    }
+    [data-theme='light'] .save-bar { box-shadow: 0 -8px 24px -12px rgb(0 0 0 / 0.08); }
+    .save-bar .left { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--stone); }
+    .save-bar .actions { display: flex; align-items: center; gap: 8px; }
+
+    /* Discard-changes modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgb(0 0 0 / 0.6); z-index: 60; animation: overlay-in 200ms cubic-bezier(0.16, 1, 0.3, 1); display: none; align-items: center; justify-content: center; padding: 20px; }
+    [data-theme='light'] .modal-overlay { background: rgb(0 0 0 / 0.35); }
+    .modal-overlay.is-open { display: flex; }
+    .modal {
+      width: 100%; max-width: 440px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline-strong);
+      border-radius: 12px; padding: 24px;
+      animation: modal-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.5);
+    }
+    .modal .ico {
+      width: 40px; height: 40px; border-radius: 9999px;
+      background: var(--brand-warn-soft); color: var(--brand-warn);
+      display: grid; place-items: center; margin-bottom: 12px;
+    }
+    .modal h3 { font-family: var(--font-ui); font-size: 17px; font-weight: 600; color: var(--ink); margin: 0 0 6px; letter-spacing: -0.2px; }
+    .modal p { font-size: 13px; color: var(--slate); margin: 0 0 20px; line-height: 1.55; }
+    .modal .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .edit-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .admin-app { grid-template-columns: 1fr; }
+      .admin-sidebar { display: none; }
+      .cmd-k-search { max-width: none; margin: 0 12px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .spec-row { grid-template-columns: 1fr; }
+      .images-grid { grid-template-columns: repeat(3, 1fr); }
+      .save-bar { left: 0; padding: 10px 16px; flex-wrap: wrap; }
+      .breadcrumb, .edit-header, .edit-grid { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-app has-topnav">
+
+    <!-- Top nav -->
+    <header class="admin-topnav">
+      <div class="topnav-left">
+        <a class="brand" href="/admin">
+          <span class="brand-glyph"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+          H-Tech <span class="admin-label">Admin</span>
+        </a>
+        <span class="env-pill"><span class="dot"></span> Prod</span>
+      </div>
+
+      <div class="cmd-k-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--stone)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span class="placeholder">Search products, orders, customers…</span>
+        <span class="kbd">⌘K</span>
+      </div>
+
+      <div class="topnav-right">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="admin-profile" aria-label="Admin menu">
+          <span class="avatar">HO</span>
+          <span class="name">Hocine</span>
+          <span class="chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Overview</div>
+        <a class="sidebar-item" href="/admin">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Catalog</div>
+        <a class="sidebar-item is-active" href="/admin/products">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Products
+          <span class="badge">1,504</span>
+        </a>
+        <a class="sidebar-item" href="/admin/categories">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Categories
+          <span class="badge">9</span>
+        </a>
+        <a class="sidebar-item" href="/admin/brands">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          Brands
+          <span class="badge">42</span>
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Orders</div>
+        <a class="sidebar-item" href="/admin/orders">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          All orders
+          <span class="badge">287</span>
+        </a>
+        <a class="sidebar-item is-sub" href="/admin/orders?state=placed">
+          <span style="width:8px;height:8px;border-radius:9999px;background:var(--steel);"></span>
+          Placed
+          <span class="badge warn">7</span>
+        </a>
+        <a class="sidebar-item is-sub" href="/admin/orders?state=confirmed">
+          <span style="width:8px;height:8px;border-radius:9999px;background:var(--brand-tag);"></span>
+          Confirmed
+          <span class="badge">4</span>
+        </a>
+        <a class="sidebar-item is-sub" href="/admin/orders?state=in_delivery">
+          <span style="width:8px;height:8px;border-radius:9999px;background:var(--brand-warn);"></span>
+          In delivery
+          <span class="badge">11</span>
+        </a>
+        <a class="sidebar-item is-sub" href="/admin/returns">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Returns
+          <span class="badge error">2</span>
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Insights</div>
+        <a class="sidebar-item is-phase2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Analytics
+          <span class="phase2-tag">Phase 2</span>
+        </a>
+        <a class="sidebar-item is-phase2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+          <span class="phase2-tag">Phase 2</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/admin">Admin</a>
+        <span class="sep">/</span>
+        <a href="/admin/products">Products</a>
+        <span class="sep">/</span>
+        <span class="current">GeForce RTX 4070 Ventus 3X 12G OC</span>
+      </nav>
+
+      <!-- Page header -->
+      <div class="edit-header">
+        <div class="title-block">
+          <div class="eyebrow-row">
+            <span class="status-chip live"><span class="dot"></span>Live</span>
+            <span class="sku">GPU-MSI-4070V3-12G</span>
+            <span style="color:var(--muted)">·</span>
+            <span class="updated">Updated 12 min ago by <span style="color:var(--slate)">Hocine</span></span>
+          </div>
+          <h1>GeForce RTX 4070 Ventus 3X 12G OC</h1>
+        </div>
+        <div class="head-actions">
+          <span class="unsaved-tag"><span class="dot"></span>Unsaved changes</span>
+          <button class="btn btn-ghost">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            View on storefront
+          </button>
+          <button class="btn btn-secondary">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            Duplicate
+          </button>
+        </div>
+      </div>
+
+      <!-- Two-column grid -->
+      <div class="edit-grid">
+
+        <!-- LEFT: form cards -->
+        <div>
+
+          <!-- Basics -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Basics</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-field full">
+                  <label for="fe-name">Product name <span class="req">*</span></label>
+                  <input id="fe-name" class="input" value="GeForce RTX 4070 Ventus 3X 12G OC" placeholder="As shown on the box" />
+                  <span class="help">Manufacturer-exact spelling. Case matters.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-brand">Brand <span class="req">*</span></label>
+                  <div class="combobox">
+                    <div class="cb-input">
+                      <span class="cb-chip">
+                        MSI
+                        <button aria-label="Remove"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                      </span>
+                      <input type="text" placeholder="" />
+                    </div>
+                  </div>
+                  <span class="help">Choose from existing brands or type to add.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-cat">Category <span class="req">*</span></label>
+                  <select id="fe-cat" class="select">
+                    <option>Graphics cards</option>
+                    <option>Processors</option>
+                    <option>Motherboards</option>
+                    <option>Memory</option>
+                    <option>Storage</option>
+                    <option>Power supplies</option>
+                    <option>Cases</option>
+                    <option>Cooling</option>
+                    <option>Peripherals</option>
+                  </select>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-sku">SKU <span class="req">*</span></label>
+                  <input id="fe-sku" class="input mono" value="GPU-MSI-4070V3-12G" />
+                  <span class="help">Distributor-provided or internal code. Must be unique.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-slug">URL slug</label>
+                  <div class="input-group" style="border-radius:8px;">
+                    <span class="prefix" style="font-family:var(--font-mono);color:var(--stone);">/product/</span>
+                    <input id="fe-slug" value="msi-rtx-4070-ventus-3x-12g-oc" style="text-align:left;" />
+                  </div>
+                  <span class="help">Auto-generated from name. Editable.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing & Stock -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Pricing & stock</h2>
+              <span class="foot-hint">All prices in Algerian dinar (DA)</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="fe-price">Price <span class="req">*</span></label>
+                  <div class="input-group">
+                    <input id="fe-price" type="text" value="89,500" inputmode="numeric" />
+                    <span class="suffix">DA</span>
+                  </div>
+                  <span class="help">Whole dinars, no decimals.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-compare">Compare-at price <span class="opt">(optional)</span></label>
+                  <div class="input-group">
+                    <input id="fe-compare" type="text" value="96,000" inputmode="numeric" />
+                    <span class="suffix">DA</span>
+                  </div>
+                  <span class="help">Shown as strikethrough when higher than price.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-stock">Stock <span class="req">*</span></label>
+                  <input id="fe-stock" class="input numeric" type="text" value="14" inputmode="numeric" />
+                  <span class="help">Backend flags items with 3 or fewer as low stock.</span>
+                </div>
+
+                <div class="form-field">
+                  <label for="fe-cost">Cost <span class="opt">(internal only)</span></label>
+                  <div class="input-group">
+                    <input id="fe-cost" type="text" value="71,200" inputmode="numeric" />
+                    <span class="suffix">DA</span>
+                  </div>
+                  <span class="help">Never shown to customers. Margin: <strong style="color:var(--brand-green);font-family:var(--font-mono);">+ 25.7%</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Content</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-field full">
+                  <label for="fe-short">Short description <span class="opt">(optional)</span></label>
+                  <textarea id="fe-short" class="textarea" style="min-height:60px;" placeholder="One-line summary shown in search results and share cards.">12GB GDDR6X · 2610 MHz boost · TRI FROZR 3 cooling · 2× 8-pin</textarea>
+                  <div class="char-counter"><span class="used">87</span> / 140</div>
+                </div>
+
+                <div class="form-field full">
+                  <label for="fe-desc">Description</label>
+                  <textarea id="fe-desc" class="textarea" style="min-height:140px;">Built for 1440p gaming with 12GB GDDR6X memory and NVIDIA's Ada Lovelace architecture. TRI FROZR 3 cooling keeps thermals in check under sustained load. Requires a 650W PSU minimum with a single 8-pin connector via the included adapter. 305mm length — fits most mid-tower cases.</textarea>
+                  <span class="help">Long-form description shown on the product page. Markdown supported.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Product images</h2>
+              <span class="foot-hint">3 of 8 uploaded</span>
+            </div>
+            <div class="card-body">
+              <div class="images-grid">
+                <div class="img-thumb is-primary">
+                  <span class="primary-tag">Primary</span>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="1"/><circle cx="8" cy="12" r="1.5"/><circle cx="14" cy="12" r="1.5"/><path d="M5 17v2M19 17v2"/></svg>
+                  <button class="remove" aria-label="Remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                  <span class="drag-handle">1</span>
+                </div>
+                <div class="img-thumb">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+                  <button class="remove" aria-label="Remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                  <span class="drag-handle">2</span>
+                </div>
+                <div class="img-thumb">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+                  <button class="remove" aria-label="Remove"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                  <span class="drag-handle">3</span>
+                </div>
+                <button class="img-add" type="button">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                  Add image
+                </button>
+              </div>
+              <div class="img-hint">
+                <span>Drag to reorder · First image is primary · WebP or JPG · Up to <span class="n">5 MB</span> each · Up to <span class="n">8 images</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category-specific specs -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Specifications</h2>
+              <span class="foot-hint">Auto-suggested for Graphics cards</span>
+            </div>
+            <div class="card-body">
+              <div class="specs-list">
+                <div class="spec-row">
+                  <div class="key">
+                    <svg class="lock" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Chipset
+                  </div>
+                  <input class="input val" value="NVIDIA GeForce RTX 4070" />
+                  <button class="remove-spec" aria-label="Remove spec" disabled style="opacity:.3;cursor:not-allowed;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">
+                    <svg class="lock" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Memory
+                  </div>
+                  <input class="input val" value="12 GB GDDR6X" />
+                  <button class="remove-spec" aria-label="Remove spec" disabled style="opacity:.3;cursor:not-allowed;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">Boost clock</div>
+                  <input class="input val" value="2610 MHz" />
+                  <button class="remove-spec" aria-label="Remove spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">
+                    <svg class="lock" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Power connector
+                  </div>
+                  <input class="input val" value="1× 8-pin (via included adapter)" />
+                  <button class="remove-spec" aria-label="Remove spec" disabled style="opacity:.3;cursor:not-allowed;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">
+                    <svg class="lock" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Recommended PSU
+                  </div>
+                  <input class="input val" value="650 W" />
+                  <button class="remove-spec" aria-label="Remove spec" disabled style="opacity:.3;cursor:not-allowed;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">Length</div>
+                  <input class="input val" value="305 mm" />
+                  <button class="remove-spec" aria-label="Remove spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <div class="spec-row">
+                  <div class="key">Warranty</div>
+                  <input class="input val" value="3 years (manufacturer)" />
+                  <button class="remove-spec" aria-label="Remove spec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                </div>
+                <button class="add-spec" type="button">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                  Add specification
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: sidebar -->
+        <aside>
+          <!-- Status -->
+          <div class="side-card">
+            <h3>Status</h3>
+            <div class="seg-group" role="radiogroup" aria-label="Product status">
+              <label class="is-selected">
+                <input type="radio" name="status" checked />
+                <span class="status-dot" style="color:var(--brand-green)"></span>
+                Live
+              </label>
+              <label>
+                <input type="radio" name="status" />
+                <span class="status-dot" style="color:var(--steel)"></span>
+                Draft
+              </label>
+              <label>
+                <input type="radio" name="status" />
+                <span class="status-dot" style="color:var(--stone)"></span>
+                Archived
+              </label>
+            </div>
+            <p style="font-size:11px;color:var(--stone);margin:10px 0 0;line-height:1.5;">
+              Live products appear in shop, search, and category pages. Draft is admin-only preview. Archived hides from customers but keeps order history intact.
+            </p>
+          </div>
+
+          <!-- Organization -->
+          <div class="side-card">
+            <h3>Organization</h3>
+            <div class="kv-list">
+              <div class="kv">
+                <span class="k">Category</span>
+                <span class="v" style="font-family:var(--font-ui);">Graphics cards</span>
+              </div>
+              <div class="kv">
+                <span class="k">Brand</span>
+                <span class="v" style="font-family:var(--font-ui);">MSI</span>
+              </div>
+              <div class="kv">
+                <span class="k">Distributor</span>
+                <span class="v" style="font-family:var(--font-ui);">Distributor A</span>
+              </div>
+              <div class="kv">
+                <span class="k">Last synced</span>
+                <span class="v">4 min ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visibility toggles -->
+          <div class="side-card">
+            <h3>Visibility</h3>
+            <div class="kv-list">
+              <div class="side-toggle-row">
+                <div class="lbl">
+                  Featured
+                  <span class="sub">Promote on the home page</span>
+                </div>
+                <div class="toggle is-on" role="switch" aria-checked="true"></div>
+              </div>
+              <div class="side-toggle-row">
+                <div class="lbl">
+                  Search-indexable
+                  <span class="sub">Appears in site search</span>
+                </div>
+                <div class="toggle is-on" role="switch" aria-checked="true"></div>
+              </div>
+              <div class="side-toggle-row">
+                <div class="lbl">
+                  Show low-stock warning
+                  <span class="sub">"Only 3 left" hint on PDP</span>
+                </div>
+                <div class="toggle is-on" role="switch" aria-checked="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meta -->
+          <div class="side-card">
+            <h3>Meta</h3>
+            <div class="kv-list">
+              <div class="kv">
+                <span class="k">Product ID</span>
+                <span class="v" style="font-size:11px;">01HW5Y8Z9NKJPQ…</span>
+              </div>
+              <div class="kv">
+                <span class="k">Created</span>
+                <span class="v" style="font-family:var(--font-ui);">14 Aug 2026</span>
+              </div>
+              <div class="kv">
+                <span class="k">Updated</span>
+                <span class="v" style="font-family:var(--font-ui);">12 min ago</span>
+              </div>
+              <div class="kv">
+                <span class="k">Storefront</span>
+                <span class="v link">View live →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger zone -->
+          <div class="side-card" style="border-color:var(--brand-error);">
+            <h3 style="color:var(--brand-error);">Danger zone</h3>
+            <p style="font-size:12px;color:var(--slate);margin:0 0 12px;line-height:1.5;">
+              Deletes are permanent. Existing orders keep a snapshot of this product; the SKU is freed for reuse.
+            </p>
+            <button class="btn btn-danger btn-sm" style="border:1px solid var(--brand-error);width:100%;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              Delete this product
+            </button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- Sticky bottom save bar -->
+  <div class="save-bar">
+    <div class="left">
+      <span class="unsaved-tag"><span class="dot"></span>3 unsaved changes</span>
+      <span>Auto-save is off — changes stay local until you Save.</span>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost" id="btn-discard">Discard</button>
+      <button class="btn btn-secondary">Save and add another</button>
+      <button class="btn btn-primary">
+        Save changes
+        <span class="btn-kbd">⌘S</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Discard-changes confirmation modal (hidden by default) -->
+  <div class="modal-overlay" id="discard-modal">
+    <div class="modal" role="dialog" aria-labelledby="discard-title" aria-modal="true">
+      <div class="ico">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3 id="discard-title">Discard 3 unsaved changes?</h3>
+      <p>Your edits to <strong>GeForce RTX 4070 Ventus 3X 12G OC</strong> will be lost. This can't be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="btn-keep-editing">Keep editing</button>
+        <button class="btn btn-primary" style="background:var(--brand-error);color:#fff;">Discard changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+
+    // Discard modal
+    const modal = document.getElementById('discard-modal');
+    document.getElementById('btn-discard')?.addEventListener('click', () => modal.classList.add('is-open'));
+    document.getElementById('btn-keep-editing')?.addEventListener('click', () => modal.classList.remove('is-open'));
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('is-open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') modal?.classList.remove('is-open');
+    });
+
+    // Segmented status radio (click to select)
+    document.querySelectorAll('.seg-group label').forEach(l => {
+      l.addEventListener('click', (e) => {
+        l.closest('.seg-group').querySelectorAll('label').forEach(x => x.classList.remove('is-selected'));
+        l.classList.add('is-selected');
+      });
+    });
+
+    // Toggle switches
+    document.querySelectorAll('.toggle').forEach(t => {
+      t.addEventListener('click', () => {
+        t.classList.toggle('is-on');
+        t.setAttribute('aria-checked', t.classList.contains('is-on'));
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Order placed · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif','ABC Arizona','Times New Roman',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --surface-3:#1c1c1e; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-error-soft:rgb(226 96 96/.14); --brand-tag-soft:rgb(90 159 242/.14); --shadow-card:0 1px 2px rgb(0 0 0/.4); --shadow-hover:0 1px 2px rgb(0 0 0/.4),0 8px 24px -6px rgb(0 0 0/.5); --nav-bg:rgb(0 0 0/.7); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --surface-3:#e2dfd4; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-error-soft:rgb(184 62 62/.10); --brand-tag-soft:rgb(42 109 184/.10); --shadow-card:0 1px 2px rgb(0 0 0/.04); --shadow-hover:0 1px 2px rgb(0 0 0/.05),0 8px 24px -6px rgb(0 0 0/.08); --nav-bg:rgb(250 249 246/.72); }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html,body { margin:0; padding:0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px; line-height: 1.55; color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; border-radius: 4px; }
+    button:focus-visible, a:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); }
+
+    @keyframes live-pulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0;   }
+    }
+    @keyframes check-bounce {
+      0%   { transform: scale(0.6); opacity: 0; }
+      60%  { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font-ui); font-size: 14px; font-weight: 500; line-height: 1;
+      padding: 10px 20px; border-radius: 9999px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap; text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-lg { padding: 14px 28px; font-size: 15px; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-accent { background: var(--brand-green); color: #000; }
+    .btn-accent:hover { background: var(--brand-green-deep); }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+
+    .icon-btn {
+      position: relative;
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; max-width: 1200px; padding: 0 24px; margin: 0 auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-right .support-link {
+      font-size: 13px; color: var(--slate); font-weight: 500;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .nav-right .support-link:hover { color: var(--brand-green); background: var(--surface-2); }
+
+    /* ==========================================================================
+       Confirmation hero
+       ========================================================================== */
+    .confirm-hero {
+      position: relative;
+      padding: 64px 0 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .confirm-hero::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(600px 300px at 50% 20%, rgb(0 212 164 / 0.14), transparent 60%),
+        radial-gradient(400px 200px at 50% 80%, rgb(0 212 164 / 0.06), transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    .confirm-hero > * { position: relative; z-index: 1; }
+
+    .check-circle {
+      display: inline-grid; place-items: center;
+      width: 80px; height: 80px; border-radius: 9999px;
+      background: var(--brand-green); color: #000;
+      margin-bottom: 24px;
+      position: relative;
+      animation: check-bounce 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .check-circle::after {
+      content: ''; position: absolute; inset: -8px;
+      border-radius: 9999px; border: 2px solid var(--brand-green);
+      opacity: 0.2;
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+    .check-circle svg { width: 40px; height: 40px; }
+
+    .confirm-hero h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(40px, 5vw, 56px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 8px;
+    }
+    .confirm-hero h1 em { font-style: italic; color: var(--brand-green); }
+    .confirm-hero .sub {
+      font-size: 17px; color: var(--slate); margin: 0 0 32px; line-height: 1.55;
+      max-width: 460px; margin-left: auto; margin-right: auto;
+    }
+
+    /* Order ref chip — click-to-copy */
+    .order-ref {
+      display: inline-flex; align-items: stretch;
+      background: var(--canvas-elev); border: 1px solid var(--hairline-strong);
+      border-radius: 12px; padding: 6px;
+      gap: 8px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .order-ref:hover { border-color: var(--brand-green); }
+    .order-ref .label-block {
+      padding: 8px 14px 8px 12px;
+      display: flex; flex-direction: column; gap: 2px;
+      text-align: left;
+    }
+    .order-ref .label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone); font-weight: 600;
+    }
+    .order-ref .value {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 500;
+      color: var(--ink); letter-spacing: 0.5px;
+    }
+    .order-ref .copy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 14px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      border-radius: 8px; cursor: pointer;
+      font-family: var(--font-ui); font-size: 13px; font-weight: 500; color: var(--slate);
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), color 150ms, border-color 150ms;
+    }
+    .order-ref .copy-btn:hover {
+      background: var(--brand-green-soft); color: var(--brand-green); border-color: var(--brand-green);
+    }
+
+    .save-hint {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 20px; padding: 8px 16px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      font-size: 13px; color: var(--slate);
+    }
+    .save-hint svg { color: var(--brand-green); flex: none; }
+    .save-hint strong { color: var(--ink); font-weight: 500; }
+
+    /* ==========================================================================
+       Journey preview — 4 steps, first is done, rest are upcoming
+       ========================================================================== */
+    .journey-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 40px;
+    }
+    .journey-card h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .journey-card h2 .eyebrow {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--brand-green); font-weight: 600;
+    }
+
+    .journey-list { display: flex; flex-direction: column; gap: 0; }
+    .journey-step {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 0;
+      position: relative;
+    }
+    .journey-step:not(:last-child)::before {
+      content: ''; position: absolute; left: 11px; top: 32px; bottom: 0; width: 2px;
+      background: var(--hairline);
+    }
+    .journey-step.done::before { background: var(--brand-green); }
+    .journey-step .step-dot {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 600; color: var(--stone);
+      flex: none; z-index: 1; position: relative;
+    }
+    .journey-step.done .step-dot {
+      background: var(--brand-green); border-color: var(--brand-green); color: #000;
+    }
+    .journey-step.active .step-dot {
+      background: transparent; border: 2px solid var(--brand-green); color: var(--ink);
+      position: relative;
+    }
+    .journey-step.active .step-dot::after {
+      content: ''; position: absolute; inset: -4px;
+      border: 2px solid var(--brand-green); border-radius: 9999px;
+      animation: live-pulse 2s ease-in-out infinite; opacity: 0;
+    }
+    .journey-step .body { flex: 1; padding-top: 2px; }
+    .journey-step .name {
+      font-size: 14px; font-weight: 600; color: var(--ink);
+      display: block; margin-bottom: 2px;
+    }
+    .journey-step .desc {
+      font-size: 13px; color: var(--stone); line-height: 1.5;
+    }
+    .journey-step:not(.done):not(.active) .name { color: var(--stone); font-weight: 500; }
+    .journey-step .time {
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+      white-space: nowrap;
+    }
+
+    /* Order details / summary */
+    .details-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-top: 16px;
+    }
+    .details-card h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 16px;
+    }
+    .details-row {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 16px; padding: 8px 0;
+      font-size: 14px;
+    }
+    .details-row + .details-row { border-top: 1px solid var(--hairline-soft); }
+    .details-row .key {
+      color: var(--stone); font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+      padding-top: 3px;
+    }
+    .details-row .val { color: var(--ink); line-height: 1.55; }
+    .details-row .val strong { font-weight: 600; }
+    .details-row .val .mono { font-family: var(--font-mono); font-size: 13px; }
+
+    .items-mini {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .items-mini .item {
+      display: flex; justify-content: space-between; gap: 12px;
+      font-size: 13px; color: var(--slate);
+    }
+    .items-mini .item .name { color: var(--ink); }
+    .items-mini .item .price { font-family: var(--font-mono); font-weight: 500; color: var(--ink); }
+
+    .total-line {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 12px; padding-top: 12px; margin-top: 4px;
+      border-top: 1px solid var(--hairline);
+      font-family: var(--font-ui); font-size: 15px; font-weight: 600; color: var(--ink);
+    }
+    .total-line .v {
+      font-family: var(--font-mono); font-size: 18px;
+    }
+
+    /* CTAs */
+    .cta-row {
+      display: flex; gap: 12px; justify-content: center;
+      margin-top: 32px; flex-wrap: wrap;
+    }
+
+    /* Support link */
+    .support-nudge {
+      text-align: center; margin-top: 32px; padding: 20px;
+      font-size: 13px; color: var(--stone);
+    }
+    .support-nudge a {
+      color: var(--brand-green); font-weight: 500;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .support-nudge a:hover { color: var(--brand-green-deep); }
+
+    /* Footer */
+    footer.checkout-footer {
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--hairline);
+      background: var(--canvas);
+      margin-top: 64px;
+    }
+    .cf-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px; flex-wrap: wrap;
+      font-size: 12px; color: var(--stone);
+    }
+    .cf-inner .cf-links { display: flex; gap: 20px; }
+    .cf-inner a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cf-inner a:hover { color: var(--brand-green); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .order-ref { flex-direction: column; }
+      .details-row { grid-template-columns: 1fr; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/>
+          </svg>
+        </span>
+        H-Tech
+      </a>
+      <div class="nav-right">
+        <a href="/support/contact" class="support-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Contact
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Confirmation hero -->
+  <section class="confirm-hero">
+    <div class="container">
+      <div class="check-circle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+
+      <h1>Order <em>placed</em>.</h1>
+      <p class="sub">
+        Thanks, Yacine. We'll call to confirm your order within the next few hours — usually within one.
+      </p>
+
+      <div class="order-ref" role="group" aria-label="Order number">
+        <div class="label-block">
+          <span class="label">Order number</span>
+          <span class="value">HT-4287</span>
+        </div>
+        <button class="copy-btn" aria-label="Copy order number">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+
+      <div class="save-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span><strong>Save this number.</strong> You'll need it + your phone to look up your order status.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- Journey preview -->
+    <div class="journey-card">
+      <h2>
+        <span>What happens next</span>
+        <span class="eyebrow">4 steps</span>
+      </h2>
+      <div class="journey-list">
+        <div class="journey-step done">
+          <span class="step-dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="body">
+            <span class="name">Order placed</span>
+            <span class="desc">Received at 14:41 · we've got your details.</span>
+          </div>
+          <span class="time">14:41</span>
+        </div>
+        <div class="journey-step active">
+          <span class="step-dot">2</span>
+          <div class="body">
+            <span class="name">We'll call to confirm</span>
+            <span class="desc">A quick phone or WhatsApp call to confirm the order and answer any questions. Cancel anytime before dispatch.</span>
+          </div>
+          <span class="time">In a few hours</span>
+        </div>
+        <div class="journey-step">
+          <span class="step-dot">3</span>
+          <div class="body">
+            <span class="name">Courier picks up</span>
+            <span class="desc">Once confirmed, your order goes to the courier for dispatch.</span>
+          </div>
+          <span class="time">Same day</span>
+        </div>
+        <div class="journey-step">
+          <span class="step-dot">4</span>
+          <div class="body">
+            <span class="name">Delivered to your door</span>
+            <span class="desc">Inspect the box, then pay the courier in cash. Refuse if anything's wrong — you won't be charged.</span>
+          </div>
+          <span class="time">24–48h to Alger</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order details -->
+    <div class="details-card">
+      <h2>Order details</h2>
+
+      <div class="details-row">
+        <span class="key">Items</span>
+        <div class="val">
+          <div class="items-mini">
+            <div class="item"><span class="name">GeForce RTX 4070 12GB GDDR6X × 1</span><span class="price">89,900 DA</span></div>
+            <div class="item"><span class="name">Corsair Vengeance DDR5 32GB × 1</span><span class="price">91,200 DA</span></div>
+            <div class="item"><span class="name">Samsung 990 Pro 2TB NVMe × 1</span><span class="price">34,500 DA</span></div>
+          </div>
+          <div class="total-line">
+            <span>You'll pay in cash</span>
+            <span class="v">215,600 DA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-row">
+        <span class="key">Delivering to</span>
+        <div class="val">
+          <strong>Yacine Belkacem</strong> · <span class="mono">+213 555 12 34 56</span><br />
+          Rue Larbi Ben M'hidi, N° 42, Bâtiment C, Apt 8 — 3rd floor<br />
+          Bab El Oued, Alger
+        </div>
+      </div>
+
+      <div class="details-row">
+        <span class="key">Method</span>
+        <div class="val">Cash on delivery · <span style="color: var(--brand-green); font-weight: 500;">Standard delivery, 24–48h</span></div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-row">
+      <button class="btn btn-accent btn-lg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy order number
+      </button>
+      <a href="/shop" class="btn btn-secondary btn-lg">
+        Continue shopping
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <p class="support-nudge">
+      Question about your order? <a href="/support/contact">Contact us on WhatsApp</a> — mention <strong>HT-4287</strong>.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="checkout-footer">
+    <div class="cf-inner">
+      <span>© 2026 H-Tech · Algiers, DZ</span>
+      <div class="cf-links">
+        <a href="/support/track-order">Track order</a>
+        <a href="/support/contact">Support</a>
+        <a href="/legal/terms">Terms</a>
+        <a href="/legal/warranty">Warranty</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) {}
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Support — H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --brand-green: #00d4a4;
+      --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', serif;
+    }
+
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000;
+      --canvas-elev: #0a0a0a;
+      --surface: #111113;
+      --surface-2: #17171a;
+      --hairline: #1f1f22;
+      --hairline-soft: #17171a;
+      --hairline-strong: #2a2a2e;
+      --ink: #fff;
+      --slate: #d4d4d6;
+      --steel: #a8a8aa;
+      --stone: #7a7a7c;
+      --muted: #5a5a5c;
+      --brand-warn: #c88a3a;
+      --brand-error: #e26060;
+      --brand-tag: #5a9ff2;
+      --brand-green-soft: rgb(0 212 164/.14);
+      --brand-warn-soft: rgb(200 138 58/.14);
+      --brand-tag-soft: rgb(90 159 242/.14);
+    }
+
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6;
+      --canvas-elev: #fff;
+      --surface: #f3f2ec;
+      --surface-2: #eceae2;
+      --hairline: #dcdad0;
+      --hairline-soft: #eeece5;
+      --hairline-strong: #c6c3b6;
+      --ink: #0a0a08;
+      --slate: #2a2926;
+      --steel: #5a5852;
+      --stone: #82807a;
+      --muted: #a8a5a0;
+      --brand-warn: #8a5c1a;
+      --brand-error: #b83e3e;
+      --brand-tag: #2a6db8;
+      --brand-green-soft: rgb(0 180 138/.10);
+      --brand-warn-soft: rgb(138 92 26/.10);
+      --brand-tag-soft: rgb(42 109 184/.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    ::selection {
+      background: rgb(0 212 164 / 0.30);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+      border-radius: 4px;
+    }
+
+    @keyframes live-pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Nav (matches home) */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+      height: 64px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-glyph {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--brand-green);
+      color: #000;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-links a:hover {
+      color: var(--brand-green);
+    }
+
+    .nav-links a.is-active {
+      color: var(--brand-green);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: inline-grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--slate);
+      cursor: pointer;
+      transition: color 150ms, background 150ms;
+    }
+
+    .icon-btn:hover {
+      color: var(--brand-green);
+      background: var(--surface);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--canvas);
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-green);
+      color: #000;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--hairline-strong);
+    }
+
+    .btn-secondary:hover {
+      background: var(--brand-green-soft);
+      border-color: var(--brand-green);
+      color: var(--brand-green);
+    }
+
+    .btn-sm {
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+
+    /* Page shell */
+    .breadcrumb {
+      padding: 16px 0 0;
+      font-size: 12px;
+      color: var(--stone);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .breadcrumb a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .breadcrumb a:hover {
+      color: var(--brand-green);
+    }
+
+    .breadcrumb .sep {
+      color: var(--muted);
+    }
+
+    .breadcrumb .current {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Hero header */
+    .support-hero {
+      padding: 40px 0 32px;
+    }
+
+    .support-hero .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--brand-green);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .support-hero .eyebrow .dot {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: var(--brand-green);
+    }
+
+    .support-hero .eyebrow .dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background: var(--brand-green);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+
+    .support-hero h1 {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: clamp(32px, 4.5vw, 44px);
+      letter-spacing: -0.6px;
+      color: var(--ink);
+      margin: 0 0 12px;
+      line-height: 1.1;
+    }
+
+    .support-hero h1 em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--brand-green);
+      letter-spacing: -1px;
+    }
+
+    .support-hero .lead {
+      font-size: 17px;
+      color: var(--slate);
+      margin: 0;
+      max-width: 620px;
+      line-height: 1.55;
+    }
+
+    /* Quick action strip */
+    .quick-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 36px 0 20px;
+    }
+
+    .quick-tile {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 22px 22px 20px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      color: inherit;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .quick-tile:hover {
+      border-color: var(--brand-green);
+    }
+
+    .quick-tile.primary {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 1px var(--brand-green) inset;
+    }
+
+    .quick-tile .ico {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--slate);
+      display: grid;
+      place-items: center;
+    }
+
+    .quick-tile.primary .ico {
+      background: var(--brand-green);
+      color: #000;
+      border: 0;
+    }
+
+    .quick-tile h3 {
+      font-family: var(--font-ui);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 4px 0 0;
+      letter-spacing: -0.2px;
+    }
+
+    .quick-tile p {
+      font-size: 13px;
+      color: var(--stone);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .quick-tile .link {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--brand-green);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .quick-tile:hover .link {
+      gap: 10px;
+    }
+
+    .quick-tile.primary .link {
+      color: var(--brand-green);
+      font-weight: 600;
+    }
+
+    /* Section titles */
+    .section {
+      padding: 32px 0;
+    }
+
+    .section h2 {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+      margin: 0 0 20px;
+    }
+
+    /* Topic cards */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .topic-card {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 18px 20px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      color: inherit;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .topic-card:hover {
+      border-color: var(--brand-green);
+    }
+
+    .topic-card .t-ico {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--stone);
+      display: grid;
+      place-items: center;
+      flex: none;
+      border: 1px solid var(--hairline);
+      transition: background 150ms, color 150ms, border-color 150ms;
+    }
+
+    .topic-card:hover .t-ico {
+      background: var(--brand-green-soft);
+      color: var(--brand-green);
+      border-color: var(--brand-green);
+    }
+
+    .topic-card .t-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .topic-card .t-body h4 {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+
+    .topic-card .t-body p {
+      font-size: 13px;
+      color: var(--stone);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .topic-card .t-body .count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--stone);
+      margin-top: 6px;
+      display: block;
+    }
+
+    .topic-card .arrow {
+      color: var(--stone);
+      flex: none;
+      transition: color 150ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .topic-card:hover .arrow {
+      color: var(--brand-green);
+      transform: translateX(4px);
+    }
+
+    /* Popular questions */
+    .questions {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .q-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--hairline-soft);
+      cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .q-item:last-child {
+      border-bottom: 0;
+    }
+
+    .q-item:hover {
+      background: var(--surface);
+    }
+
+    .q-item .q-body {
+      flex: 1;
+    }
+
+    .q-item .q-body h5 {
+      font-family: var(--font-ui);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      margin: 0 0 3px;
+      transition: color 150ms;
+    }
+
+    .q-item:hover h5 {
+      color: var(--brand-green);
+    }
+
+    .q-item .q-body .snippet {
+      font-size: 13px;
+      color: var(--stone);
+      line-height: 1.5;
+    }
+
+    .q-item .arrow {
+      color: var(--stone);
+      transition: color 150ms, transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      flex: none;
+    }
+
+    .q-item:hover .arrow {
+      color: var(--brand-green);
+      transform: translateX(4px);
+    }
+
+    /* Contact panel */
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .contact-tile {
+      display: flex;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      align-items: center;
+      color: inherit;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .contact-tile:hover {
+      border-color: var(--brand-green);
+    }
+
+    .contact-tile .c-ico {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--brand-green-soft);
+      color: var(--brand-green);
+      display: grid;
+      place-items: center;
+      flex: none;
+      border: 1px solid var(--brand-green);
+    }
+
+    .contact-tile .c-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-tile .c-body .lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--stone);
+      font-weight: 600;
+    }
+
+    .contact-tile .c-body .val {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      color: var(--ink);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .contact-tile .c-body .hours {
+      font-size: 11px;
+      color: var(--stone);
+      margin-top: 2px;
+      font-family: var(--font-mono);
+    }
+
+    /* Footer (compact) */
+    footer {
+      margin-top: 60px;
+      border-top: 1px solid var(--hairline);
+      padding: 40px 0 24px;
+      background: var(--canvas-elev);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-col h5 {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--stone);
+      margin: 0 0 12px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 13px;
+      color: var(--slate);
+      padding: 4px 0;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .footer-col a:hover {
+      color: var(--brand-green);
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--stone);
+      margin: 12px 0 0;
+      max-width: 320px;
+      line-height: 1.55;
+    }
+
+    .footer-bottom {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--stone);
+      font-family: var(--font-mono);
+    }
+
+    .footer-bottom .links a {
+      color: var(--stone);
+      margin-left: 16px;
+      transition: color 150ms;
+    }
+
+    .footer-bottom .links a:hover {
+      color: var(--brand-green);
+    }
+
+    @media (max-width: 900px) {
+
+      .quick-strip,
+      .topics-grid,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z" />
+          </svg></span>
+        H-Tech
+      </a>
+      <nav class="nav-links">
+        <a href="/shop">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support" class="is-active">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg></button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account"><svg width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg></a>
+        <a href="/cart" class="icon-btn" aria-label="Cart"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg></a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme"><svg width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" id="theme-icon">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg></button>
+        <a href="/shop" class="btn btn-primary btn-sm">Shop now</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Support</span>
+    </nav>
+
+    <!-- Hero -->
+    <section class="support-hero">
+      <span class="eyebrow"><span class="dot"></span>We usually reply within 2 hours (business days)</span>
+      <h1>Need a hand? <em>Start here.</em></h1>
+      <p class="lead">Tracking, returns, compatibility, refunds — most answers are one click below. If not, WhatsApp is
+        the fastest way to reach a human.</p>
+    </section>
+
+    <!-- Quick actions -->
+    <div class="quick-strip">
+      <a class="quick-tile primary" href="/support/track-order">
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg></span>
+        <h3>Track my order</h3>
+        <p>Enter your order number and phone to see the live delivery timeline.</p>
+        <span class="link">Track now →</span>
+      </a>
+      <a class="quick-tile" href="/support/returns">
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10" />
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+          </svg></span>
+        <h3>Return an item</h3>
+        <p>7-day DOA policy. Photos required. Cash reimbursement handled offline.</p>
+        <span class="link">Start a return →</span>
+      </a>
+      <a class="quick-tile" href="/support/compatibility">
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 3v12" />
+            <circle cx="18" cy="6" r="3" />
+            <circle cx="6" cy="18" r="3" />
+            <path d="M18 9a9 9 0 0 1-9 9" />
+          </svg></span>
+        <h3>Check compatibility</h3>
+        <p>Sockets, PSU wattage, form factors. Get it right before you order.</p>
+        <span class="link">Compatibility guide →</span>
+      </a>
+    </div>
+
+    <!-- Browse by topic -->
+    <section class="section">
+      <h2>Browse by topic</h2>
+      <div class="topics-grid">
+        <a class="topic-card" href="/support/faq#orders">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+              <rect x="9" y="3" width="6" height="4" rx="1" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Orders & checkout</h4>
+            <p>Placing orders, cash on delivery, order confirmation calls, price locks.</p>
+            <span class="count">12 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+
+        <a class="topic-card" href="/support/faq#delivery">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Delivery & tracking</h4>
+            <p>Coverage across 48 wilayas, delivery times, courier partners, address changes.</p>
+            <span class="count">8 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+
+        <a class="topic-card" href="/support/faq#payment">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Payment & pricing</h4>
+            <p>Cash on delivery only, cash inspection at door, VAT-inclusive prices, refunds.</p>
+            <span class="count">6 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+
+        <a class="topic-card" href="/support/returns">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Returns & warranty</h4>
+            <p>7-day DOA window, manufacturer warranty passthrough, refund timelines.</p>
+            <span class="count">9 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+
+        <a class="topic-card" href="/support/compatibility">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Compatibility help</h4>
+            <p>CPU sockets, RAM speeds, PSU wattage, GPU length, motherboard form factors.</p>
+            <span class="count">14 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+
+        <a class="topic-card" href="/support/faq#account">
+          <span class="t-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg></span>
+          <div class="t-body">
+            <h4>Account & privacy</h4>
+            <p>Guest vs. registered checkout, saved addresses, data deletion, email preferences.</p>
+            <span class="count">7 articles</span>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Popular questions -->
+    <section class="section">
+      <h2>Popular questions</h2>
+      <div class="questions">
+        <a class="q-item" href="/support/faq#pay-on-delivery">
+          <div class="q-body">
+            <h5>Can I inspect the package before paying?</h5>
+            <p class="snippet">Yes. Open the box, check the item is present and undamaged, then pay the courier in cash.
+              You can refuse if anything looks wrong.</p>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+        <a class="q-item" href="/support/faq#delivery-time">
+          <div class="q-body">
+            <h5>How long does delivery take?</h5>
+            <p class="snippet">Algiers and surrounding wilayas: 1–2 business days. Other wilayas: 2–4 business days.
+              Deep south (Tamanrasset, Adrar, Illizi): up to 6 days.</p>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+        <a class="q-item" href="/support/faq#doa">
+          <div class="q-body">
+            <h5>What if my item arrives dead or damaged?</h5>
+            <p class="snippet">You have 7 days from delivery to open a DOA return. We need photos of the issue and the
+              original packaging. Approved returns are refunded in full.</p>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+        <a class="q-item" href="/support/faq#price-change">
+          <div class="q-body">
+            <h5>The price changed between my cart and checkout — what now?</h5>
+            <p class="snippet">Prices sync from distributors 3× daily. If a price changes, we show a warning at checkout
+              and re-lock it for 15 minutes so you can decide.</p>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+        <a class="q-item" href="/support/faq#warranty">
+          <div class="q-body">
+            <h5>How does manufacturer warranty work?</h5>
+            <p class="snippet">Every product ships with its manufacturer warranty (usually 2–3 years). We help you file
+              the claim directly with the brand — no middleman markup or delays.</p>
+          </div>
+          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section">
+      <h2>Still need help?</h2>
+      <div class="contact-panel">
+        <a class="contact-tile" href="https://wa.me/213555000000">
+          <span class="c-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg></span>
+          <div class="c-body">
+            <span class="lbl">WhatsApp — fastest reply</span>
+            <div class="val">+213 555 42 18 90</div>
+            <span class="hours">Sat–Thu · 9:00 – 18:00</span>
+          </div>
+        </a>
+        <a class="contact-tile" href="tel:+213555000000">
+          <span class="c-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg></span>
+          <div class="c-body">
+            <span class="lbl">Call us</span>
+            <div class="val">+213 555 42 18 90</div>
+            <span class="hours">Sat–Thu · 9:00 – 18:00</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand" href="/"><span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24"
+                fill="currentColor">
+                <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z" />
+              </svg></span>H-Tech</a>
+          <p>Computer parts & peripherals, delivered anywhere in Algeria. Cash on delivery. 7-day DOA return.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <a href="/shop">All categories</a>
+          <a href="/deals">Deals</a>
+          <a href="/bundles">Bundles</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="/support/track-order">Track order</a>
+          <a href="/support/returns">Returns</a>
+          <a href="/support/faq">FAQ</a>
+          <a href="/support/contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="/about">About</a>
+          <a href="/distributors">Distributors</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+          <a href="/legal/warranty">Warranty</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div class="links">
+          <a href="/status">Status</a>
+          <a>v0.1 · preview</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+  </script>
+</body>
+
+</html>

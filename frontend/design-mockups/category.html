@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Graphics cards · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       Token layer — kept in sync with globals.css
+       ========================================================================== */
+    :root {
+      --brand-green: #00d4a4; --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', 'ABC Arizona', 'Times New Roman', serif;
+    }
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000000; --canvas-elev: #0a0a0a;
+      --surface: #111113; --surface-2: #17171a; --surface-3: #1c1c1e;
+      --hairline: #1f1f22; --hairline-soft: #17171a; --hairline-strong: #2a2a2e;
+      --ink: #ffffff; --slate: #d4d4d6; --steel: #a8a8aa; --stone: #7a7a7c; --muted: #5a5a5c;
+      --brand-warn: #c88a3a; --brand-error: #e26060; --brand-tag: #5a9ff2;
+      --brand-green-soft: rgb(0 212 164 / 0.14);
+      --brand-warn-soft: rgb(200 138 58 / 0.14);
+      --brand-error-soft: rgb(226 96 96 / 0.14);
+      --brand-tag-soft: rgb(90 159 242 / 0.14);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -6px rgb(0 0 0 / 0.5);
+      --nav-bg: rgb(0 0 0 / 0.7);
+    }
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6; --canvas-elev: #ffffff;
+      --surface: #f3f2ec; --surface-2: #eceae2; --surface-3: #e2dfd4;
+      --hairline: #dcdad0; --hairline-soft: #eeece5; --hairline-strong: #c6c3b6;
+      --ink: #0a0a08; --slate: #2a2926; --steel: #5a5852; --stone: #82807a; --muted: #a8a5a0;
+      --brand-warn: #8a5c1a; --brand-error: #b83e3e; --brand-tag: #2a6db8;
+      --brand-green-soft: rgb(0 180 138 / 0.10);
+      --brand-warn-soft: rgb(138 92 26 / 0.10);
+      --brand-error-soft: rgb(184 62 62 / 0.10);
+      --brand-tag-soft: rgb(42 109 184 / 0.10);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 24px -6px rgb(0 0 0 / 0.08);
+      --nav-bg: rgb(250 249 246 / 0.72);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px; line-height: 1.55; color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; border-radius: 4px; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); }
+
+    /* Live-pulse — for the sync-updated indicator */
+    @keyframes live-pulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0;   }
+    }
+    .live-dot {
+      position: relative; display: inline-block;
+      width: 6px; height: 6px; border-radius: 9999px;
+      background: var(--brand-green); flex: none;
+    }
+    .live-dot::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 9999px; background: var(--brand-green);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot::after { animation: none; opacity: 0.35; transform: scale(1.4); }
+    }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font-ui); font-size: 14px; font-weight: 500; line-height: 1;
+      padding: 10px 20px; border-radius: 9999px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap; text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 8px 12px; border-radius: 8px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-link {
+      background: transparent; padding: 0; border-radius: 0;
+      color: var(--stone); font-size: 13px; font-weight: 500;
+    }
+    .btn-link:hover { color: var(--brand-green); }
+
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+
+    /* Promo strip */
+    .promo {
+      background: var(--canvas-elev); color: var(--slate);
+      text-align: center; font-size: 13px; font-weight: 500;
+      padding: 10px 16px; border-bottom: 1px solid var(--hairline);
+    }
+    .promo .dot { color: var(--brand-green); margin-right: 6px; }
+    .promo a {
+      text-decoration: underline; text-underline-offset: 3px;
+      color: var(--ink); margin-left: 4px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .promo a:hover { color: var(--brand-green); }
+    .promo strong { color: var(--ink); font-weight: 600; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--steel);
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms, background 150ms;
+    }
+    .nav-links a:hover { color: var(--brand-green); background: var(--surface-2); }
+    .nav-links a.is-active { color: var(--ink); background: var(--surface-2); }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+
+    /* ==========================================================================
+       Category hero — bigger and more branded than shop.html's page header
+       ========================================================================== */
+    .cat-hero {
+      position: relative;
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--hairline);
+      background: var(--canvas);
+      overflow: hidden;
+    }
+    .cat-hero::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(700px 260px at 90% 0%, rgb(0 212 164 / 0.08), transparent 60%),
+        radial-gradient(500px 200px at 5% 100%, rgb(0 212 164 / 0.04), transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    .cat-hero > .container { position: relative; z-index: 1; }
+    .breadcrumbs {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--stone);
+      margin-bottom: 20px;
+    }
+    .breadcrumbs a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumbs a:hover { color: var(--brand-green); }
+    .breadcrumbs .sep { color: var(--muted); }
+    .breadcrumbs .current { color: var(--ink); font-weight: 500; }
+    .breadcrumbs svg { vertical-align: middle; }
+
+    .cat-hero-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end;
+    }
+    .cat-copy { max-width: 620px; }
+    .cat-header-row {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 8px;
+    }
+    .cat-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: var(--brand-green-soft); border: 1px solid var(--brand-green);
+      display: grid; place-items: center; color: var(--brand-green); flex: none;
+    }
+    .cat-hero h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(48px, 6.4vw, 76px);
+      line-height: 1; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+    .cat-hero h1 em { font-style: italic; color: var(--brand-green); }
+    .cat-hero .cat-desc {
+      font-size: 16px; color: var(--slate); line-height: 1.55;
+      margin: 12px 0 20px;
+    }
+    .cat-meta {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      font-size: 13px; color: var(--stone);
+    }
+    .cat-meta .sep { color: var(--muted); }
+    .cat-meta strong { color: var(--ink); font-weight: 500; }
+    .cat-meta .sync-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--brand-green); font-weight: 500;
+    }
+
+    .cat-search {
+      display: flex; align-items: center; gap: 8px;
+      height: 44px; padding: 0 8px 0 16px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 9999px;
+      min-width: 320px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms;
+    }
+    .cat-search:focus-within {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+    .cat-search svg { color: var(--stone); flex: none; }
+    .cat-search input {
+      flex: 1; height: 100%; border: 0; background: transparent;
+      color: var(--ink); font-family: var(--font-ui); font-size: 14px; outline: none;
+    }
+    .cat-search input::placeholder { color: var(--stone); }
+    .cat-search .kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 2px 6px; min-width: 20px; height: 20px;
+      border-radius: 4px; background: var(--surface);
+      border: 1px solid var(--hairline);
+      font-family: var(--font-mono); font-size: 11px; color: var(--slate);
+    }
+
+    /* ==========================================================================
+       Body — filter panel + results (same shape as shop.html)
+       ========================================================================== */
+    .cat-body {
+      display: grid; grid-template-columns: 260px 1fr; gap: 32px;
+      padding: 32px 0 48px;
+    }
+
+    /* Filter panel */
+    .filter-panel {
+      position: sticky; top: 76px;
+      align-self: start;
+      max-height: calc(100vh - 92px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .filter-group + .filter-group {
+      margin-top: 24px; padding-top: 24px;
+      border-top: 1px solid var(--hairline);
+    }
+    /* GPU-specific filter group gets a subtle brand-green accent on the header */
+    .filter-group.category-specific .filter-heading {
+      color: var(--brand-green);
+    }
+    .filter-heading {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone); font-weight: 600;
+      margin: 0 0 12px;
+    }
+
+    .filter-list {
+      display: flex; flex-direction: column; gap: 4px;
+      list-style: none; padding: 0; margin: 0;
+    }
+    .filter-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 8px; border-radius: 6px;
+      font-size: 13px; color: var(--slate); cursor: pointer;
+      transition: background 150ms, color 150ms;
+    }
+    .filter-item:hover { background: var(--surface); color: var(--brand-green); }
+    .filter-item.is-active { color: var(--ink); font-weight: 500; }
+    .filter-item .count {
+      margin-left: auto; font-family: var(--font-mono); font-size: 11px;
+      color: var(--stone);
+    }
+    .filter-item.is-active .count { color: var(--brand-green); }
+
+    .filter-check {
+      display: inline-grid; place-items: center;
+      width: 16px; height: 16px; border-radius: 4px;
+      background: var(--canvas-elev);
+      border: 1.5px solid var(--hairline-strong);
+      flex: none;
+    }
+    .filter-check.is-checked {
+      background: var(--brand-green); border-color: var(--brand-green); color: #000;
+    }
+    .filter-radio {
+      display: inline-grid; place-items: center;
+      width: 16px; height: 16px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      border: 1.5px solid var(--hairline-strong);
+      flex: none;
+    }
+    .filter-radio.is-checked::after {
+      content: ''; width: 7px; height: 7px; border-radius: 9999px;
+      background: var(--brand-green);
+    }
+
+    /* Price range */
+    .price-range-inputs {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      gap: 8px; margin-bottom: 8px;
+    }
+    .price-input {
+      display: block; width: 100%; height: 36px;
+      padding: 0 10px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 13px;
+      color: var(--ink); background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      outline: none;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+    .price-input:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+    .price-range-inputs .dash { color: var(--stone); font-family: var(--font-mono); }
+    .price-range-slider {
+      position: relative; height: 4px; margin: 20px 0 8px;
+      background: var(--surface-2); border-radius: 9999px;
+    }
+    .price-range-slider .range-fill {
+      position: absolute; top: 0; bottom: 0;
+      left: 20%; right: 30%;
+      background: var(--brand-green); border-radius: 9999px;
+    }
+    .price-range-slider .range-handle {
+      position: absolute; top: 50%;
+      width: 14px; height: 14px; border-radius: 9999px;
+      background: var(--canvas-elev); border: 2px solid var(--brand-green);
+      transform: translate(-50%, -50%);
+    }
+    .price-range-slider .range-handle.min { left: 20%; }
+    .price-range-slider .range-handle.max { left: 70%; }
+    .price-range-legend {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+    }
+
+    /* Toggle */
+    .filter-toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 4px 8px;
+    }
+    .filter-toggle-row .label { font-size: 13px; color: var(--slate); }
+    .filter-toggle-row .desc { font-size: 11px; color: var(--stone); margin-top: 2px; }
+    .toggle-sw {
+      position: relative; display: inline-block;
+      width: 32px; height: 18px; border-radius: 9999px;
+      background: var(--hairline-strong); cursor: pointer;
+      transition: background 150ms;
+      flex: none;
+    }
+    .toggle-sw::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 14px; height: 14px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+    }
+    .toggle-sw.is-on { background: var(--brand-green); }
+    .toggle-sw.is-on::after { transform: translateX(14px); }
+
+    /* Results */
+    .results { min-width: 0; }
+    .results-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .results-count { font-size: 14px; color: var(--slate); }
+    .results-count strong { color: var(--ink); font-weight: 500; }
+    .results-actions { display: flex; align-items: center; gap: 12px; }
+    .sort-select {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 32px 0 12px;
+      border-radius: 8px; background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      font-family: var(--font-ui); font-size: 13px; color: var(--ink);
+      appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237a7a7c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+
+    /* Applied filters */
+    .applied-filters {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      margin-bottom: 20px;
+    }
+    .applied-filters .label {
+      font-size: 12px; color: var(--stone); font-weight: 500; margin-right: 4px;
+    }
+    .filter-chip {
+      display: inline-flex; align-items: center;
+      padding: 5px 6px 5px 12px;
+      background: var(--ink); color: var(--canvas);
+      border-radius: 9999px; font-size: 12px; font-weight: 500;
+    }
+    .filter-chip .x {
+      display: inline-grid; place-items: center;
+      width: 18px; height: 18px; margin-left: 6px;
+      border-radius: 9999px; cursor: pointer;
+      transition: background 150ms;
+    }
+    .filter-chip .x:hover { background: rgba(255,255,255,0.15); }
+
+    /* Product grid + card (same as shop.html) */
+    .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .product-card {
+      position: relative;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      border-radius: 12px; padding: 14px;
+      cursor: pointer; color: inherit;
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms;
+    }
+    .product-card:hover { transform: translateY(-2px); border-color: var(--brand-green); }
+    .product-card:hover .product-name { color: var(--brand-green); }
+
+    .product-card .top-badges {
+      position: absolute; top: 22px; left: 22px;
+      display: flex; gap: 4px; z-index: 2;
+    }
+    .product-card .wishlist {
+      position: absolute; top: 22px; right: 22px;
+      width: 30px; height: 30px; border-radius: 9999px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+      cursor: pointer; z-index: 2;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .product-card .wishlist:hover { color: var(--brand-error); border-color: var(--brand-error); }
+    .product-card .wishlist.is-saved {
+      color: var(--brand-error); border-color: var(--brand-error);
+      background: var(--brand-error-soft);
+    }
+    .product-card .product-img {
+      aspect-ratio: 4 / 3; border-radius: 8px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+    }
+    .product-card .product-img svg { width: 44px; height: 44px; opacity: 0.8; }
+
+    .product-brand {
+      margin-top: 12px; font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone);
+    }
+    .product-name {
+      margin-top: 4px; font-size: 13px; font-weight: 600;
+      color: var(--ink); line-height: 1.35;
+      min-height: 36px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* Compact spec chips row — surfaced on category pages for quick scan */
+    .product-specs {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+    }
+    .spec-chip {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--steel); background: var(--surface);
+      padding: 2px 6px; border-radius: 4px;
+      border: 1px solid var(--hairline);
+    }
+    .product-rating {
+      display: flex; align-items: center; gap: 4px; margin-top: 6px;
+      font-size: 11px; color: var(--stone);
+    }
+    .product-rating .stars { color: var(--brand-green); display: inline-flex; }
+    .product-rating .stars svg { width: 11px; height: 11px; }
+    .product-price-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px; border-top: 1px solid var(--hairline-soft);
+    }
+    .product-price-stack { display: flex; align-items: baseline; gap: 6px; }
+    .product-price-stack .original {
+      text-decoration: line-through; color: var(--stone); font-size: 11px;
+    }
+    .product-price-stack .current {
+      font-family: var(--font-ui); font-size: 14px; font-weight: 600; color: var(--ink);
+    }
+    .stock-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 600;
+      padding: 2px 8px 2px 6px; border-radius: 9999px;
+    }
+    .stock-chip.in { background: var(--brand-green-soft); color: var(--brand-green); }
+    .stock-chip.in .dot {
+      width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-green);
+      box-shadow: 0 0 0 3px rgb(0 212 164 / 0.18);
+    }
+    .stock-chip.low { background: var(--brand-warn-soft); color: var(--brand-warn); }
+    .stock-chip.low .dot { width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-warn); }
+
+    .badge {
+      display: inline-flex; align-items: center;
+      font-family: var(--font-ui); font-weight: 600; line-height: 1;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 7px; border-radius: 5px;
+    }
+    .badge-discount { background: var(--brand-green); color: #000; }
+    .badge-new { background: var(--brand-tag-soft); color: var(--brand-tag); }
+    .badge-featured { background: var(--ink); color: var(--canvas); }
+
+    /* Pagination */
+    .pagination-wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-top: 40px; flex-wrap: wrap;
+    }
+    .pagination { display: inline-flex; align-items: center; gap: 4px; }
+    .pagination .page {
+      display: inline-grid; place-items: center;
+      min-width: 34px; height: 34px; padding: 0 8px;
+      border: 1px solid var(--hairline);
+      border-radius: 8px; background: var(--canvas-elev);
+      font-size: 13px; font-weight: 500; color: var(--slate); cursor: pointer;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .pagination .page:hover { border-color: var(--brand-green); color: var(--brand-green); }
+    .pagination .page.is-active {
+      background: var(--ink); color: var(--canvas); border-color: var(--ink);
+    }
+    .pagination .page.is-active:hover { background: var(--brand-green); color: #000; border-color: var(--brand-green); }
+    .pagination .page.is-disabled { color: var(--muted); cursor: not-allowed; opacity: 0.6; }
+    .pagination .page.is-disabled:hover { border-color: var(--hairline); color: var(--muted); }
+    .pagination .ellipsis { color: var(--stone); padding: 0 4px; }
+    .pagination-summary { font-size: 13px; color: var(--stone); }
+    .pagination-summary strong { color: var(--ink); font-weight: 500; }
+
+    /* ==========================================================================
+       Compatibility helper callout — category-specific info banner
+       ========================================================================== */
+    .compat-callout {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 18px 20px; margin: 32px 0 0;
+      background: var(--brand-tag-soft);
+      border: 1px solid var(--brand-tag);
+      border-radius: 12px;
+    }
+    .compat-callout .ico { flex: none; color: var(--brand-tag); margin-top: 1px; }
+    .compat-callout .body { flex: 1; }
+    .compat-callout .body strong {
+      display: block; color: var(--brand-tag); font-size: 14px; font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .compat-callout .body p {
+      margin: 0; font-size: 13px; color: var(--ink); line-height: 1.5;
+    }
+    .compat-callout .actions { flex: none; align-self: center; }
+
+    /* ==========================================================================
+       "You might also need" — related categories rail
+       ========================================================================== */
+    .related-rail {
+      padding: 56px 0 96px;
+      border-top: 1px solid var(--hairline);
+      margin-top: 48px;
+    }
+    .related-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 20px; gap: 24px; flex-wrap: wrap;
+    }
+    .related-header h3 {
+      font-family: var(--font-serif); font-weight: 400; font-style: italic;
+      font-size: 28px; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+    .related-header h3 em { color: var(--brand-green); }
+    .related-header p { font-size: 14px; color: var(--slate); margin: 6px 0 0; }
+    .related-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+    }
+    .related-tile {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px; color: inherit;
+      cursor: pointer;
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms;
+    }
+    .related-tile:hover { transform: translateY(-2px); border-color: var(--brand-green); }
+    .related-tile:hover .rel-name { color: var(--brand-green); }
+    .related-tile .ico {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--ink); flex: none;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .related-tile:hover .ico {
+      background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green);
+    }
+    .related-tile .rel-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .related-tile .rel-name {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .related-tile .rel-count {
+      font-family: var(--font-mono); font-size: 10px; color: var(--stone);
+    }
+
+    /* Footer (same as shop/home) */
+    footer {
+      background: var(--canvas-elev);
+      border-top: 1px solid var(--hairline);
+      padding: 72px 0 24px;
+      position: relative; overflow: hidden;
+    }
+    footer > .container { position: relative; z-index: 1; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 40px; }
+    .footer-col h5 { margin: 0 0 14px; font-size: 13px; font-weight: 500; color: var(--stone); }
+    .footer-col a {
+      display: block; padding: 5px 0;
+      font-size: 14px; color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .footer-col a:hover { color: var(--brand-green); }
+    .footer-brand { max-width: 320px; }
+    .footer-brand p { font-size: 14px; color: var(--slate); margin: 16px 0 20px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-socials a {
+      width: 32px; height: 32px; border-radius: 9999px;
+      display: grid; place-items: center; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .footer-socials a:hover {
+      color: var(--brand-green); background: var(--surface); border-color: var(--brand-green);
+    }
+    .footer-mega-bg {
+      position: absolute; left: 0; right: 0; bottom: -6vw;
+      text-align: center;
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(160px, 26vw, 380px);
+      line-height: 0.85; letter-spacing: -0.04em;
+      color: transparent; -webkit-text-stroke: 2px var(--ink);
+      opacity: 0.10; pointer-events: none; user-select: none;
+      white-space: nowrap; z-index: 0;
+    }
+    .footer-mega-bg em {
+      font-family: var(--font-serif); font-style: italic;
+      color: transparent; -webkit-text-stroke: 2px var(--brand-green);
+    }
+    .footer-bottom {
+      margin-top: 56px; padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--stone);
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom .links { display: flex; gap: 20px; }
+    .footer-bottom a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .footer-bottom a:hover { color: var(--brand-green); }
+    .footer-bottom .mono { font-family: var(--font-mono); }
+
+    /* Responsive */
+    @media (max-width: 1200px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .cat-body { grid-template-columns: 1fr; }
+      .filter-panel {
+        position: static; max-height: none; overflow: visible;
+        padding: 20px; background: var(--canvas-elev);
+        border: 1px solid var(--hairline); border-radius: 12px;
+        margin-bottom: 24px;
+      }
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+      .cat-hero-row { flex-direction: column; align-items: stretch; grid-template-columns: 1fr; }
+      .cat-search { min-width: 0; width: 100%; }
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-search .kbd { display: none; }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .compat-callout { flex-direction: column; align-items: stretch; }
+    }
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Promo strip -->
+  <div class="promo">
+    <span class="dot">●</span>
+    Back-to-school promo — up to <strong>20% off</strong> select GPUs & SSDs.
+    <a href="/deals">See deals →</a>
+  </div>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/>
+          </svg>
+        </span>
+        H-Tech
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/shop" class="is-active">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+        <a href="/cart" class="icon-btn" aria-label="Cart, empty">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category hero -->
+  <section class="cat-hero">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" aria-label="Home">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10a2 2 0 0 0 2 2h3v-6h4v6h3a2 2 0 0 0 2-2V10"/></svg>
+        </a>
+        <span class="sep">/</span>
+        <a href="/shop">Shop</a>
+        <span class="sep">/</span>
+        <span class="current">Graphics cards</span>
+      </nav>
+
+      <div class="cat-hero-row">
+        <div class="cat-copy">
+          <div class="cat-header-row">
+            <span class="cat-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2"/><circle cx="15" cy="12" r="2"/></svg>
+            </span>
+            <h1>Graphics <em>cards</em>.</h1>
+          </div>
+          <p class="cat-desc">
+            NVIDIA GeForce, AMD Radeon, and Intel Arc — every current-gen tier in stock. Real-time
+            distributor sync, no phantom listings.
+          </p>
+          <div class="cat-meta">
+            <span><strong>86</strong> products</span>
+            <span class="sep">·</span>
+            <span>from <strong>5</strong> brands</span>
+            <span class="sep">·</span>
+            <span class="sync-chip"><span class="live-dot"></span> Sync'd 4 min ago</span>
+          </div>
+        </div>
+
+        <div class="cat-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="search" placeholder="Search graphics cards" aria-label="Search graphics cards" />
+          <span class="kbd">⌘K</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body: filters + results -->
+  <div class="container">
+    <div class="cat-body">
+      <aside class="filter-panel" aria-label="Filters">
+        <!-- General filters -->
+        <div class="filter-group">
+          <h4 class="filter-heading">Brand</h4>
+          <ul class="filter-list">
+            <li class="filter-item"><span class="filter-check is-checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> NVIDIA <span class="count">42</span></li>
+            <li class="filter-item"><span class="filter-check is-checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> AMD <span class="count">31</span></li>
+            <li class="filter-item"><span class="filter-check"></span> Intel <span class="count">6</span></li>
+            <li class="filter-item"><span class="filter-check"></span> ASUS <span class="count">18</span></li>
+            <li class="filter-item"><span class="filter-check"></span> MSI <span class="count">15</span></li>
+            <li class="filter-item"><span class="filter-check"></span> Gigabyte <span class="count">12</span></li>
+            <li class="filter-item"><span class="filter-check"></span> Sapphire <span class="count">9</span></li>
+          </ul>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-heading">Price (DA)</h4>
+          <div class="price-range-inputs">
+            <input type="number" class="price-input" placeholder="Min" value="60,000" />
+            <span class="dash">—</span>
+            <input type="number" class="price-input" placeholder="Max" value="180,000" />
+          </div>
+          <div class="price-range-slider" aria-hidden="true">
+            <div class="range-fill"></div>
+            <span class="range-handle min"></span>
+            <span class="range-handle max"></span>
+          </div>
+          <div class="price-range-legend">
+            <span>40,000</span>
+            <span>280,000</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-heading">Availability</h4>
+          <div class="filter-toggle-row">
+            <div>
+              <div class="label">In stock only</div>
+              <div class="desc">Hide out-of-stock items</div>
+            </div>
+            <span class="toggle-sw is-on" role="switch" aria-checked="true"></span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4 class="filter-heading">Discount</h4>
+          <div class="filter-toggle-row">
+            <div>
+              <div class="label">On sale</div>
+              <div class="desc">Products with active discount</div>
+            </div>
+            <span class="toggle-sw" role="switch" aria-checked="false"></span>
+          </div>
+        </div>
+
+        <!-- GPU-specific filters — subtle brand-green header accent -->
+        <div class="filter-group category-specific">
+          <h4 class="filter-heading">GPU chipset</h4>
+          <ul class="filter-list">
+            <li class="filter-item is-active"><span class="filter-radio is-checked"></span> All chipsets <span class="count">86</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> NVIDIA GeForce RTX 40 <span class="count">28</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> NVIDIA GeForce RTX 30 <span class="count">14</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> AMD Radeon RX 7000 <span class="count">22</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> AMD Radeon RX 6000 <span class="count">9</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> Intel Arc A-series <span class="count">6</span></li>
+          </ul>
+        </div>
+
+        <div class="filter-group category-specific">
+          <h4 class="filter-heading">Memory</h4>
+          <ul class="filter-list">
+            <li class="filter-item"><span class="filter-check"></span> 8 GB <span class="count">18</span></li>
+            <li class="filter-item"><span class="filter-check is-checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 12 GB <span class="count">24</span></li>
+            <li class="filter-item"><span class="filter-check is-checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 16 GB <span class="count">17</span></li>
+            <li class="filter-item"><span class="filter-check"></span> 20 GB <span class="count">6</span></li>
+            <li class="filter-item"><span class="filter-check"></span> 24 GB <span class="count">9</span></li>
+          </ul>
+        </div>
+
+        <div class="filter-group category-specific">
+          <h4 class="filter-heading">Recommended PSU</h4>
+          <ul class="filter-list">
+            <li class="filter-item is-active"><span class="filter-radio is-checked"></span> Any <span class="count">86</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> Up to 550W <span class="count">14</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> 550 – 650W <span class="count">26</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> 650 – 750W <span class="count">28</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> 750W+ <span class="count">18</span></li>
+          </ul>
+        </div>
+
+        <div class="filter-group category-specific">
+          <h4 class="filter-heading">Card length</h4>
+          <ul class="filter-list">
+            <li class="filter-item is-active"><span class="filter-radio is-checked"></span> Any <span class="count">86</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> Compact (&lt;240 mm) <span class="count">18</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> Standard (240 – 300 mm) <span class="count">48</span></li>
+            <li class="filter-item"><span class="filter-radio"></span> Long (300 mm+) <span class="count">20</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="results">
+        <div class="applied-filters">
+          <span class="label">Applied:</span>
+          <span class="filter-chip">NVIDIA <span class="x" role="button">×</span></span>
+          <span class="filter-chip">AMD <span class="x" role="button">×</span></span>
+          <span class="filter-chip">12 GB <span class="x" role="button">×</span></span>
+          <span class="filter-chip">16 GB <span class="x" role="button">×</span></span>
+          <span class="filter-chip">In stock <span class="x" role="button">×</span></span>
+          <span class="filter-chip">60k – 180k DA <span class="x" role="button">×</span></span>
+          <button class="btn-link" style="margin-left: 4px;">Clear all</button>
+        </div>
+
+        <div class="results-toolbar">
+          <span class="results-count">Showing <strong>1–12</strong> of <strong>41</strong> graphics cards</span>
+          <div class="results-actions">
+            <label for="sort" style="font-size: 12px; color: var(--stone);">Sort by</label>
+            <select class="sort-select" id="sort">
+              <option>Most popular</option>
+              <option>Price: low to high</option>
+              <option>Price: high to low</option>
+              <option>Newest first</option>
+              <option>Highest rated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="product-grid">
+          <!-- Card 1: RTX 4090 — Featured / flagship -->
+          <a class="product-card" href="/product/geforce-rtx-4090-24gb">
+            <div class="top-badges"><span class="badge badge-featured">Featured</span></div>
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4090 24GB GDDR6X</div>
+            <div class="product-specs">
+              <span class="spec-chip">24 GB</span>
+              <span class="spec-chip">GDDR6X</span>
+              <span class="spec-chip">850W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.9 (89)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">275,000 DA</span></div>
+              <span class="stock-chip low"><span class="dot"></span> 2 left</span>
+            </div>
+          </a>
+
+          <!-- Card 2: RTX 4080 SUPER -->
+          <a class="product-card" href="/product/geforce-rtx-4080-super-16gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4080 SUPER 16GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">16 GB</span>
+              <span class="spec-chip">GDDR6X</span>
+              <span class="spec-chip">750W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.7 (56)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">158,000 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 5 left</span>
+            </div>
+          </a>
+
+          <!-- Card 3: AMD RX 7900 XTX -->
+          <a class="product-card" href="/product/radeon-rx-7900-xtx-24gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">AMD</div>
+            <div class="product-name">Radeon RX 7900 XTX 24GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">24 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">800W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.6 (73)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">155,000 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 4 left</span>
+            </div>
+          </a>
+
+          <!-- Card 4: AMD RX 7900 XT -->
+          <a class="product-card" href="/product/radeon-rx-7900-xt-20gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">AMD</div>
+            <div class="product-name">Radeon RX 7900 XT 20GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">20 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">750W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.5 (48)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">128,000 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 7 left</span>
+            </div>
+          </a>
+
+          <!-- Card 5: RTX 4070 SUPER -->
+          <a class="product-card" href="/product/geforce-rtx-4070-super-12gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4070 SUPER 12GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">12 GB</span>
+              <span class="spec-chip">GDDR6X</span>
+              <span class="spec-chip">650W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.8 (128)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">98,500 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 11 left</span>
+            </div>
+          </a>
+
+          <!-- Card 6: RTX 4070 with sale -->
+          <a class="product-card" href="/product/geforce-rtx-4070-12gb">
+            <div class="top-badges"><span class="badge badge-discount">-3%</span></div>
+            <button class="wishlist is-saved" aria-label="Remove from wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4070 12GB GDDR6X</div>
+            <div class="product-specs">
+              <span class="spec-chip">12 GB</span>
+              <span class="spec-chip">GDDR6X</span>
+              <span class="spec-chip">650W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.6 (142)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="original">92,400 DA</span><span class="current">89,900 DA</span></div>
+              <span class="stock-chip low"><span class="dot"></span> 4 left</span>
+            </div>
+          </a>
+
+          <!-- Card 7: AMD RX 7800 XT — New -->
+          <a class="product-card" href="/product/radeon-rx-7800-xt-16gb">
+            <div class="top-badges"><span class="badge badge-new">New</span></div>
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">AMD</div>
+            <div class="product-name">Radeon RX 7800 XT 16GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">16 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">700W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.8 (37)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">78,500 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 9 left</span>
+            </div>
+          </a>
+
+          <!-- Card 8: RTX 4060 Ti -->
+          <a class="product-card" href="/product/geforce-rtx-4060-ti-8gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4060 Ti 8GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">8 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">550W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.4 (89)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">64,200 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 12 left</span>
+            </div>
+          </a>
+
+          <!-- Card 9: AMD RX 7700 XT -->
+          <a class="product-card" href="/product/radeon-rx-7700-xt-12gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">AMD</div>
+            <div class="product-name">Radeon RX 7700 XT 12GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">12 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">650W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.5 (62)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">62,000 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 8 left</span>
+            </div>
+          </a>
+
+          <!-- Card 10: RTX 4060 -->
+          <a class="product-card" href="/product/geforce-rtx-4060-8gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">NVIDIA</div>
+            <div class="product-name">GeForce RTX 4060 8GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">8 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">500W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.3 (94)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">48,900 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 15 left</span>
+            </div>
+          </a>
+
+          <!-- Card 11: Intel Arc A770 — New -->
+          <a class="product-card" href="/product/intel-arc-a770-16gb">
+            <div class="top-badges"><span class="badge badge-new">New</span></div>
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">INTEL</div>
+            <div class="product-name">Arc A770 16GB Limited Edition</div>
+            <div class="product-specs">
+              <span class="spec-chip">16 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">600W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.2 (28)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">44,800 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 6 left</span>
+            </div>
+          </a>
+
+          <!-- Card 12: AMD RX 7600 -->
+          <a class="product-card" href="/product/radeon-rx-7600-8gb">
+            <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+            <div class="product-brand">AMD</div>
+            <div class="product-name">Radeon RX 7600 8GB</div>
+            <div class="product-specs">
+              <span class="spec-chip">8 GB</span>
+              <span class="spec-chip">GDDR6</span>
+              <span class="spec-chip">550W+ PSU</span>
+            </div>
+            <div class="product-rating">
+              <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+              <span>4.2 (54)</span>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price-stack"><span class="current">42,500 DA</span></div>
+              <span class="stock-chip in"><span class="dot"></span> 18 left</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Compatibility helper callout -->
+        <div class="compat-callout">
+          <span class="ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          </span>
+          <div class="body">
+            <strong>Not sure which GPU fits your build?</strong>
+            <p>Check your PSU wattage and case length before ordering. We can help — send us your motherboard and PSU on WhatsApp and we'll confirm compatibility in a few minutes.</p>
+          </div>
+          <div class="actions">
+            <a href="/support/compatibility" class="btn btn-secondary btn-sm">Compatibility help →</a>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrap">
+          <span class="pagination-summary">Showing <strong>1–12</strong> of <strong>41</strong></span>
+          <div class="pagination">
+            <button class="page is-disabled" aria-label="Previous"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="page is-active">1</button>
+            <button class="page">2</button>
+            <button class="page">3</button>
+            <button class="page">4</button>
+            <button class="page" aria-label="Next"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- "You might also need" -->
+  <section class="related-rail">
+    <div class="container">
+      <div class="related-header">
+        <div>
+          <h3>You might also <em>need</em>.</h3>
+          <p>Components that pair with graphics cards for a complete build.</p>
+        </div>
+        <a href="/bundles" class="btn btn-secondary btn-sm">See build bundles</a>
+      </div>
+      <div class="related-grid">
+        <a class="related-tile" href="/c/processors">
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx=".5"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2"/></svg></span>
+          <div class="rel-copy"><span class="rel-name">Processors</span><span class="rel-count">63 products</span></div>
+        </a>
+        <a class="related-tile" href="/c/motherboards">
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1.5"/><rect x="7" y="7" width="5" height="5" rx=".5"/><path d="M14 8h4M14 11h4M8 15v3M12 15v3M17 15v3"/></svg></span>
+          <div class="rel-copy"><span class="rel-name">Motherboards</span><span class="rel-count">98 products</span></div>
+        </a>
+        <a class="related-tile" href="/c/memory">
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v8M10 8v8M14 8v8M18 8v8"/></svg></span>
+          <div class="rel-copy"><span class="rel-name">Memory (RAM)</span><span class="rel-count">201 products</span></div>
+        </a>
+        <a class="related-tile" href="/c/cases-cooling">
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="1.5"/><path d="M9 6h6M9 10h6"/><circle cx="12" cy="17" r="1.5"/></svg></span>
+          <div class="rel-copy"><span class="rel-name">Power & cooling</span><span class="rel-count">124 products</span></div>
+        </a>
+        <a class="related-tile" href="/c/monitors">
+          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg></span>
+          <div class="rel-copy"><span class="rel-name">Monitors</span><span class="rel-count">142 products</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-mega-bg" aria-hidden="true">H<em>-</em>Tech</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-glyph">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg>
+            </span>
+            H-Tech
+          </a>
+          <p>Computer parts & peripherals, delivered anywhere in the country. Cash on delivery. 7-day DOA return.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+            <a href="#" aria-label="TikTok"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.3a5.5 5.5 0 0 1-3.7-1.4v9.4a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 1 .1v2.8a2.8 2.8 0 1 0 2 2.7V1h2.8a5.5 5.5 0 0 0 3.5 4.5v.8z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <a href="/shop">All products</a>
+          <a href="/c/graphics-cards">Graphics cards</a>
+          <a href="/c/processors">Processors</a>
+          <a href="/c/memory">Memory</a>
+          <a href="/c/storage">Storage</a>
+          <a href="/bundles">Bundles</a>
+          <a href="/deals">Deals</a>
+          <a href="/new">New arrivals</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="/support/track-order">Track order</a>
+          <a href="/support/returns">Returns (7-day DOA)</a>
+          <a href="/support/compatibility">Compatibility help</a>
+          <a href="/support/contact">Contact</a>
+          <a href="/support/faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="/about">About</a>
+          <a href="/distributors">Distributors</a>
+          <a href="/careers">Careers</a>
+          <a href="/press">Press</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+          <a href="/legal/warranty">Warranty</a>
+          <a href="/legal/cookies">Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div class="links">
+          <a href="/status">Status</a>
+          <a href="/changelog">Changelog</a>
+          <a href="#" class="mono">v0.1 · preview</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) {}
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1975 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Your cart · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --brand-green: #00d4a4;
+      --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', 'ABC Arizona', 'Times New Roman', serif;
+    }
+
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000000;
+      --canvas-elev: #0a0a0a;
+      --surface: #111113;
+      --surface-2: #17171a;
+      --surface-3: #1c1c1e;
+      --hairline: #1f1f22;
+      --hairline-soft: #17171a;
+      --hairline-strong: #2a2a2e;
+      --ink: #ffffff;
+      --slate: #d4d4d6;
+      --steel: #a8a8aa;
+      --stone: #7a7a7c;
+      --muted: #5a5a5c;
+      --brand-warn: #c88a3a;
+      --brand-error: #e26060;
+      --brand-tag: #5a9ff2;
+      --brand-green-soft: rgb(0 212 164 / 0.14);
+      --brand-warn-soft: rgb(200 138 58 / 0.14);
+      --brand-error-soft: rgb(226 96 96 / 0.14);
+      --brand-tag-soft: rgb(90 159 242 / 0.14);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -6px rgb(0 0 0 / 0.5);
+      --nav-bg: rgb(0 0 0 / 0.7);
+    }
+
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6;
+      --canvas-elev: #ffffff;
+      --surface: #f3f2ec;
+      --surface-2: #eceae2;
+      --surface-3: #e2dfd4;
+      --hairline: #dcdad0;
+      --hairline-soft: #eeece5;
+      --hairline-strong: #c6c3b6;
+      --ink: #0a0a08;
+      --slate: #2a2926;
+      --steel: #5a5852;
+      --stone: #82807a;
+      --muted: #a8a5a0;
+      --brand-warn: #8a5c1a;
+      --brand-error: #b83e3e;
+      --brand-tag: #2a6db8;
+      --brand-green-soft: rgb(0 180 138 / 0.10);
+      --brand-warn-soft: rgb(138 92 26 / 0.10);
+      --brand-error-soft: rgb(184 62 62 / 0.10);
+      --brand-tag-soft: rgb(42 109 184 / 0.10);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 24px -6px rgb(0 0 0 / 0.08);
+      --nav-bg: rgb(250 249 246 / 0.72);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    ::selection {
+      background: rgb(0 212 164 / 0.30);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--brand-green);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+
+    .btn:focus-visible {
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 15px;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--canvas);
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-green);
+      color: #000;
+    }
+
+    .btn-accent {
+      background: var(--brand-green);
+      color: #000;
+    }
+
+    .btn-accent:hover {
+      background: var(--brand-green-deep);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--hairline-strong);
+    }
+
+    .btn-secondary:hover {
+      background: var(--brand-green-soft);
+      border-color: var(--brand-green);
+      color: var(--brand-green);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--slate);
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-2);
+      color: var(--brand-green);
+    }
+
+    .btn-link {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: var(--stone);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .btn-link:hover {
+      color: var(--brand-green);
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 9999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      background: transparent;
+      color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+
+    .icon-btn:hover {
+      color: var(--brand-green);
+      background: var(--surface);
+      border-color: var(--brand-green);
+    }
+
+    /* Cart-icon badge showing count */
+    .icon-btn .count-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      background: var(--brand-green);
+      color: #000;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 9999px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--canvas);
+    }
+
+    .icon-btn {
+      position: relative;
+    }
+
+    /* Promo strip */
+    .promo {
+      background: var(--canvas-elev);
+      color: var(--slate);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .promo .dot {
+      color: var(--brand-green);
+      margin-right: 6px;
+    }
+
+    .promo a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      color: var(--ink);
+      margin-left: 4px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .promo a:hover {
+      color: var(--brand-green);
+    }
+
+    .promo strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+    }
+
+    .brand-glyph {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--brand-green);
+      color: #000;
+      display: grid;
+      place-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--steel);
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: color 150ms, background 150ms;
+    }
+
+    .nav-links a:hover {
+      color: var(--brand-green);
+      background: var(--surface-2);
+    }
+
+    .nav-links a.is-active {
+      color: var(--ink);
+      background: var(--surface-2);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Breadcrumb strip */
+    .breadcrumb-strip {
+      padding: 20px 0 0;
+    }
+
+    .breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--stone);
+    }
+
+    .breadcrumbs a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .breadcrumbs a:hover {
+      color: var(--brand-green);
+    }
+
+    .breadcrumbs .sep {
+      color: var(--muted);
+    }
+
+    .breadcrumbs .current {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .breadcrumbs svg {
+      vertical-align: middle;
+    }
+
+    /* Page header */
+    .page-header {
+      padding: 20px 0 32px;
+    }
+
+    .page-header h1 {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: clamp(28px, 3.4vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+
+    .page-header .item-count {
+      font-size: 14px;
+      color: var(--stone);
+    }
+
+    .page-header .item-count strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Guest banner */
+    .guest-banner {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      background: var(--brand-tag-soft);
+      border: 1px solid var(--brand-tag);
+      border-radius: 12px;
+    }
+
+    .guest-banner .ico {
+      flex: none;
+      color: var(--brand-tag);
+      margin-top: 1px;
+    }
+
+    .guest-banner .body {
+      flex: 1;
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .guest-banner .body strong {
+      color: var(--brand-tag);
+      font-weight: 600;
+    }
+
+    .guest-banner .body a {
+      color: var(--brand-tag);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .guest-banner .body a:hover {
+      color: var(--brand-tag);
+      filter: brightness(1.15);
+    }
+
+    .guest-banner .dismiss {
+      flex: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 9999px;
+      background: transparent;
+      border: 0;
+      color: var(--stone);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: color 150ms, background 150ms;
+    }
+
+    .guest-banner .dismiss:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* ==========================================================================
+       Cart body — two-column (items + summary)
+       ========================================================================== */
+    .cart-body {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      padding-bottom: 48px;
+    }
+
+    /* Cart line items list */
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cart-line {
+      display: grid;
+      grid-template-columns: 96px 1fr auto;
+      gap: 20px;
+      padding: 20px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      align-items: start;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-line:hover {
+      border-color: var(--hairline-strong);
+    }
+
+    .cart-line .thumb {
+      width: 96px;
+      height: 96px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid;
+      place-items: center;
+      color: var(--stone);
+    }
+
+    .cart-line .thumb svg {
+      width: 44px;
+      height: 44px;
+      opacity: 0.7;
+    }
+
+    .cart-line .body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .cart-line .brand-row {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--stone);
+    }
+
+    .cart-line a.name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.1px;
+      line-height: 1.35;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-line a.name:hover {
+      color: var(--brand-green);
+    }
+
+    .cart-line .sku {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--stone);
+      margin-top: 2px;
+    }
+
+    .cart-line .actions-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .cart-line .actions-row button {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cart-line .actions-row button:hover {
+      color: var(--brand-green);
+    }
+
+    .cart-line .actions-row button.danger:hover {
+      color: var(--brand-error);
+    }
+
+    .cart-line .right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+    }
+
+    .cart-line .line-price {
+      font-family: var(--font-ui);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .cart-line .unit-price {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--stone);
+      white-space: nowrap;
+    }
+
+    /* Quantity stepper — cart variant */
+    .qty {
+      display: inline-flex;
+      align-items: stretch;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      overflow: hidden;
+    }
+
+    .qty button {
+      width: 30px;
+      background: transparent;
+      border: 0;
+      color: var(--ink);
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 150ms, color 150ms;
+    }
+
+    .qty button:hover:not(:disabled) {
+      background: var(--surface-2);
+      color: var(--brand-green);
+    }
+
+    .qty button:disabled {
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .qty .val {
+      min-width: 36px;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--ink);
+      border-left: 1px solid var(--hairline);
+      border-right: 1px solid var(--hairline);
+    }
+
+    /* Inline stock-drop notice (per line-item) */
+    .stock-drop-inline {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--brand-warn-soft);
+      border: 1px solid var(--brand-warn);
+      border-radius: 8px;
+    }
+
+    .stock-drop-inline .ico {
+      flex: none;
+      color: var(--brand-warn);
+      margin-top: 1px;
+    }
+
+    .stock-drop-inline .body {
+      flex: 1;
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .stock-drop-inline .body strong {
+      color: var(--brand-warn);
+      font-weight: 700;
+    }
+
+    /* Continue shopping / clear cart link row */
+    .cart-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .cart-toolbar a,
+    .cart-toolbar button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-toolbar a:hover {
+      color: var(--brand-green);
+    }
+
+    .cart-toolbar button.danger:hover {
+      color: var(--brand-error);
+    }
+
+    /* ==========================================================================
+       Order summary (right column, sticky)
+       ========================================================================== */
+    .summary-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 76px;
+      align-self: start;
+    }
+
+    .summary {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+    }
+
+    .summary h3 {
+      font-family: var(--font-ui);
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.1px;
+      color: var(--ink);
+      margin: 0 0 14px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--slate);
+    }
+
+    .summary-line .v {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .summary-line.discount .v {
+      color: var(--brand-green);
+    }
+
+    .summary-line .free-label {
+      color: var(--brand-green);
+      font-weight: 600;
+    }
+
+    .summary-line .info-tip {
+      display: inline-grid;
+      place-items: center;
+      width: 14px;
+      height: 14px;
+      color: var(--stone);
+      cursor: help;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .summary-line .info-tip:hover {
+      color: var(--brand-green);
+    }
+
+    /* Promo code (collapsible) */
+    .promo-code {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--hairline);
+    }
+
+    .promo-code summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--stone);
+      font-weight: 500;
+      padding: 4px 0;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .promo-code summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .promo-code summary:hover {
+      color: var(--brand-green);
+    }
+
+    .promo-code summary .chevron {
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .promo-code[open] summary .chevron {
+      transform: rotate(180deg);
+    }
+
+    .promo-code .input-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .promo-code .code-input {
+      flex: 1;
+      height: 36px;
+      padding: 0 12px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+
+    .promo-code .code-input:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+
+    .promo-code .code-input::placeholder {
+      color: var(--stone);
+    }
+
+    /* Total row */
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding-top: 16px;
+      margin-top: 10px;
+      border-top: 1px solid var(--hairline);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .summary-total .v {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .summary-total .method {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--stone);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      height: 52px;
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* Trust cluster inside summary */
+    .trust-cluster {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trust-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--slate);
+    }
+
+    .trust-row .ico {
+      flex: none;
+      color: var(--brand-green);
+      margin-top: 2px;
+    }
+
+    .trust-row strong {
+      color: var(--ink);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    .trust-row span.dim {
+      color: var(--stone);
+    }
+
+    /* Delivering-to card (small, above summary) */
+    .delivering-to {
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .delivering-to .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--slate);
+    }
+
+    .delivering-to .left .ico {
+      color: var(--brand-green);
+      flex: none;
+    }
+
+    .delivering-to .left strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .delivering-to a {
+      font-size: 12px;
+      color: var(--brand-green);
+      font-weight: 500;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .delivering-to a:hover {
+      color: var(--brand-green-deep);
+    }
+
+    /* ==========================================================================
+       Recommendation rail
+       ========================================================================== */
+    .rec-rail {
+      padding: 64px 0 96px;
+      border-top: 1px solid var(--hairline);
+      margin-top: 24px;
+    }
+
+    .rec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 24px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .rec-header h2 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(24px, 3vw, 32px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .rec-header h2 em {
+      font-style: italic;
+      color: var(--brand-green);
+    }
+
+    .rec-header p {
+      font-size: 14px;
+      color: var(--slate);
+      margin: 6px 0 0;
+    }
+
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    /* Product card (reused) */
+    .product-card {
+      position: relative;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      color: inherit;
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--brand-green);
+    }
+
+    .product-card:hover .product-name {
+      color: var(--brand-green);
+    }
+
+    .product-card .wishlist {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 30px;
+      height: 30px;
+      border-radius: 9999px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      display: grid;
+      place-items: center;
+      color: var(--stone);
+      cursor: pointer;
+      z-index: 2;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+
+    .product-card .wishlist:hover {
+      color: var(--brand-error);
+      border-color: var(--brand-error);
+    }
+
+    .product-card .product-img {
+      aspect-ratio: 4 / 3;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid;
+      place-items: center;
+      color: var(--stone);
+    }
+
+    .product-card .product-img svg {
+      width: 44px;
+      height: 44px;
+      opacity: 0.8;
+    }
+
+    .product-brand {
+      margin-top: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--stone);
+    }
+
+    .product-name {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+      min-height: 36px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .product-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--hairline-soft);
+    }
+
+    .product-price {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .stock-chip-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px 2px 6px;
+      border-radius: 9999px;
+    }
+
+    .stock-chip-sm.in {
+      background: var(--brand-green-soft);
+      color: var(--brand-green);
+    }
+
+    .stock-chip-sm.in .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 9999px;
+      background: var(--brand-green);
+      box-shadow: 0 0 0 3px rgb(0 212 164 / 0.18);
+    }
+
+    .add-to-cart-mini {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 9999px;
+      margin-top: 8px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms;
+    }
+
+    .add-to-cart-mini:hover {
+      background: var(--brand-green);
+      color: #000;
+      border-color: var(--brand-green);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--canvas-elev);
+      border-top: 1px solid var(--hairline);
+      padding: 72px 0 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer>.container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-col h5 {
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+    }
+
+    .footer-col a {
+      display: block;
+      padding: 5px 0;
+      font-size: 14px;
+      color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .footer-col a:hover {
+      color: var(--brand-green);
+    }
+
+    .footer-brand {
+      max-width: 320px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--slate);
+      margin: 16px 0 20px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 8px;
+    }
+
+    .footer-socials a {
+      width: 32px;
+      height: 32px;
+      border-radius: 9999px;
+      display: grid;
+      place-items: center;
+      color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+
+    .footer-socials a:hover {
+      color: var(--brand-green);
+      background: var(--surface);
+      border-color: var(--brand-green);
+    }
+
+    .footer-mega-bg {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6vw;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(160px, 26vw, 380px);
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--ink);
+      opacity: 0.10;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      z-index: 0;
+    }
+
+    .footer-mega-bg em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--brand-green);
+    }
+
+    .footer-bottom {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--stone);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom .links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-bottom a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .footer-bottom a:hover {
+      color: var(--brand-green);
+    }
+
+    .footer-bottom .mono {
+      font-family: var(--font-mono);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .nav-links {
+        display: none;
+      }
+
+      .cart-body {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-wrap {
+        position: static;
+      }
+
+      .rec-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cart-line {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .cart-line .thumb {
+        width: 72px;
+        height: 72px;
+      }
+
+      .cart-line .right {
+        grid-column: 2;
+        align-items: flex-start;
+        text-align: left;
+        margin-top: 4px;
+      }
+
+      .rec-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .rec-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Promo strip -->
+  <div class="promo">
+    <span class="dot">●</span>
+    Back-to-school promo — up to <strong>20% off</strong> select GPUs & SSDs.
+    <a href="/deals">See deals →</a>
+  </div>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z" />
+          </svg>
+        </span>
+        H-Tech
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/shop">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+        </button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </a>
+        <a href="/cart" class="icon-btn" aria-label="Cart, 3 items">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span class="count-badge">3</span>
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round" id="theme-icon">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-strip">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" aria-label="Home">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12l9-9 9 9M5 10v10a2 2 0 0 0 2 2h3v-6h4v6h3a2 2 0 0 0 2-2V10" />
+          </svg>
+        </a>
+        <span class="sep">/</span>
+        <span class="current">Cart</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Your cart</h1>
+      <div class="item-count"><strong>3 items</strong> · ready to check out</div>
+    </div>
+  </section>
+
+  <!-- Cart body -->
+  <div class="container">
+    <!-- Guest banner -->
+    <div class="guest-banner">
+      <span class="ico">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="16" x2="12" y2="12" />
+          <line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      </span>
+      <div class="body">
+        <strong>You're browsing as a guest.</strong>
+        <a href="/sign-in?next=/cart">Sign in</a> to save this cart across devices and get faster checkout next time. Or
+        continue as a guest — no account required.
+      </div>
+      <button class="dismiss" aria-label="Dismiss">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="cart-body">
+      <!-- Left: cart items -->
+      <div>
+        <div class="cart-items">
+          <!-- Item 1: RTX 4070 (normal) -->
+          <article class="cart-line">
+            <div class="thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="7" width="20" height="10" rx="1.5" />
+                <circle cx="8" cy="12" r="2.2" />
+                <circle cx="15" cy="12" r="2.2" />
+              </svg>
+            </div>
+            <div class="body">
+              <span class="brand-row">NVIDIA</span>
+              <a class="name" href="/product/geforce-rtx-4070-12gb">GeForce RTX 4070 12GB GDDR6X</a>
+              <span class="sku">SKU: GPU-NV-4070-12G</span>
+              <div class="actions-row">
+                <div class="qty">
+                  <button disabled aria-label="Decrease">−</button>
+                  <span class="val">1</span>
+                  <button aria-label="Increase">+</button>
+                </div>
+                <button class="danger">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+                  </svg>
+                  Remove
+                </button>
+                <button>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                  Save for later
+                </button>
+              </div>
+            </div>
+            <div class="right">
+              <div class="line-price">89,900 DA</div>
+              <div class="unit-price">89,900 × 1</div>
+            </div>
+          </article>
+
+          <!-- Item 2: Corsair with stock-drop notice -->
+          <article class="cart-line">
+            <div class="thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="8" width="20" height="8" rx="1" />
+                <path d="M6 8v8M10 8v8M14 8v8M18 8v8" />
+              </svg>
+            </div>
+            <div class="body">
+              <span class="brand-row">CORSAIR</span>
+              <a class="name" href="/product/vengeance-32gb-ddr5">Vengeance DDR5 32GB (2×16) 6000MHz CL30</a>
+              <span class="sku">SKU: RAM-CS-32-6000</span>
+              <div class="actions-row">
+                <div class="qty">
+                  <button disabled aria-label="Decrease">−</button>
+                  <span class="val">1</span>
+                  <button disabled aria-label="Increase">+</button>
+                </div>
+                <button class="danger">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+                  </svg>
+                  Remove
+                </button>
+                <button>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                  Save for later
+                </button>
+              </div>
+            </div>
+            <div class="right">
+              <div class="line-price">42,400 DA</div>
+              <div class="unit-price">42,400 × 1</div>
+            </div>
+
+            <!-- Stock-drop inline notice -->
+            <div class="stock-drop-inline">
+              <span class="ico">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </span>
+              <div class="body">
+                <strong>Stock dropped since you added this.</strong>
+                It was 12 in stock. <strong>only 1 left</strong>
+                Your quantity is still available. Check out to secure it.
+              </div>
+            </div>
+          </article>
+
+          <!-- Item 3: Samsung 990 Pro -->
+          <article class="cart-line">
+            <div class="thumb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="3" y="6" width="18" height="12" rx="1.5" />
+                <circle cx="7" cy="12" r="1" />
+                <path d="M11 10h7M11 14h5" />
+              </svg>
+            </div>
+            <div class="body">
+              <span class="brand-row">SAMSUNG</span>
+              <a class="name" href="/product/samsung-990-pro-2tb">990 Pro 2TB NVMe Gen4 SSD</a>
+              <span class="sku">SKU: SSD-SM-990P-2T</span>
+              <div class="actions-row">
+                <div class="qty">
+                  <button disabled aria-label="Decrease">−</button>
+                  <span class="val">1</span>
+                  <button aria-label="Increase">+</button>
+                </div>
+                <button class="danger">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+                  </svg>
+                  Remove
+                </button>
+                <button>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                  Save for later
+                </button>
+              </div>
+            </div>
+            <div class="right">
+              <div class="line-price">34,500 DA</div>
+              <div class="unit-price">34,500 × 1</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="cart-toolbar">
+          <a href="/shop">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Continue shopping
+          </a>
+          <button class="danger">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+            </svg>
+            Clear cart
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: order summary -->
+      <div class="summary-wrap">
+        <!-- Delivering-to card -->
+        <div class="delivering-to">
+          <div class="left">
+            <span class="ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </span>
+            <span>Delivering to <strong>Alger</strong> · <span
+                style="color: var(--brand-green); font-weight: 600;">24–48h</span></span>
+          </div>
+          <a href="#">Change</a>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary">
+          <h3>Order summary</h3>
+
+          <div class="summary-line"><span>Subtotal (3 items)</span><span class="v">166,800 DA</span></div>
+          <div class="summary-line">
+            <span>Delivery to Alger
+              <span class="info-tip" title="Delivery is free on orders over 50,000 DA">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </span>
+            </span>
+            <span class="v free-label">Free</span>
+          </div>
+
+          <!-- Promo code (collapsible) -->
+          <details class="promo-code">
+            <summary>
+              <span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                  <line x1="7" y1="7" x2="7.01" y2="7" />
+                </svg>
+                Have a promo code?
+              </span>
+              <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </summary>
+            <div class="input-row">
+              <input type="text" class="code-input" placeholder="Enter code" />
+              <button class="btn btn-secondary btn-sm">Apply</button>
+            </div>
+          </details>
+
+          <div class="summary-total">
+            <div>
+              <span>Total</span>
+              <span class="method">Cash on delivery</span>
+            </div>
+            <span class="v">166,800 DA</span>
+          </div>
+
+          <a href="/checkout" class="btn btn-accent checkout-btn">
+            Proceed to checkout
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </a>
+
+          <!-- Trust cluster -->
+          <div class="trust-cluster">
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2" />
+                  <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+              </span>
+              <div>
+                <strong>Cash on delivery, inspect first</strong>
+                <span class="dim">Pay the courier only after checking the box.</span>
+              </div>
+            </div>
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+              </span>
+              <div>
+                <strong>7-day DOA return</strong>
+                <span class="dim">Full refund or swap on any defective item.</span>
+              </div>
+            </div>
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </span>
+              <div>
+                <strong>Prices locked at checkout</strong>
+                <span class="dim">The price you see is the price the courier collects.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendation rail -->
+  <section class="rec-rail">
+    <div class="container">
+      <div class="rec-header">
+        <div>
+          <h2>Builders who bought these also <em>picked</em>.</h2>
+          <p>Compatible parts that pair with what's in your cart.</p>
+        </div>
+        <a href="/bundles" class="btn btn-secondary btn-sm">See build bundles</a>
+      </div>
+      <div class="rec-grid">
+        <a class="product-card" href="/product/ryzen-7-7800x3d">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="6" y="6" width="12" height="12" rx="1.5" />
+              <rect x="9" y="9" width="6" height="6" rx=".5" />
+              <path d="M10 3v2M14 3v2M10 19v2M14 19v2" />
+            </svg></div>
+          <div class="product-brand">AMD</div>
+          <div class="product-name">Ryzen 7 7800X3D 8-core CPU</div>
+          <div class="product-price-row">
+            <span class="product-price">82,600 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 6 left</span>
+          </div>
+          <button class="add-to-cart-mini">Add to cart</button>
+        </a>
+
+        <a class="product-card" href="/product/rog-strix-b650-a">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="3" y="3" width="18" height="18" rx="1.5" />
+              <rect x="7" y="7" width="5" height="5" rx=".5" />
+              <path d="M14 8h4M14 11h4M8 15v3M12 15v3M17 15v3" />
+            </svg></div>
+          <div class="product-brand">ASUS</div>
+          <div class="product-name">ROG Strix B650-A Gaming WiFi</div>
+          <div class="product-price-row">
+            <span class="product-price">65,000 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 11 left</span>
+          </div>
+          <button class="add-to-cart-mini">Add to cart</button>
+        </a>
+
+        <a class="product-card" href="/product/noctua-nh-d15">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 3v6M12 15v6M3 12h6M15 12h6" />
+            </svg></div>
+          <div class="product-brand">NOCTUA</div>
+          <div class="product-name">NH-D15 Dual-Tower CPU Cooler</div>
+          <div class="product-price-row">
+            <span class="product-price">15,200 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 9 left</span>
+          </div>
+          <button class="add-to-cart-mini">Add to cart</button>
+        </a>
+
+        <a class="product-card" href="/product/fractal-north">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="6" y="2" width="12" height="20" rx="1.5" />
+              <path d="M9 6h6M9 10h6" />
+              <circle cx="12" cy="17" r="1.5" />
+            </svg></div>
+          <div class="product-brand">FRACTAL DESIGN</div>
+          <div class="product-name">North Charcoal Black — Wood Front</div>
+          <div class="product-price-row">
+            <span class="product-price">24,900 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 5 left</span>
+          </div>
+          <button class="add-to-cart-mini">Add to cart</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-mega-bg" aria-hidden="true">H<em>-</em>Tech</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-glyph">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z" />
+              </svg>
+            </span>
+            H-Tech
+          </a>
+          <p>Computer parts & peripherals, delivered anywhere in the country. Cash on delivery. 7-day DOA return.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.75">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg></a>
+            <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.75">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+              </svg></a>
+            <a href="#" aria-label="TikTok"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19.6 6.3a5.5 5.5 0 0 1-3.7-1.4v9.4a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 1 .1v2.8a2.8 2.8 0 1 0 2 2.7V1h2.8a5.5 5.5 0 0 0 3.5 4.5v.8z" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <a href="/shop">All products</a>
+          <a href="/c/graphics-cards">Graphics cards</a>
+          <a href="/c/processors">Processors</a>
+          <a href="/c/memory">Memory</a>
+          <a href="/c/storage">Storage</a>
+          <a href="/bundles">Bundles</a>
+          <a href="/deals">Deals</a>
+          <a href="/new">New arrivals</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="/support/track-order">Track order</a>
+          <a href="/support/returns">Returns (7-day DOA)</a>
+          <a href="/support/compatibility">Compatibility help</a>
+          <a href="/support/contact">Contact</a>
+          <a href="/support/faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="/about">About</a>
+          <a href="/distributors">Distributors</a>
+          <a href="/careers">Careers</a>
+          <a href="/press">Press</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+          <a href="/legal/warranty">Warranty</a>
+          <a href="/legal/cookies">Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div class="links">
+          <a href="/status">Status</a>
+          <a href="/changelog">Changelog</a>
+          <a href="#" class="mono">v0.1 · preview</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) { }
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Terms of service — H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-tag-soft:rgb(90 159 242/.14); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-tag-soft:rgb(42 109 184/.10); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--font-ui); font-size: 15px; line-height: 1.7; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+    :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); border-radius: 4px; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 20; background: var(--canvas); border-bottom: 1px solid var(--hairline); height: 64px; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.3px; }
+    .brand-glyph { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-green); color: #000; display: grid; place-items: center; }
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500; }
+    .nav-links a { color: var(--slate); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .nav-links a:hover { color: var(--brand-green); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 8px; display: inline-grid; place-items: center; background: transparent; color: var(--slate); cursor: pointer; border: 1px solid transparent; transition: color 150ms, background 150ms; }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); }
+    .btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; padding: 10px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; }
+    .btn-primary { background: var(--ink); color: var(--canvas); transition: background 150ms, color 150ms; }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-sm { padding: 7px 12px; font-size: 13px; }
+
+    .breadcrumb { padding: 16px 0 0; font-size: 12px; color: var(--stone); display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumb a:hover { color: var(--brand-green); }
+    .breadcrumb .sep { color: var(--muted); }
+    .breadcrumb .current { color: var(--ink); font-weight: 500; }
+
+    /* Header */
+    .legal-head { padding: 36px 0 20px; max-width: 720px; }
+    .legal-head .eyebrow {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .legal-head h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: clamp(30px, 4vw, 38px); letter-spacing: -0.5px;
+      color: var(--ink); margin: 0 0 12px;
+      line-height: 1.15;
+    }
+    .legal-head h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--brand-green); }
+    .legal-head .meta {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+      margin-top: 12px;
+    }
+    .legal-head .meta .sep { color: var(--muted); }
+
+    /* Legal-tab strip */
+    .legal-tabs {
+      display: flex; align-items: center; gap: 4px;
+      border-bottom: 1px solid var(--hairline);
+      margin: 24px 0 8px;
+      overflow-x: auto;
+    }
+    .legal-tabs a {
+      padding: 12px 16px;
+      color: var(--stone); font-size: 14px; font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px; white-space: nowrap;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms;
+    }
+    .legal-tabs a:hover { color: var(--brand-green); }
+    .legal-tabs a.is-active { color: var(--brand-green); border-bottom-color: var(--brand-green); }
+
+    /* 2-col: TOC + content */
+    .legal-grid {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 48px;
+      padding: 32px 0 80px;
+      align-items: flex-start;
+    }
+
+    /* Sticky TOC */
+    .toc {
+      position: sticky; top: 84px;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .toc .lbl {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 8px 12px 10px;
+    }
+    .toc a {
+      display: block; padding: 6px 12px; border-radius: 4px;
+      font-size: 13px; color: var(--slate); font-weight: 400;
+      border-left: 2px solid transparent;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+    }
+    .toc a:hover { color: var(--brand-green); background: var(--surface); }
+    .toc a.is-active { color: var(--brand-green); border-left-color: var(--brand-green); font-weight: 500; }
+
+    /* Prose */
+    .prose { max-width: 720px; }
+    .prose h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 20px; letter-spacing: -0.2px;
+      color: var(--ink); margin: 40px 0 12px;
+      display: flex; align-items: baseline; gap: 12px;
+      scroll-margin-top: 84px;
+    }
+    .prose h2:first-child { margin-top: 0; }
+    .prose h2 .num {
+      font-family: var(--font-mono); font-size: 14px; font-weight: 400;
+      color: var(--brand-green);
+      background: var(--brand-green-soft);
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .prose h3 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; color: var(--ink);
+      margin: 20px 0 8px;
+    }
+    .prose p { color: var(--slate); margin: 0 0 14px; }
+    .prose ul, .prose ol { color: var(--slate); margin: 0 0 14px; padding-left: 20px; }
+    .prose li { margin-bottom: 6px; }
+    .prose strong { color: var(--ink); font-weight: 600; }
+    .prose a { color: var(--brand-green); }
+    .prose a:hover { text-decoration: underline; }
+    .prose hr { border: 0; border-top: 1px solid var(--hairline); margin: 32px 0; }
+
+    .callout {
+      background: var(--brand-tag-soft); border-left: 3px solid var(--brand-tag);
+      padding: 14px 16px; border-radius: 4px;
+      color: var(--slate); font-size: 14px;
+      margin: 14px 0;
+    }
+    .callout.tldr {
+      background: var(--brand-green-soft); border-left-color: var(--brand-green);
+      border-radius: 8px;
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .callout.tldr .ico {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center; flex: none;
+    }
+    .callout.tldr .body { flex: 1; }
+    .callout.tldr .body strong { color: var(--brand-green); display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+    .callout.tldr .body p { margin: 0; font-size: 14px; color: var(--slate); line-height: 1.55; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--hairline); padding: 32px 0; background: var(--canvas-elev); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--stone); font-family: var(--font-mono); max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+    .footer-bottom .links a { color: var(--stone); margin-left: 16px; transition: color 150ms; }
+    .footer-bottom .links a:hover { color: var(--brand-green); }
+
+    @media (max-width: 900px) {
+      .legal-grid { grid-template-columns: 1fr; gap: 24px; }
+      .toc { position: static; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+        H-Tech
+      </a>
+      <nav class="nav-links">
+        <a href="/shop">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <a href="/shop" class="btn btn-primary btn-sm">Shop now</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href="/legal">Legal</a>
+      <span class="sep">/</span>
+      <span class="current">Terms of service</span>
+    </nav>
+
+    <section class="legal-head">
+      <div class="eyebrow">Legal</div>
+      <h1>Terms of <em>service.</em></h1>
+      <div class="meta">
+        <span>Version <strong style="color:var(--slate);">1.0</strong></span>
+        <span class="sep">·</span>
+        <span>Effective <strong style="color:var(--slate);">1 September 2026</strong></span>
+        <span class="sep">·</span>
+        <a href="#" style="color:var(--brand-green);">Changelog →</a>
+      </div>
+    </section>
+
+    <!-- Legal-tabs -->
+    <nav class="legal-tabs" aria-label="Legal pages">
+      <a href="/legal/terms" class="is-active">Terms</a>
+      <a href="/legal/privacy">Privacy</a>
+      <a href="/legal/warranty">Warranty</a>
+      <a href="/legal/cookies">Cookies</a>
+    </nav>
+
+    <!-- Grid -->
+    <div class="legal-grid">
+
+      <!-- TOC -->
+      <nav class="toc" aria-label="Table of contents">
+        <span class="lbl">On this page</span>
+        <a href="#s1" class="is-active">1. Who we are</a>
+        <a href="#s2">2. Using H-Tech</a>
+        <a href="#s3">3. Placing an order</a>
+        <a href="#s4">4. Prices & payment</a>
+        <a href="#s5">5. Delivery</a>
+        <a href="#s6">6. Returns & warranty</a>
+        <a href="#s7">7. Product info & availability</a>
+        <a href="#s8">8. Your account</a>
+        <a href="#s9">9. Liability</a>
+        <a href="#s10">10. Disputes & jurisdiction</a>
+        <a href="#s11">11. Changes to these terms</a>
+      </nav>
+
+      <!-- Prose -->
+      <article class="prose">
+
+        <div class="callout tldr">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="body">
+            <strong>Plain-language summary</strong>
+            <p>You order, we confirm by phone, we deliver, you inspect the box before paying cash. Dead-on-arrival items get a 7-day return window. Manufacturer warranties apply after that. We hold your data only as long as needed and never sell it.</p>
+          </div>
+        </div>
+
+        <section>
+          <h2 id="s1"><span class="num">01</span>Who we are</h2>
+          <p>H-Tech is operated by <strong>H-Tech SARL</strong>, registered in Algiers, Algeria. Registered office: <span style="font-family:var(--font-mono);color:var(--slate);">Cité 200 Logements, Bâtiment C, Bab Ezzouar, Alger 16311</span>. Commercial registry: <span style="font-family:var(--font-mono);color:var(--slate);">16/00-1234567 B 26</span> · NIF: <span style="font-family:var(--font-mono);color:var(--slate);">1234567890123456</span>.</p>
+          <p>By using this website (the "Service"), you accept these terms. If you don't, please don't use the Service.</p>
+        </section>
+
+        <section>
+          <h2 id="s2"><span class="num">02</span>Using H-Tech</h2>
+          <p>You may browse the catalog, place orders, and manage returns without an account. Some features (saved addresses, order history, wishlist) require registration. Registration is free.</p>
+          <p>You agree not to:</p>
+          <ul>
+            <li>Attempt to bypass rate limits, scrape the catalog, or interfere with normal operation of the site</li>
+            <li>Use the Service to place fraudulent orders or for resale outside the intended consumer scope without a business agreement</li>
+            <li>Impersonate another person when placing an order</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 id="s3"><span class="num">03</span>Placing an order</h2>
+          <p>An order is a request to buy — not a binding contract. It becomes binding only when we call to confirm and you agree to the items, delivery address, and price on the phone.</p>
+          <p>We may refuse or cancel an order at our discretion, including if:</p>
+          <ul>
+            <li>An item shows in stock but is actually unavailable at our distributor</li>
+            <li>The listed price is clearly wrong (e.g., a data-entry error where a 90,000 DA GPU shows as 9,000 DA)</li>
+            <li>We cannot reach you after 3 confirmation attempts within 48 hours</li>
+            <li>The delivery address is outside our courier partners' coverage</li>
+          </ul>
+          <p>When we refuse or cancel, we tell you why on your tracking page and via SMS. You owe nothing.</p>
+        </section>
+
+        <section>
+          <h2 id="s4"><span class="num">04</span>Prices & payment</h2>
+          <p>Every price shown on H-Tech is <strong>final, in Algerian dinars (DA), VAT included</strong>. Prices sync from our distributors up to 3 times per day and can change without notice.</p>
+          <p>When you reach checkout, we lock your price for <strong>15 minutes</strong>. If the price changes during that window, we honor the locked price. After the window expires, the current price applies.</p>
+          <p>We accept <strong>cash on delivery only</strong> for consumer orders. For business orders above 500,000 DA, we accept bank transfer against a proforma invoice.</p>
+          <div class="callout"><strong>Cash inspection at door:</strong> You can open the box, verify the item is present, in its original packaging, and undamaged before paying the courier. If anything looks wrong, refuse the parcel and you owe nothing.</div>
+        </section>
+
+        <section>
+          <h2 id="s5"><span class="num">05</span>Delivery</h2>
+          <p>We deliver to all 48 wilayas through our partners Yalidine and Zr Express. Delivery times run 1–6 business days depending on your wilaya (see <a href="/support/faq#delivery-time">FAQ</a> for the breakdown).</p>
+          <p>Delivery fees apply below the 15,000 DA free-shipping threshold and are shown at checkout. Once handed to the courier, delivery is subject to their terms of service and delays outside our control (weather, roadworks, force majeure) are not our responsibility.</p>
+        </section>
+
+        <section>
+          <h2 id="s6"><span class="num">06</span>Returns & warranty</h2>
+          <h3>Dead on arrival (DOA)</h3>
+          <p>You have <strong>7 days from delivery</strong> to open a return for a defective item. Requirements: original packaging, photos of the issue, and a description. Approved returns are refunded in full including the delivery fee, via cash reimbursement scheduled through the same courier (3–5 business days).</p>
+
+          <h3>Change of mind</h3>
+          <p>Cash on delivery gives you the equivalent of a change-of-mind window at the door: refuse the parcel and you owe nothing. After delivery, change-of-mind returns are accepted only for sealed, unopened items within 48 hours and at our discretion.</p>
+
+          <h3>Manufacturer warranty</h3>
+          <p>Every product ships with its full manufacturer warranty (typically 2 years peripherals, 3 years GPU/motherboard/SSD, 5 years high-end memory). Warranty is honored directly by the manufacturer or its regional service partner. We help you file the claim; we do not act as the warranty provider.</p>
+        </section>
+
+        <section>
+          <h2 id="s7"><span class="num">07</span>Product information & availability</h2>
+          <p>We take reasonable care to describe products accurately — specifications, photos, and compatibility notes come from the manufacturer. Occasional errors happen. If you notice one, please let us know at <a href="/support/contact">support</a>.</p>
+          <p>Stock levels shown on the site reflect distributor inventory and are updated up to 3 times per day. An item shown as "in stock" may occasionally be unavailable when we go to fulfill your order. In that case, we cancel the affected item, refund it if already paid, and notify you.</p>
+        </section>
+
+        <section>
+          <h2 id="s8"><span class="num">08</span>Your account</h2>
+          <p>If you create an account, you're responsible for keeping your password secure and for activity on your account. Tell us immediately if you suspect unauthorized access.</p>
+          <p>You may delete your account anytime via Account → Settings → Delete account. Personal data is anonymized within 24 hours. Order records are retained for 5 years per Algerian tax law but stripped of identifying info. Full details in our <a href="/legal/privacy">Privacy policy</a>.</p>
+        </section>
+
+        <section>
+          <h2 id="s9"><span class="num">09</span>Liability</h2>
+          <p>Our maximum liability for any claim related to an order is limited to the amount you paid for that order. We are not liable for indirect damages, loss of profit, or loss of data.</p>
+          <p>Nothing in these terms excludes liabilities that cannot be excluded under Algerian consumer protection law.</p>
+        </section>
+
+        <section>
+          <h2 id="s10"><span class="num">10</span>Disputes & jurisdiction</h2>
+          <p>We prefer to resolve disputes directly — WhatsApp us at <span style="font-family:var(--font-mono);color:var(--slate);">+213 555 42 18 90</span> or email <a href="mailto:legal@h-tech.dz">legal@h-tech.dz</a>. If we can't reach an agreement, Algerian law applies and the courts of Alger have exclusive jurisdiction.</p>
+        </section>
+
+        <section>
+          <h2 id="s11"><span class="num">11</span>Changes to these terms</h2>
+          <p>We may update these terms occasionally. When we do, we bump the version number at the top of this page and post the diff in the <a href="#">changelog</a>. Material changes (anything that reduces your rights) are announced by email to registered users at least 30 days before taking effect. Continued use of the Service after the effective date means you accept the new terms.</p>
+          <hr />
+          <p style="color:var(--stone);font-size:13px;">Questions about these terms? Contact <a href="mailto:legal@h-tech.dz">legal@h-tech.dz</a>.</p>
+        </section>
+
+      </article>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-bottom">
+      <span>© 2026 H-Tech · Algiers, DZ</span>
+      <div class="links">
+        <a href="/support">Support</a>
+        <a href="/legal/terms">Terms</a>
+        <a href="/legal/privacy">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+
+    // TOC active state
+    document.querySelectorAll('.toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.querySelectorAll('.toc a').forEach(x => x.classList.remove('is-active'));
+        a.classList.add('is-active');
+      });
+    });
+  </script>
+</body>
+</html>

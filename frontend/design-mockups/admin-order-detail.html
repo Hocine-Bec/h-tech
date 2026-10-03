@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Order HT-4287 · H-Tech Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --surface-3:#1c1c1e; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-error-soft:rgb(226 96 96/.14); --brand-tag-soft:rgb(90 159 242/.14); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --surface-3:#e2dfd4; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-error-soft:rgb(184 62 62/.10); --brand-tag-soft:rgb(42 109 184/.10); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--font-ui); font-size: 14px; line-height: 1.5; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+    :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); border-radius: 4px; }
+    @keyframes live-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.4); opacity: 0; } }
+    @keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modal-in { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* Shell */
+    .admin-app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .admin-app.has-topnav { grid-template-rows: 56px 1fr; grid-template-columns: 240px 1fr; }
+    .admin-topnav { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--canvas-elev); border-bottom: 1px solid var(--hairline); position: sticky; top: 0; z-index: 30; height: 56px; }
+    .topnav-left { display: flex; align-items: center; gap: 12px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; letter-spacing: -0.3px; color: var(--ink); }
+    .brand-glyph { width: 20px; height: 20px; border-radius: 5px; background: var(--brand-green); color: #000; display: grid; place-items: center; }
+    .brand .admin-label { color: var(--stone); font-weight: 500; margin-left: 4px; }
+    .env-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; background: var(--brand-green-soft); border: 1px solid var(--brand-green); border-radius: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.08em; }
+    .env-pill .dot { position: relative; width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-green); }
+    .env-pill .dot::after { content: ''; position: absolute; inset: 0; border-radius: 9999px; background: var(--brand-green); animation: live-pulse 2s ease-in-out infinite; }
+    .cmd-k-search { flex: 1; max-width: 480px; margin: 0 24px; display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px; font-size: 13px; color: var(--stone); cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .cmd-k-search:hover { border-color: var(--brand-green); }
+    .cmd-k-search .kbd { display: inline-flex; align-items: center; justify-content: center; padding: 1px 5px; min-width: 18px; height: 18px; border-radius: 4px; background: var(--canvas-elev); border: 1px solid var(--hairline); font-family: var(--font-mono); font-size: 10px; color: var(--slate); font-weight: 500; }
+    .cmd-k-search .placeholder { flex: 1; }
+    .topnav-right { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { position: relative; width: 32px; height: 32px; border-radius: 8px; display: inline-grid; place-items: center; cursor: pointer; background: transparent; color: var(--slate); border: 1px solid transparent; transition: color 150ms, background 150ms, border-color 150ms; }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface-2); }
+    .icon-btn .notif-dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 9999px; background: var(--brand-error); border: 2px solid var(--canvas-elev); }
+    .admin-profile { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px 4px 4px; background: transparent; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms; }
+    .admin-profile:hover { background: var(--surface-2); border-color: var(--hairline); }
+    .admin-profile .avatar { width: 24px; height: 24px; border-radius: 9999px; background: var(--brand-green-soft); color: var(--brand-green); display: grid; place-items: center; font-size: 10px; font-weight: 700; }
+    .admin-profile .name { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .admin-profile .chev { color: var(--stone); }
+
+    /* Sidebar */
+    .admin-sidebar { background: var(--canvas-elev); border-right: 1px solid var(--hairline); padding: 16px 12px; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+    .sidebar-section + .sidebar-section { margin-top: 20px; }
+    .sidebar-section-label { padding: 8px 12px 6px; font-size: 10px; font-weight: 600; color: var(--stone); text-transform: uppercase; letter-spacing: 0.1em; }
+    .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--slate); cursor: pointer; transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms; }
+    .sidebar-item:hover { color: var(--brand-green); background: var(--surface); }
+    .sidebar-item.is-active { color: var(--brand-green); background: var(--brand-green-soft); }
+    .sidebar-item.is-sub { padding-left: 34px; font-size: 12px; }
+    .sidebar-item.is-sub.is-active { color: var(--brand-green); background: var(--brand-green-soft); }
+    .sidebar-item .badge { margin-left: auto; font-family: var(--font-mono); font-size: 10px; font-weight: 500; background: var(--surface); border: 1px solid var(--hairline); color: var(--stone); padding: 1px 6px; border-radius: 9999px; min-width: 20px; text-align: center; }
+    .sidebar-item.is-active .badge, .sidebar-item.is-sub.is-active .badge { background: var(--brand-green); color: #000; border-color: var(--brand-green); }
+    .sidebar-item.is-sub .badge.warn { background: var(--brand-warn-soft); color: var(--brand-warn); border-color: var(--brand-warn); }
+    .sidebar-item.is-sub .badge.error { background: var(--brand-error-soft); color: var(--brand-error); border-color: var(--brand-error); }
+    .sidebar-item.is-phase2 { color: var(--muted); cursor: not-allowed; }
+    .sidebar-item.is-phase2:hover { color: var(--muted); background: transparent; }
+    .sidebar-item .phase2-tag { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--stone); text-transform: uppercase; letter-spacing: 0.06em; }
+    .sidebar-item svg { flex: none; color: currentColor; }
+
+    /* Main */
+    .admin-main { padding: 0 0 40px; min-width: 0; }
+
+    /* Breadcrumb */
+    .breadcrumb { display: flex; align-items: center; gap: 6px; padding: 12px 28px 0; font-size: 12px; color: var(--stone); }
+    .breadcrumb a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumb a:hover { color: var(--brand-green); }
+    .breadcrumb .sep { color: var(--muted); }
+    .breadcrumb .current { color: var(--ink); font-weight: 500; font-family: var(--font-mono); }
+
+    /* Header */
+    .order-header {
+      padding: 12px 28px 18px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--hairline);
+      background: var(--canvas-elev);
+    }
+    .order-header .title-block { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .order-header .id-row { display: inline-flex; align-items: center; gap: 10px; }
+    .order-header h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 26px; letter-spacing: -0.4px;
+      color: var(--ink); margin: 0;
+    }
+    .order-header h1 .ref { font-family: var(--font-mono); font-weight: 500; color: var(--brand-green); }
+    .order-header .copy-ref {
+      background: transparent; border: 0; color: var(--stone); cursor: pointer;
+      padding: 4px; border-radius: 4px; display: grid; place-items: center;
+      transition: color 150ms, background 150ms;
+    }
+    .order-header .copy-ref:hover { color: var(--brand-green); background: var(--surface-2); }
+    .order-header .meta-row {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+    }
+    .order-header .meta-row .sep { color: var(--muted); }
+    .order-header .head-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500; line-height: 1;
+      padding: 5px 10px; border-radius: 9999px;
+      white-space: nowrap;
+    }
+    .chip .dot { width: 6px; height: 6px; border-radius: 9999px; background: currentColor; position: relative; }
+    .chip.chip-placed { background: var(--surface); color: var(--steel); border: 1px solid var(--hairline); }
+    .chip.chip-confirmed { background: var(--brand-tag-soft); color: var(--brand-tag); }
+    .chip.chip-in-delivery { background: var(--brand-warn-soft); color: var(--brand-warn); }
+    .chip.chip-delivered { background: var(--brand-green-soft); color: var(--brand-green); }
+    .chip.chip-refused { background: var(--brand-error-soft); color: var(--brand-error); }
+    .chip.chip-returned { background: var(--brand-tag-soft); color: var(--brand-tag); }
+    .chip.is-live .dot::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 9999px; background: currentColor;
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 500; line-height: 1; padding: 8px 14px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms; white-space: nowrap; font-family: var(--font-ui); }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-accent { background: var(--brand-green); color: #000; }
+    .btn-accent:hover { background: var(--brand-green-deep); }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 6px 10px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-danger { background: transparent; color: var(--brand-error); border: 1px solid var(--brand-error); }
+    .btn-danger:hover { background: var(--brand-error-soft); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+
+    /* State transition action bar */
+    .state-actions {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 28px;
+      background: var(--brand-green-soft);
+      border-bottom: 1px solid var(--brand-green);
+    }
+    .state-actions .left {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; color: var(--slate);
+    }
+    .state-actions .left .ico {
+      width: 28px; height: 28px; border-radius: 9999px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center; flex: none;
+    }
+    .state-actions .left .title { color: var(--ink); font-weight: 600; }
+    .state-actions .left .sub { color: var(--stone); font-family: var(--font-mono); font-size: 11px; margin-top: 2px; }
+    .state-actions .actions { display: flex; align-items: center; gap: 8px; }
+    .state-actions .actions .btn-danger { color: var(--brand-error); border-color: var(--brand-error); }
+    .state-actions .actions .btn-accent {
+      background: var(--brand-green); color: #000;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .state-actions .actions .btn-accent .kbd {
+      font-family: var(--font-mono); font-size: 10px; opacity: 0.6;
+      margin-left: 4px;
+    }
+
+    /* 2-col layout */
+    .detail-grid {
+      display: grid; grid-template-columns: 1fr 340px;
+      gap: 20px;
+      padding: 20px 28px 0;
+      align-items: flex-start;
+    }
+
+    /* Card */
+    .card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .card + .card { margin-top: 16px; }
+    .card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 20px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .card-head h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 14px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .card-head h2 .num-pill {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--hairline);
+      color: var(--stone); padding: 1px 7px; border-radius: 9999px;
+    }
+    .card-head .head-action {
+      font-size: 12px; font-weight: 500; color: var(--stone);
+      background: transparent; border: 0; cursor: pointer;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-head .head-action:hover { color: var(--brand-green); }
+    .card-body { padding: 0; }
+    .card-body.padded { padding: 18px 20px; }
+
+    /* Line items table */
+    .items-list { display: flex; flex-direction: column; }
+    .item-row {
+      display: grid; grid-template-columns: 56px 1fr 60px 110px 120px;
+      align-items: center; gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+    .item-row:last-child { border-bottom: 0; }
+    .item-thumb {
+      width: 56px; height: 56px; border-radius: 8px;
+      background: linear-gradient(135deg, rgb(0 212 164 / 0.12), rgb(90 159 242 / 0.12));
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--brand-green);
+      flex: none;
+    }
+    .item-thumb.cpu { background: linear-gradient(135deg, rgb(200 138 58 / 0.12), rgb(226 96 96 / 0.10)); color: var(--brand-warn); }
+    .item-thumb.mem { background: linear-gradient(135deg, rgb(90 159 242 / 0.12), rgb(0 212 164 / 0.10)); color: var(--brand-tag); }
+    .item-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .item-body .title { font-size: 14px; font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .item-body .meta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+    }
+    .item-body .meta .brand { color: var(--slate); font-family: var(--font-ui); font-weight: 500; }
+    .item-body .meta .dot { width: 3px; height: 3px; border-radius: 9999px; background: var(--muted); }
+    .item-qty { font-family: var(--font-mono); font-size: 13px; color: var(--slate); font-weight: 500; text-align: center; }
+    .item-qty .x { color: var(--stone); font-size: 11px; }
+    .item-unit { font-family: var(--font-mono); font-size: 12px; color: var(--stone); text-align: right; }
+    .item-line-total { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--ink); text-align: right; }
+    .item-line-total .unit { font-size: 10px; color: var(--stone); font-weight: 400; margin-left: 3px; }
+
+    /* Totals */
+    .totals-block {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--hairline);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .total-line {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+      font-size: 13px; color: var(--slate);
+    }
+    .total-line .v { font-family: var(--font-mono); font-weight: 500; color: var(--slate); }
+    .total-line.grand {
+      padding-top: 12px; margin-top: 4px;
+      border-top: 1px solid var(--hairline);
+      font-size: 15px; color: var(--ink); font-weight: 600;
+    }
+    .total-line.grand .v { font-size: 18px; font-weight: 600; color: var(--ink); }
+    .total-line.grand .v .unit { font-size: 11px; color: var(--stone); font-weight: 400; margin-left: 4px; }
+
+    /* Timeline */
+    .timeline { padding: 20px; display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 12px; position: relative; padding-bottom: 18px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item:not(:last-child)::before {
+      content: ''; position: absolute; left: 11px; top: 26px;
+      width: 2px; bottom: -4px;
+      background: var(--hairline);
+    }
+    .tl-dot {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: var(--surface); border: 2px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+      flex: none; z-index: 1;
+    }
+    .tl-dot.done { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .tl-dot.current { background: var(--brand-warn-soft); border-color: var(--brand-warn); color: var(--brand-warn); position: relative; }
+    .tl-dot.current::after {
+      content: ''; position: absolute; inset: -3px;
+      border-radius: 9999px; border: 2px solid var(--brand-warn);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+    .tl-body { flex: 1; padding-top: 2px; min-width: 0; }
+    .tl-body .row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .tl-body .title { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .tl-body .title .by { color: var(--stone); font-weight: 400; font-size: 12px; }
+    .tl-body .when { font-family: var(--font-mono); font-size: 11px; color: var(--stone); white-space: nowrap; }
+    .tl-body .detail { font-size: 12px; color: var(--stone); margin-top: 3px; line-height: 1.5; }
+    .tl-body .detail strong { color: var(--slate); font-weight: 500; }
+
+    /* Notes */
+    .notes-list { padding: 4px 20px 12px; display: flex; flex-direction: column; gap: 12px; }
+    .note {
+      display: flex; gap: 10px; padding: 12px 14px;
+      background: var(--surface);
+      border-radius: 8px;
+    }
+    .note .avatar {
+      width: 26px; height: 26px; border-radius: 9999px;
+      background: var(--brand-green-soft); color: var(--brand-green);
+      display: grid; place-items: center; flex: none;
+      font-size: 10px; font-weight: 700;
+    }
+    .note .avatar.other { background: var(--brand-tag-soft); color: var(--brand-tag); }
+    .note .body { flex: 1; min-width: 0; }
+    .note .body .head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .note .body .head .who { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .note .body .head .when { font-family: var(--font-mono); font-size: 10px; color: var(--stone); }
+    .note .body p { font-size: 13px; color: var(--slate); margin: 4px 0 0; line-height: 1.5; }
+
+    .note-composer {
+      display: flex; gap: 10px; padding: 12px 20px 18px;
+      border-top: 1px solid var(--hairline-soft);
+    }
+    .note-composer .avatar {
+      width: 26px; height: 26px; border-radius: 9999px;
+      background: var(--brand-green-soft); color: var(--brand-green);
+      display: grid; place-items: center; flex: none;
+      font-size: 10px; font-weight: 700;
+    }
+    .note-composer .field {
+      flex: 1; display: flex; flex-direction: column; gap: 8px;
+    }
+    .note-composer textarea {
+      background: var(--canvas); border: 1px solid var(--hairline);
+      color: var(--ink); font-size: 13px;
+      padding: 9px 12px; border-radius: 8px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none; resize: vertical; min-height: 60px;
+      font-family: inherit;
+    }
+    .note-composer textarea:hover { border-color: var(--hairline-strong); }
+    .note-composer textarea:focus { border-color: var(--brand-green); }
+    .note-composer .foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .note-composer .foot .hint { font-size: 11px; color: var(--stone); font-family: var(--font-mono); }
+    .note-composer .foot .hint .kbd { padding: 1px 5px; border: 1px solid var(--hairline); border-radius: 4px; color: var(--slate); }
+
+    /* Right sidebar cards */
+    .side-card { background: var(--canvas-elev); border: 1px solid var(--hairline); border-radius: 10px; }
+    .side-card + .side-card { margin-top: 12px; }
+    .side-card .head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+      font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .side-card .head .edit-link {
+      background: transparent; border: 0; cursor: pointer;
+      font-size: 11px; color: var(--stone); font-family: var(--font-ui); font-weight: 500; text-transform: none; letter-spacing: 0;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .side-card .head .edit-link:hover { color: var(--brand-green); }
+    .side-card .body { padding: 14px 16px; }
+
+    .contact-block { display: flex; flex-direction: column; gap: 8px; }
+    .contact-block .name { font-size: 15px; font-weight: 600; color: var(--ink); }
+    .contact-block .name-sub {
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+    }
+    .contact-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      margin-top: 4px;
+    }
+    .contact-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      color: var(--ink);
+      border-radius: 8px; font-size: 12px; font-weight: 500;
+      cursor: pointer;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), color 150ms, background 150ms;
+    }
+    .contact-btn:hover { border-color: var(--brand-green); color: var(--brand-green); background: var(--brand-green-soft); }
+    .contact-btn svg { color: var(--stone); flex: none; }
+    .contact-btn:hover svg { color: var(--brand-green); }
+    .contact-btn .val { font-family: var(--font-mono); font-size: 11px; }
+
+    .customer-stats {
+      display: flex; align-items: center; gap: 16px;
+      margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--hairline-soft);
+    }
+    .customer-stats .stat { display: flex; flex-direction: column; gap: 2px; }
+    .customer-stats .stat .n { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--ink); }
+    .customer-stats .stat .lbl { font-size: 10px; color: var(--stone); text-transform: uppercase; letter-spacing: 0.06em; }
+    .customer-stats .stat .n.warn { color: var(--brand-warn); }
+
+    .address-block {
+      display: flex; flex-direction: column; gap: 4px;
+      font-size: 13px; color: var(--slate); line-height: 1.55;
+    }
+    .address-block .who { color: var(--ink); font-weight: 500; }
+    .address-block .street { color: var(--slate); }
+    .address-block .locality { color: var(--slate); }
+    .address-block .locality .wilaya { color: var(--slate); font-weight: 500; }
+    .address-block .locality .num { font-family: var(--font-mono); color: var(--stone); }
+    .address-block .phone { font-family: var(--font-mono); font-size: 12px; color: var(--stone); margin-top: 4px; }
+
+    .kv-list { display: flex; flex-direction: column; gap: 10px; }
+    .kv { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .kv .k { color: var(--stone); }
+    .kv .v { color: var(--ink); font-weight: 500; text-align: right; font-family: var(--font-mono); }
+    .kv .v.link { color: var(--brand-green); cursor: pointer; }
+    .kv .v.link:hover { text-decoration: underline; }
+    .kv .v.ui { font-family: var(--font-ui); }
+
+    .courier-block .row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .courier-block .logo {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--brand-warn-soft); color: var(--brand-warn);
+      display: grid; place-items: center;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      border: 1px solid var(--brand-warn);
+    }
+    .courier-block .body { flex: 1; min-width: 0; }
+    .courier-block .body .name { font-size: 13px; color: var(--ink); font-weight: 500; }
+    .courier-block .body .sub { font-family: var(--font-mono); font-size: 11px; color: var(--stone); }
+    .courier-block .tracking {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface);
+      padding: 8px 10px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 12px; color: var(--slate);
+    }
+    .courier-block .tracking .copy {
+      margin-left: auto;
+      background: transparent; border: 0; color: var(--stone);
+      cursor: pointer; padding: 3px; border-radius: 4px;
+      display: grid; place-items: center;
+      transition: color 150ms, background 150ms;
+    }
+    .courier-block .tracking .copy:hover { color: var(--brand-green); background: var(--canvas-elev); }
+
+    /* Confirm modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgb(0 0 0 / 0.6); z-index: 60; animation: overlay-in 200ms cubic-bezier(0.16, 1, 0.3, 1); display: none; align-items: center; justify-content: center; padding: 20px; }
+    [data-theme='light'] .modal-overlay { background: rgb(0 0 0 / 0.35); }
+    .modal-overlay.is-open { display: flex; }
+    .modal { width: 100%; max-width: 480px; background: var(--canvas-elev); border: 1px solid var(--hairline-strong); border-radius: 12px; padding: 24px; animation: modal-in 240ms cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 40px -12px rgb(0 0 0 / 0.5); }
+    .modal .ico { width: 40px; height: 40px; border-radius: 9999px; background: var(--brand-error-soft); color: var(--brand-error); display: grid; place-items: center; margin-bottom: 12px; }
+    .modal h3 { font-family: var(--font-ui); font-size: 17px; font-weight: 600; color: var(--ink); margin: 0 0 6px; letter-spacing: -0.2px; }
+    .modal p { font-size: 13px; color: var(--slate); margin: 0 0 12px; line-height: 1.55; }
+    .modal .reason-select { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 20px; }
+    .modal .reason-select label { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px; font-size: 13px; color: var(--slate); cursor: pointer; transition: border-color 150ms, color 150ms, background 150ms; }
+    .modal .reason-select label:hover { border-color: var(--brand-green); color: var(--brand-green); background: var(--brand-green-soft); }
+    .modal .reason-select label input { accent-color: var(--brand-error); }
+    .modal .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .modal .modal-actions .btn-danger { background: var(--brand-error); color: #fff; border-color: var(--brand-error); }
+    .modal .modal-actions .btn-danger:hover { background: var(--brand-error); opacity: 0.9; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .item-row { grid-template-columns: 44px 1fr 110px; row-gap: 6px; }
+      .item-row .item-qty, .item-row .item-unit { display: none; }
+    }
+    @media (max-width: 900px) {
+      .admin-app { grid-template-columns: 1fr; }
+      .admin-sidebar { display: none; }
+      .cmd-k-search { max-width: none; margin: 0 12px; }
+      .breadcrumb, .order-header, .state-actions, .detail-grid { padding-left: 16px; padding-right: 16px; }
+      .state-actions { flex-direction: column; align-items: flex-start; }
+      .state-actions .actions { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-app has-topnav">
+
+    <!-- Top nav -->
+    <header class="admin-topnav">
+      <div class="topnav-left">
+        <a class="brand" href="/admin">
+          <span class="brand-glyph"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+          H-Tech <span class="admin-label">Admin</span>
+        </a>
+        <span class="env-pill"><span class="dot"></span> Prod</span>
+      </div>
+
+      <div class="cmd-k-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--stone)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span class="placeholder">Search products, orders, customers…</span>
+        <span class="kbd">⌘K</span>
+      </div>
+
+      <div class="topnav-right">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="admin-profile"><span class="avatar">HO</span><span class="name">Hocine</span><span class="chev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Overview</div>
+        <a class="sidebar-item" href="/admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Catalog</div>
+        <a class="sidebar-item" href="/admin/products"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Products<span class="badge">1,504</span></a>
+        <a class="sidebar-item" href="/admin/categories"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Categories<span class="badge">9</span></a>
+        <a class="sidebar-item" href="/admin/brands"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Brands<span class="badge">42</span></a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Orders</div>
+        <a class="sidebar-item is-active" href="/admin/orders"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>All orders<span class="badge">287</span></a>
+        <a class="sidebar-item is-sub is-active" href="/admin/orders?state=placed"><span style="width:8px;height:8px;border-radius:9999px;background:var(--steel);"></span>Placed<span class="badge">7</span></a>
+        <a class="sidebar-item is-sub" href="/admin/orders?state=confirmed"><span style="width:8px;height:8px;border-radius:9999px;background:var(--brand-tag);"></span>Confirmed<span class="badge">4</span></a>
+        <a class="sidebar-item is-sub" href="/admin/orders?state=in_delivery"><span style="width:8px;height:8px;border-radius:9999px;background:var(--brand-warn);"></span>In delivery<span class="badge">11</span></a>
+        <a class="sidebar-item is-sub" href="/admin/returns"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Returns<span class="badge error">2</span></a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Insights</div>
+        <a class="sidebar-item is-phase2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics<span class="phase2-tag">Phase 2</span></a>
+        <a class="sidebar-item is-phase2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>Settings<span class="phase2-tag">Phase 2</span></a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/admin">Admin</a>
+        <span class="sep">/</span>
+        <a href="/admin/orders">Orders</a>
+        <span class="sep">/</span>
+        <span class="current">HT-4287</span>
+      </nav>
+
+      <!-- Header -->
+      <div class="order-header">
+        <div class="title-block">
+          <div class="id-row">
+            <h1>Order <span class="ref">HT-4287</span></h1>
+            <button class="copy-ref" aria-label="Copy order reference">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            </button>
+            <span class="chip chip-placed is-live"><span class="dot"></span>Placed · to confirm</span>
+          </div>
+          <div class="meta-row">
+            <span>Placed <strong style="color:var(--brand-warn);">2h 14m ago</strong></span>
+            <span class="sep">·</span>
+            <span>28 Aug 2026, 14:50</span>
+            <span class="sep">·</span>
+            <span>Waiting <strong style="color:var(--brand-warn);">2h 14m</strong> for confirmation</span>
+          </div>
+        </div>
+        <div class="head-actions">
+          <button class="btn btn-ghost">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Print invoice
+          </button>
+          <button class="btn btn-secondary">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            View on storefront
+          </button>
+        </div>
+      </div>
+
+      <!-- State action bar -->
+      <div class="state-actions">
+        <div class="left">
+          <span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <div>
+            <div class="title">Call Amina to confirm this order</div>
+            <div class="sub">+213 555 42 18 90 · This customer has 3 previous orders</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-danger btn-sm" id="btn-refuse">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Refuse
+          </button>
+          <button class="btn btn-accent">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Confirm order
+            <span class="kbd">⌘↵</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2-col grid -->
+      <div class="detail-grid">
+
+        <!-- LEFT column -->
+        <div>
+
+          <!-- Items card -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Line items <span class="num-pill">3 · 4 units</span></h2>
+            </div>
+            <div class="card-body">
+              <div class="items-list">
+                <div class="item-row">
+                  <span class="item-thumb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="1"/><circle cx="8" cy="12" r="1.5"/><circle cx="14" cy="12" r="1.5"/><path d="M5 17v2M19 17v2"/></svg></span>
+                  <div class="item-body">
+                    <span class="title">GeForce RTX 4070 Ventus 3X 12G OC</span>
+                    <span class="meta"><span class="brand">MSI</span><span class="dot"></span><span>GPU-MSI-4070V3-12G</span></span>
+                  </div>
+                  <span class="item-qty"><span class="x">×</span> 1</span>
+                  <span class="item-unit">89,500 DA</span>
+                  <span class="item-line-total">89,500<span class="unit">DA</span></span>
+                </div>
+
+                <div class="item-row">
+                  <span class="item-thumb cpu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/></svg></span>
+                  <div class="item-body">
+                    <span class="title">Ryzen 7 7700X</span>
+                    <span class="meta"><span class="brand">AMD</span><span class="dot"></span><span>CPU-AMD-R7-7700X</span></span>
+                  </div>
+                  <span class="item-qty"><span class="x">×</span> 1</span>
+                  <span class="item-unit">42,800 DA</span>
+                  <span class="item-line-total">42,800<span class="unit">DA</span></span>
+                </div>
+
+                <div class="item-row">
+                  <span class="item-thumb mem"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="20" height="8" rx="1"/><line x1="6" y1="12" x2="6" y2="12.01"/><line x1="10" y1="12" x2="10" y2="12.01"/><line x1="14" y1="12" x2="14" y2="12.01"/><line x1="18" y1="12" x2="18" y2="12.01"/></svg></span>
+                  <div class="item-body">
+                    <span class="title">Vengeance 32GB (2×16GB) DDR5-6000 CL30</span>
+                    <span class="meta"><span class="brand">Corsair</span><span class="dot"></span><span>MEM-CR-V32-6000</span></span>
+                  </div>
+                  <span class="item-qty"><span class="x">×</span> 2</span>
+                  <span class="item-unit">7,750 DA</span>
+                  <span class="item-line-total">15,500<span class="unit">DA</span></span>
+                </div>
+              </div>
+
+              <div class="totals-block">
+                <div class="total-line">
+                  <span>Subtotal</span>
+                  <span class="v">147,800 DA</span>
+                </div>
+                <div class="total-line">
+                  <span>Delivery <span style="color:var(--stone);font-size:12px;">· Yalidine to home · Alger (16)</span></span>
+                  <span class="v">0 DA</span>
+                </div>
+                <div class="total-line grand">
+                  <span>Total · cash on delivery</span>
+                  <span class="v">147,800<span class="unit">DA</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline card -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Timeline</h2>
+              <button class="head-action">See full history →</button>
+            </div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="tl-item">
+                  <span class="tl-dot current">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </span>
+                  <div class="tl-body">
+                    <div class="row">
+                      <span class="title">Waiting for confirmation call</span>
+                      <span class="when">2h 14m — now</span>
+                    </div>
+                    <p class="detail">System auto-flagged for follow-up. Try calling again if the customer didn't answer.</p>
+                  </div>
+                </div>
+
+                <div class="tl-item">
+                  <span class="tl-dot done">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <div class="tl-body">
+                    <div class="row">
+                      <span class="title">Order placed <span class="by">by Amina Belkacem</span></span>
+                      <span class="when">14:50 · 28 Aug</span>
+                    </div>
+                    <p class="detail">
+                      3 items · <strong>147,800 DA</strong> · Cash on delivery · Yalidine to home · Alger (16), Bab Ezzouar
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tl-item">
+                  <span class="tl-dot done">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  </span>
+                  <div class="tl-body">
+                    <div class="row">
+                      <span class="title">Checkout started</span>
+                      <span class="when">14:47 · 28 Aug</span>
+                    </div>
+                    <p class="detail">Guest checkout · No account created</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Internal notes -->
+          <div class="card">
+            <div class="card-head">
+              <h2>Internal notes <span class="num-pill">1</span></h2>
+              <span class="head-action" style="cursor:default;">Only visible to admins</span>
+            </div>
+            <div class="card-body">
+              <div class="notes-list">
+                <div class="note">
+                  <span class="avatar other">YA</span>
+                  <div class="body">
+                    <div class="head">
+                      <span class="who">Yasmine · Ops</span>
+                      <span class="when">1h 45m ago · 15:19</span>
+                    </div>
+                    <p>Called at 15:15 — voicemail. Trying again after 17:00 per customer request in checkout notes.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="note-composer">
+                <span class="avatar">HO</span>
+                <div class="field">
+                  <textarea placeholder="Add a note visible only to admins…"></textarea>
+                  <div class="foot">
+                    <span class="hint"><span class="kbd">⌘↵</span> to post</span>
+                    <button class="btn btn-primary btn-sm">Post note</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT column -->
+        <aside>
+
+          <!-- Customer -->
+          <div class="side-card">
+            <div class="head">Customer</div>
+            <div class="body">
+              <div class="contact-block">
+                <span class="name">Amina Belkacem</span>
+                <span class="name-sub">Guest · not registered</span>
+                <div class="contact-actions">
+                  <button class="contact-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span class="val">Call</span>
+                  </button>
+                  <button class="contact-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+                    <span class="val">Email</span>
+                  </button>
+                </div>
+                <div class="customer-stats">
+                  <div class="stat">
+                    <span class="n">3</span>
+                    <span class="lbl">Previous orders</span>
+                  </div>
+                  <div class="stat">
+                    <span class="n">386,400</span>
+                    <span class="lbl">DA lifetime</span>
+                  </div>
+                  <div class="stat">
+                    <span class="n warn">1</span>
+                    <span class="lbl">Refused</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery address -->
+          <div class="side-card">
+            <div class="head">
+              Delivery address
+              <button class="edit-link">Edit</button>
+            </div>
+            <div class="body">
+              <div class="address-block">
+                <span class="who">Amina Belkacem</span>
+                <span class="street">Cité 200 Logements, Bâtiment C, App. 12</span>
+                <span class="locality"><span class="wilaya">Bab Ezzouar</span> · <span class="num">16311</span></span>
+                <span class="locality"><span class="wilaya">Alger (16)</span></span>
+                <span class="phone">+213 555 42 18 90</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery method -->
+          <div class="side-card">
+            <div class="head">
+              Delivery
+              <button class="edit-link">Change</button>
+            </div>
+            <div class="body">
+              <div class="courier-block">
+                <div class="row">
+                  <span class="logo">YAL</span>
+                  <div class="body">
+                    <div class="name">Yalidine · To home</div>
+                    <div class="sub">Est. 1–2 business days</div>
+                  </div>
+                </div>
+                <div class="tracking" title="Assigned after confirmation">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--stone);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span style="color:var(--stone);">Tracking assigned after confirmation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="side-card">
+            <div class="head">Payment</div>
+            <div class="body">
+              <div class="kv-list">
+                <div class="kv">
+                  <span class="k">Method</span>
+                  <span class="v ui">Cash on delivery</span>
+                </div>
+                <div class="kv">
+                  <span class="k">Status</span>
+                  <span class="v" style="color:var(--brand-warn);font-family:var(--font-ui);">Collect on delivery</span>
+                </div>
+                <div class="kv">
+                  <span class="k">Amount</span>
+                  <span class="v">147,800 DA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Meta -->
+          <div class="side-card">
+            <div class="head">Order meta</div>
+            <div class="body">
+              <div class="kv-list">
+                <div class="kv"><span class="k">Ref</span><span class="v">HT-4287</span></div>
+                <div class="kv"><span class="k">Internal ID</span><span class="v" style="font-size:11px;">01HW5Y8Z9NKJPQ…</span></div>
+                <div class="kv"><span class="k">Source</span><span class="v ui">Storefront · Direct</span></div>
+                <div class="kv"><span class="k">Placed at</span><span class="v">28 Aug, 14:50</span></div>
+                <div class="kv"><span class="k">Updated</span><span class="v">2h 14m ago</span></div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Refuse confirmation modal -->
+  <div class="modal-overlay" id="refuse-modal">
+    <div class="modal" role="dialog" aria-labelledby="refuse-title" aria-modal="true">
+      <div class="ico">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <h3 id="refuse-title">Refuse order HT-4287?</h3>
+      <p>This releases the reserved stock back to the catalog and marks the order as <strong>Refused</strong>. The customer will see the state change on their tracking page.</p>
+      <div class="reason-select">
+        <label><input type="radio" name="reason" /> Couldn't reach customer after 3 attempts</label>
+        <label><input type="radio" name="reason" checked /> Customer cancelled during call</label>
+        <label><input type="radio" name="reason" /> Payment concerns (fraud, previous refusal)</label>
+        <label><input type="radio" name="reason" /> Out of stock — can't fulfill</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="btn-cancel-refuse">Keep as Placed</button>
+        <button class="btn btn-danger">Refuse order</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+
+    // Refuse modal
+    const modal = document.getElementById('refuse-modal');
+    document.getElementById('btn-refuse')?.addEventListener('click', () => modal.classList.add('is-open'));
+    document.getElementById('btn-cancel-refuse')?.addEventListener('click', () => modal.classList.remove('is-open'));
+    modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('is-open'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal?.classList.remove('is-open'); });
+  </script>
+</body>
+</html>

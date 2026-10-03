@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>GeForce RTX 4070 12GB GDDR6X · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-green: #00d4a4; --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', 'ABC Arizona', 'Times New Roman', serif;
+    }
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000000; --canvas-elev: #0a0a0a;
+      --surface: #111113; --surface-2: #17171a; --surface-3: #1c1c1e;
+      --hairline: #1f1f22; --hairline-soft: #17171a; --hairline-strong: #2a2a2e;
+      --ink: #ffffff; --slate: #d4d4d6; --steel: #a8a8aa; --stone: #7a7a7c; --muted: #5a5a5c;
+      --brand-warn: #c88a3a; --brand-error: #e26060; --brand-tag: #5a9ff2;
+      --brand-green-soft: rgb(0 212 164 / 0.14);
+      --brand-warn-soft: rgb(200 138 58 / 0.14);
+      --brand-error-soft: rgb(226 96 96 / 0.14);
+      --brand-tag-soft: rgb(90 159 242 / 0.14);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -6px rgb(0 0 0 / 0.5);
+      --nav-bg: rgb(0 0 0 / 0.7);
+    }
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6; --canvas-elev: #ffffff;
+      --surface: #f3f2ec; --surface-2: #eceae2; --surface-3: #e2dfd4;
+      --hairline: #dcdad0; --hairline-soft: #eeece5; --hairline-strong: #c6c3b6;
+      --ink: #0a0a08; --slate: #2a2926; --steel: #5a5852; --stone: #82807a; --muted: #a8a5a0;
+      --brand-warn: #8a5c1a; --brand-error: #b83e3e; --brand-tag: #2a6db8;
+      --brand-green-soft: rgb(0 180 138 / 0.10);
+      --brand-warn-soft: rgb(138 92 26 / 0.10);
+      --brand-error-soft: rgb(184 62 62 / 0.10);
+      --brand-tag-soft: rgb(42 109 184 / 0.10);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 24px -6px rgb(0 0 0 / 0.08);
+      --nav-bg: rgb(250 249 246 / 0.72);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px; line-height: 1.55; color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; border-radius: 4px; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); }
+
+    @keyframes live-pulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0;   }
+    }
+    .live-dot {
+      position: relative; display: inline-block;
+      width: 6px; height: 6px; border-radius: 9999px;
+      background: var(--brand-green); flex: none;
+    }
+    .live-dot::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 9999px; background: var(--brand-green);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot::after { animation: none; opacity: 0.35; transform: scale(1.4); }
+    }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font-ui); font-size: 14px; font-weight: 500; line-height: 1;
+      padding: 10px 20px; border-radius: 9999px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap; text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-lg { padding: 14px 28px; font-size: 15px; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-accent { background: var(--brand-green); color: #000; }
+    .btn-accent:hover { background: var(--brand-green-deep); }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 8px 12px; border-radius: 8px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-link {
+      background: transparent; padding: 0; border-radius: 0;
+      color: var(--stone); font-size: 13px; font-weight: 500;
+    }
+    .btn-link:hover { color: var(--brand-green); }
+
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+
+    /* Promo strip */
+    .promo {
+      background: var(--canvas-elev); color: var(--slate);
+      text-align: center; font-size: 13px; font-weight: 500;
+      padding: 10px 16px; border-bottom: 1px solid var(--hairline);
+    }
+    .promo .dot { color: var(--brand-green); margin-right: 6px; }
+    .promo a {
+      text-decoration: underline; text-underline-offset: 3px;
+      color: var(--ink); margin-left: 4px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .promo a:hover { color: var(--brand-green); }
+    .promo strong { color: var(--ink); font-weight: 600; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--steel);
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms, background 150ms;
+    }
+    .nav-links a:hover { color: var(--brand-green); background: var(--surface-2); }
+    .nav-links a.is-active { color: var(--ink); background: var(--surface-2); }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+
+    /* Breadcrumb strip */
+    .breadcrumb-strip {
+      padding: 20px 0 0;
+    }
+    .breadcrumbs {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--stone);
+    }
+    .breadcrumbs a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumbs a:hover { color: var(--brand-green); }
+    .breadcrumbs .sep { color: var(--muted); }
+    .breadcrumbs .current { color: var(--ink); font-weight: 500; }
+    .breadcrumbs svg { vertical-align: middle; }
+
+    /* ==========================================================================
+       PDP two-column top: gallery (left) + purchase panel (right)
+       ========================================================================== */
+    .pdp-top {
+      display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px;
+      padding: 24px 0 40px;
+    }
+
+    /* Gallery */
+    .gallery { display: flex; flex-direction: column; gap: 14px; }
+    .gallery-main {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      display: grid; place-items: center;
+      color: var(--stone);
+      overflow: hidden;
+    }
+    .gallery-main svg { width: 160px; height: 160px; opacity: 0.65; }
+    .gallery-badges {
+      position: absolute; top: 20px; left: 20px;
+      display: flex; gap: 6px;
+    }
+    .gallery-actions {
+      position: absolute; top: 20px; right: 20px;
+      display: flex; gap: 6px;
+    }
+    .gallery-arrow {
+      width: 36px; height: 36px; border-radius: 9999px;
+      background: var(--canvas-elev); color: var(--slate);
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; cursor: pointer;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .gallery-arrow:hover { color: var(--brand-green); border-color: var(--brand-green); background: var(--brand-green-soft); }
+    .gallery-arrow.prev { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); opacity: 0.85; }
+    .gallery-arrow.next { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); opacity: 0.85; }
+
+    .gallery-thumbs {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+    }
+    .gallery-thumb {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 2px solid var(--hairline);
+      border-radius: 10px;
+      display: grid; place-items: center;
+      color: var(--stone);
+      cursor: pointer;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), transform 150ms;
+    }
+    .gallery-thumb svg { width: 38px; height: 38px; opacity: 0.65; }
+    .gallery-thumb:hover { border-color: var(--brand-green); transform: translateY(-1px); }
+    .gallery-thumb.is-active { border-color: var(--brand-green); background: var(--brand-green-soft); }
+    .gallery-thumb.is-active svg { opacity: 0.9; color: var(--brand-green); }
+
+    /* ==========================================================================
+       Purchase panel (right column)
+       ========================================================================== */
+    .purchase { display: flex; flex-direction: column; gap: 18px; }
+    .purchase-header {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .product-brand-row {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--stone); font-weight: 600;
+    }
+    .product-brand-row a {
+      color: var(--brand-green);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-brand-row a:hover { color: var(--brand-green-deep); }
+    .product-brand-row .sep { color: var(--muted); }
+    .product-brand-row .sku {
+      font-family: var(--font-mono); font-size: 11px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      padding: 2px 6px; border-radius: 4px;
+      color: var(--slate); letter-spacing: 0;
+      text-transform: none; font-weight: 500;
+    }
+
+    .product-h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: clamp(28px, 3.4vw, 34px);
+      line-height: 1.15; letter-spacing: -0.5px;
+      color: var(--ink); margin: 0;
+    }
+
+    .rating-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--slate);
+      margin-top: -4px;
+    }
+    .rating-row .stars { color: var(--brand-green); display: inline-flex; gap: 1px; }
+    .rating-row .stars svg { width: 14px; height: 14px; }
+    .rating-row strong { color: var(--ink); font-weight: 600; }
+    .rating-row a {
+      color: var(--stone); font-size: 13px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .rating-row a:hover { color: var(--brand-green); }
+
+    /* Price block */
+    .price-block {
+      display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+      padding: 20px 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .price-current {
+      font-family: var(--font-ui); font-size: 34px; font-weight: 600;
+      letter-spacing: -0.02em; color: var(--ink);
+    }
+    .price-original {
+      text-decoration: line-through; color: var(--stone); font-size: 16px;
+    }
+    .price-save {
+      display: inline-flex; align-items: center;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #000; background: var(--brand-green);
+      font-weight: 600; padding: 3px 8px; border-radius: 5px;
+    }
+    .price-hint {
+      width: 100%; margin-top: 4px;
+      font-size: 12px; color: var(--stone);
+    }
+    .price-hint svg { color: var(--brand-green); vertical-align: middle; }
+
+    /* Stock */
+    .stock-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--slate);
+    }
+    .stock-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600;
+      padding: 4px 10px 4px 8px; border-radius: 9999px;
+    }
+    .stock-badge.in { background: var(--brand-green-soft); color: var(--brand-green); }
+    .stock-badge.low { background: var(--brand-warn-soft); color: var(--brand-warn); }
+    .stock-badge .dot { width: 6px; height: 6px; border-radius: 9999px; background: currentColor; }
+    .stock-note {
+      font-size: 12px; color: var(--stone);
+    }
+    .stock-note strong { color: var(--brand-green); font-weight: 500; }
+
+    /* Quick specs (sidebar summary card) */
+    .quick-specs {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .quick-specs-heading {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone); font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .quick-specs-heading a {
+      font-size: 12px; color: var(--brand-green); font-weight: 500;
+      text-transform: none; letter-spacing: 0;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .quick-specs-heading a:hover { color: var(--brand-green-deep); }
+    .quick-specs-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 12px;
+      font-size: 13px; color: var(--slate);
+      padding: 4px 0;
+    }
+    .quick-specs-row .key {
+      color: var(--stone); flex: 0 0 auto;
+    }
+    .quick-specs-row .val {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+      color: var(--ink); text-align: right;
+    }
+
+    /* Purchase actions row */
+    .qty-and-cta {
+      display: flex; gap: 12px; align-items: stretch;
+    }
+    .qty {
+      display: inline-flex; align-items: stretch;
+      height: 48px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      overflow: hidden;
+    }
+    .qty button {
+      width: 42px; background: transparent; border: 0;
+      color: var(--ink); font-size: 18px; cursor: pointer;
+      transition: background 150ms, color 150ms;
+    }
+    .qty button:hover:not(:disabled) { background: var(--surface-2); color: var(--brand-green); }
+    .qty button:disabled { color: var(--muted); cursor: not-allowed; }
+    .qty .val {
+      min-width: 40px; display: grid; place-items: center;
+      font-family: var(--font-ui); font-weight: 600; font-size: 15px;
+      color: var(--ink);
+    }
+    .cta-row {
+      display: flex; flex: 1; gap: 10px;
+    }
+    .cta-row .btn-accent {
+      flex: 1; height: 48px; font-size: 15px; padding: 0 24px;
+    }
+    .wishlist-btn {
+      width: 48px; height: 48px; border-radius: 9999px;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      display: grid; place-items: center; cursor: pointer;
+      flex: none;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, background 150ms;
+    }
+    .wishlist-btn:hover { color: var(--brand-error); border-color: var(--brand-error); background: var(--brand-error-soft); }
+    .wishlist-btn.is-saved { color: var(--brand-error); border-color: var(--brand-error); background: var(--brand-error-soft); }
+
+    /* Trust cluster */
+    .trust-cluster {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+    }
+    .trust-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 13px; color: var(--slate);
+    }
+    .trust-row .ico {
+      flex: none; width: 20px; display: grid; place-items: center;
+      color: var(--brand-green); margin-top: 2px;
+    }
+    .trust-row .body { line-height: 1.5; }
+    .trust-row .body strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 1px; }
+    .trust-row .body span { color: var(--stone); font-size: 12px; }
+
+    /* Ask a question link */
+    .ask-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ask-link:hover { color: var(--brand-green); }
+
+    /* ==========================================================================
+       Tabs section
+       ========================================================================== */
+    .tabs-section {
+      padding: 40px 0 24px;
+      border-top: 1px solid var(--hairline);
+    }
+    .tabs {
+      display: flex; gap: 4px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 32px;
+      position: sticky; top: 60px; z-index: 20;
+      background: var(--canvas);
+      padding-top: 8px;
+    }
+    .tab {
+      padding: 14px 20px; font-size: 14px; font-weight: 500;
+      color: var(--steel); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .tab:hover { color: var(--brand-green); }
+    .tab.is-active { color: var(--ink); border-bottom-color: var(--ink); }
+    .tab .tab-count {
+      display: inline-block; padding: 1px 6px;
+      background: var(--surface); color: var(--stone);
+      border-radius: 9999px; font-size: 11px; font-weight: 500;
+    }
+    .tab.is-active .tab-count { background: var(--brand-green-soft); color: var(--brand-green); }
+
+    /* Overview content */
+    .overview-content {
+      display: grid; grid-template-columns: 1fr 320px; gap: 48px;
+    }
+    .overview-content .prose {
+      font-size: 16px; line-height: 1.65; color: var(--slate);
+    }
+    .overview-content .prose p { margin: 0 0 16px; }
+    .overview-content .prose h3 {
+      font-family: var(--font-ui); font-size: 18px; font-weight: 600;
+      color: var(--ink); letter-spacing: -0.2px;
+      margin: 24px 0 12px;
+    }
+    .overview-content .prose ul {
+      list-style: none; padding: 0; margin: 0 0 16px;
+    }
+    .overview-content .prose ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 6px 0; font-size: 15px; color: var(--slate);
+    }
+    .overview-content .prose ul li svg { color: var(--brand-green); flex: none; margin-top: 4px; }
+
+    .overview-side {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .side-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .side-card h4 {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      margin: 0 0 12px; letter-spacing: -0.1px;
+    }
+    .side-card .in-box {
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 13px; color: var(--slate);
+    }
+    .side-card .in-box li {
+      display: flex; align-items: flex-start; gap: 8px;
+      list-style: none;
+    }
+    .side-card .in-box li svg { color: var(--brand-green); flex: none; margin-top: 3px; }
+
+    /* Specs section (below tabs — this mockup shows Overview active, but here's the spec layout when Specs tab is on) */
+
+    /* Related products */
+    .related-section {
+      padding: 64px 0 96px;
+      border-top: 1px solid var(--hairline);
+      margin-top: 48px;
+    }
+    .related-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 24px; gap: 24px; flex-wrap: wrap;
+    }
+    .related-header h2 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(28px, 3.4vw, 36px);
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0;
+    }
+    .related-header h2 em { font-style: italic; color: var(--brand-green); }
+    .related-header p {
+      font-size: 14px; color: var(--slate); margin: 6px 0 0;
+    }
+    .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+    /* Product card (reused from category.html/shop.html) */
+    .product-card {
+      position: relative;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px; padding: 14px;
+      cursor: pointer; color: inherit;
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms;
+    }
+    .product-card:hover { transform: translateY(-2px); border-color: var(--brand-green); }
+    .product-card:hover .product-name { color: var(--brand-green); }
+    .product-card .wishlist {
+      position: absolute; top: 22px; right: 22px;
+      width: 30px; height: 30px; border-radius: 9999px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+      cursor: pointer; z-index: 2;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .product-card .wishlist:hover { color: var(--brand-error); border-color: var(--brand-error); }
+    .product-card .product-img {
+      aspect-ratio: 4 / 3; border-radius: 8px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+    }
+    .product-card .product-img svg { width: 44px; height: 44px; opacity: 0.8; }
+    .product-brand {
+      margin-top: 12px; font-size: 10px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone);
+    }
+    .product-name {
+      margin-top: 4px; font-size: 13px; font-weight: 600;
+      color: var(--ink); line-height: 1.35;
+      min-height: 36px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-rating {
+      display: flex; align-items: center; gap: 4px; margin-top: 6px;
+      font-size: 11px; color: var(--stone);
+    }
+    .product-rating .stars { color: var(--brand-green); display: inline-flex; }
+    .product-rating .stars svg { width: 11px; height: 11px; }
+    .product-price-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px; border-top: 1px solid var(--hairline-soft);
+    }
+    .product-price {
+      font-family: var(--font-ui); font-size: 14px; font-weight: 600; color: var(--ink);
+    }
+    .stock-chip-sm {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 600;
+      padding: 2px 8px 2px 6px; border-radius: 9999px;
+    }
+    .stock-chip-sm.in { background: var(--brand-green-soft); color: var(--brand-green); }
+    .stock-chip-sm.in .dot {
+      width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-green);
+      box-shadow: 0 0 0 3px rgb(0 212 164 / 0.18);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center;
+      font-family: var(--font-ui); font-weight: 600; line-height: 1;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 7px; border-radius: 5px;
+    }
+    .badge-discount { background: var(--brand-green); color: #000; }
+    .badge-new { background: var(--brand-tag-soft); color: var(--brand-tag); }
+
+    /* Footer */
+    footer {
+      background: var(--canvas-elev);
+      border-top: 1px solid var(--hairline);
+      padding: 72px 0 24px;
+      position: relative; overflow: hidden;
+    }
+    footer > .container { position: relative; z-index: 1; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 40px; }
+    .footer-col h5 { margin: 0 0 14px; font-size: 13px; font-weight: 500; color: var(--stone); }
+    .footer-col a {
+      display: block; padding: 5px 0;
+      font-size: 14px; color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .footer-col a:hover { color: var(--brand-green); }
+    .footer-brand { max-width: 320px; }
+    .footer-brand p { font-size: 14px; color: var(--slate); margin: 16px 0 20px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-socials a {
+      width: 32px; height: 32px; border-radius: 9999px;
+      display: grid; place-items: center; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .footer-socials a:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+    .footer-mega-bg {
+      position: absolute; left: 0; right: 0; bottom: -6vw;
+      text-align: center;
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(160px, 26vw, 380px);
+      line-height: 0.85; letter-spacing: -0.04em;
+      color: transparent; -webkit-text-stroke: 2px var(--ink);
+      opacity: 0.10; pointer-events: none; user-select: none;
+      white-space: nowrap; z-index: 0;
+    }
+    .footer-mega-bg em {
+      font-family: var(--font-serif); font-style: italic;
+      color: transparent; -webkit-text-stroke: 2px var(--brand-green);
+    }
+    .footer-bottom {
+      margin-top: 56px; padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--stone);
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom .links { display: flex; gap: 20px; }
+    .footer-bottom a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .footer-bottom a:hover { color: var(--brand-green); }
+    .footer-bottom .mono { font-family: var(--font-mono); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .pdp-top { grid-template-columns: 1fr; gap: 32px; }
+      .overview-content { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .price-current { font-size: 28px; }
+      .gallery-thumbs { grid-template-columns: repeat(4, 1fr); }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+      .qty-and-cta { flex-wrap: wrap; }
+      .cta-row { width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .related-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Promo strip -->
+  <div class="promo">
+    <span class="dot">●</span>
+    Back-to-school promo — up to <strong>20% off</strong> select GPUs & SSDs.
+    <a href="/deals">See deals →</a>
+  </div>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/>
+          </svg>
+        </span>
+        H-Tech
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/shop" class="is-active">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+        <a href="/cart" class="icon-btn" aria-label="Cart, empty">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-strip">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" aria-label="Home">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10a2 2 0 0 0 2 2h3v-6h4v6h3a2 2 0 0 0 2-2V10"/></svg>
+        </a>
+        <span class="sep">/</span>
+        <a href="/shop">Shop</a>
+        <span class="sep">/</span>
+        <a href="/c/graphics-cards">Graphics cards</a>
+        <span class="sep">/</span>
+        <span class="current">GeForce RTX 4070 12GB GDDR6X</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- PDP top: gallery + purchase panel -->
+  <section class="container">
+    <div class="pdp-top">
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-main">
+          <div class="gallery-badges">
+            <span class="badge badge-discount">-3%</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-arrow" aria-label="Zoom">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
+            </button>
+          </div>
+          <button class="gallery-arrow prev" aria-label="Previous image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="gallery-arrow next" aria-label="Next image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb is-active" role="button" aria-label="Image 1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+          <div class="gallery-thumb" role="button" aria-label="Image 2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><path d="M6 7v10M18 7v10"/></svg></div>
+          <div class="gallery-thumb" role="button" aria-label="Image 3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="8" width="20" height="8" rx="1.5"/><path d="M8 8v8M16 8v8"/></svg></div>
+          <div class="gallery-thumb" role="button" aria-label="Image 4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8"/><path d="M12 6v12M6 12h12"/></svg></div>
+          <div class="gallery-thumb" role="button" aria-label="Image 5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="6" width="16" height="12" rx="1.5"/><rect x="7" y="9" width="10" height="6" rx=".5"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Purchase panel -->
+      <div class="purchase">
+        <div class="purchase-header">
+          <div class="product-brand-row">
+            <a href="/c/graphics-cards?brand=NVIDIA">NVIDIA</a>
+            <span class="sep">·</span>
+            <span class="sku">GPU-NV-4070-12G</span>
+          </div>
+          <h1 class="product-h1">GeForce RTX 4070 12GB GDDR6X</h1>
+          <div class="rating-row">
+            <span class="stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <strong>4.6</strong>
+            <a href="#reviews">142 reviews</a>
+          </div>
+        </div>
+
+        <div class="price-block">
+          <span class="price-current">89,900 DA</span>
+          <span class="price-original">92,400 DA</span>
+          <span class="price-save">Save 3%</span>
+          <span class="price-hint">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Price locks at 89,900 DA when you add it to your cart — even if it changes later.
+          </span>
+        </div>
+
+        <div class="stock-row">
+          <span class="stock-badge low"><span class="dot"></span> Only 4 left</span>
+          <span class="stock-note">·&nbsp; <strong>Sync'd 4 min ago</strong> from Distributor A</span>
+        </div>
+
+        <!-- Quick specs card -->
+        <div class="quick-specs">
+          <div class="quick-specs-heading">
+            <span>Quick specs</span>
+            <a href="#specs">See full specs →</a>
+          </div>
+          <div class="quick-specs-row"><span class="key">Memory</span><span class="val">12 GB GDDR6X</span></div>
+          <div class="quick-specs-row"><span class="key">Boost clock</span><span class="val">2.48 GHz</span></div>
+          <div class="quick-specs-row"><span class="key">TDP</span><span class="val">200 W</span></div>
+          <div class="quick-specs-row"><span class="key">Recommended PSU</span><span class="val">650 W+</span></div>
+          <div class="quick-specs-row"><span class="key">Length</span><span class="val">285 mm</span></div>
+          <div class="quick-specs-row"><span class="key">Outputs</span><span class="val">3× DP · 1× HDMI</span></div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="qty-and-cta">
+          <div class="qty">
+            <button disabled aria-label="Decrease quantity">−</button>
+            <span class="val">1</span>
+            <button aria-label="Increase quantity">+</button>
+          </div>
+          <div class="cta-row">
+            <button class="btn btn-accent">
+              Add to cart · 89,900 DA
+            </button>
+            <button class="wishlist-btn" aria-label="Save to wishlist">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Trust cluster -->
+        <div class="trust-cluster">
+          <div class="trust-row">
+            <span class="ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M14 18h6M14 18v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-3M20 18h1a1 1 0 0 0 1-1v-4l-3-4h-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+            </span>
+            <div class="body">
+              <strong>Ships from Alger — arrives 24–48h</strong>
+              <span>Free delivery on orders over 50,000 DA</span>
+            </div>
+          </div>
+          <div class="trust-row">
+            <span class="ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </span>
+            <div class="body">
+              <strong>Cash on delivery, inspect before paying</strong>
+              <span>Refuse the package at the door if anything's wrong</span>
+            </div>
+          </div>
+          <div class="trust-row">
+            <span class="ico">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            </span>
+            <div class="body">
+              <strong>7-day DOA return</strong>
+              <span>Full refund or swap if the card arrives defective</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="/support/contact" class="ask-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Have a question about this GPU? Ask us on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs section -->
+  <section class="tabs-section">
+    <div class="container">
+      <div class="tabs" role="tablist">
+        <span class="tab is-active" role="tab" aria-selected="true">Overview</span>
+        <span class="tab" role="tab">Specs</span>
+        <span class="tab" role="tab">Compatibility</span>
+        <span class="tab" role="tab">Reviews <span class="tab-count">142</span></span>
+      </div>
+
+      <!-- Overview content (shown when Overview tab active) -->
+      <div class="overview-content">
+        <div class="prose">
+          <p>The GeForce RTX 4070 is NVIDIA's mid-high tier for the Ada Lovelace generation — the card most Algerian builders land on when the RTX 4060 Ti isn't enough and the RTX 4070 SUPER is out of budget. 12 GB of GDDR6X memory on a 192-bit bus keeps 1440p gaming smooth at high refresh rates, and DLSS 3 with frame generation opens the door to 4K in newer titles without dropping settings.</p>
+
+          <p>At 200W TDP, this card sits inside the thermal budget of most mid-tower cases and pairs cleanly with a 650W+ power supply — no need to upgrade if you're coming from a 3060/3070 build. The 285mm length fits every ATX case we stock; if you're building in ITX, check case clearance first (see the Compatibility tab).</p>
+
+          <h3>What this card does well</h3>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong style="color: var(--ink);">1440p at high refresh</strong> — comfortable 100+ fps in AAA titles at max settings without DLSS.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong style="color: var(--ink);">4K with DLSS 3</strong> — frame generation extends this card's life into 4K territory for modern engines.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong style="color: var(--ink);">Ray tracing that's actually usable</strong> — 3rd-gen RT cores make ray-traced settings viable at 1440p, not just marketing.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong style="color: var(--ink);">Quiet under load</strong> — dual-fan cooling design stays under 65°C at 100% GPU utilization in most cases.</span></li>
+          </ul>
+
+          <h3>What to know before buying</h3>
+          <ul>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Uses the <strong style="color: var(--ink);">12VHPWR (16-pin)</strong> power connector — bundled adapter included. Native 12VHPWR PSUs work directly.</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>The 12 GB VRAM is <strong style="color: var(--ink);">plenty for 1440p</strong> today. If you plan to run heavy 4K textures for the next 3–4 years, consider stepping up to the 4070 SUPER (12 GB, same VRAM but more CUDA).</span></li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Bundled with the <strong style="color: var(--ink);">3-year manufacturer warranty</strong> valid in Algeria. Warranty claims go through the distributor; H-Tech facilitates.</span></li>
+          </ul>
+        </div>
+
+        <aside class="overview-side">
+          <div class="side-card">
+            <h4>What's in the box</h4>
+            <ul class="in-box">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>GeForce RTX 4070 12GB card</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>12VHPWR to 2× 8-pin adapter</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Quick-start card</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3-year warranty certificate</li>
+            </ul>
+          </div>
+          <div class="side-card" style="background: var(--brand-green-soft); border-color: var(--brand-green);">
+            <h4 style="color: var(--brand-green);">Pair it with</h4>
+            <ul class="in-box" style="gap: 12px;">
+              <li style="align-items: flex-start;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong style="color: var(--ink); display: block;">Ryzen 7 7800X3D</strong><span style="color: var(--stone);">The cleanest CPU pairing at 1440p</span></span>
+              </li>
+              <li style="align-items: flex-start;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong style="color: var(--ink); display: block;">750W Gold-rated PSU</strong><span style="color: var(--stone);">Comfortable headroom for OC</span></span>
+              </li>
+              <li style="align-items: flex-start;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong style="color: var(--ink); display: block;">32 GB DDR5 6000</strong><span style="color: var(--stone);">Sweet spot for gaming + productivity</span></span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related products -->
+  <section class="related-section">
+    <div class="container">
+      <div class="related-header">
+        <div>
+          <h2>You might also <em>consider</em>.</h2>
+          <p>Similar cards from the same tier — compare specs, prices, and stock at a glance.</p>
+        </div>
+        <a href="/c/graphics-cards" class="btn btn-secondary btn-sm">See all graphics cards</a>
+      </div>
+      <div class="related-grid">
+        <a class="product-card" href="/product/geforce-rtx-4070-super-12gb">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+          <div class="product-brand">NVIDIA</div>
+          <div class="product-name">GeForce RTX 4070 SUPER 12GB</div>
+          <div class="product-rating">
+            <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span>4.8 (128)</span>
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">98,500 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 11 left</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="/product/radeon-rx-7800-xt-16gb">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+          <div class="product-brand">AMD</div>
+          <div class="product-name">Radeon RX 7800 XT 16GB</div>
+          <div class="product-rating">
+            <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span>4.8 (37)</span>
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">78,500 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 9 left</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="/product/geforce-rtx-4060-ti-8gb">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+          <div class="product-brand">NVIDIA</div>
+          <div class="product-name">GeForce RTX 4060 Ti 8GB</div>
+          <div class="product-rating">
+            <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span>4.4 (89)</span>
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">64,200 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 12 left</span>
+          </div>
+        </a>
+
+        <a class="product-card" href="/product/radeon-rx-7700-xt-12gb">
+          <button class="wishlist" aria-label="Add to wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <div class="product-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg></div>
+          <div class="product-brand">AMD</div>
+          <div class="product-name">Radeon RX 7700 XT 12GB</div>
+          <div class="product-rating">
+            <span class="stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span>4.5 (62)</span>
+          </div>
+          <div class="product-price-row">
+            <span class="product-price">62,000 DA</span>
+            <span class="stock-chip-sm in"><span class="dot"></span> 8 left</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-mega-bg" aria-hidden="true">H<em>-</em>Tech</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-glyph">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg>
+            </span>
+            H-Tech
+          </a>
+          <p>Computer parts & peripherals, delivered anywhere in the country. Cash on delivery. 7-day DOA return.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+            <a href="#" aria-label="TikTok"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.3a5.5 5.5 0 0 1-3.7-1.4v9.4a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 1 .1v2.8a2.8 2.8 0 1 0 2 2.7V1h2.8a5.5 5.5 0 0 0 3.5 4.5v.8z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <a href="/shop">All products</a>
+          <a href="/c/graphics-cards">Graphics cards</a>
+          <a href="/c/processors">Processors</a>
+          <a href="/c/memory">Memory</a>
+          <a href="/c/storage">Storage</a>
+          <a href="/bundles">Bundles</a>
+          <a href="/deals">Deals</a>
+          <a href="/new">New arrivals</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="/support/track-order">Track order</a>
+          <a href="/support/returns">Returns (7-day DOA)</a>
+          <a href="/support/compatibility">Compatibility help</a>
+          <a href="/support/contact">Contact</a>
+          <a href="/support/faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="/about">About</a>
+          <a href="/distributors">Distributors</a>
+          <a href="/careers">Careers</a>
+          <a href="/press">Press</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+          <a href="/legal/warranty">Warranty</a>
+          <a href="/legal/cookies">Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div class="links">
+          <a href="/status">Status</a>
+          <a href="/changelog">Changelog</a>
+          <a href="#" class="mono">v0.1 · preview</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) {}
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>

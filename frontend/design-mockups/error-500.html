@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Something broke — H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-error-soft:rgb(226 96 96/.14); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-error-soft:rgb(184 62 62/.10); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+    :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); border-radius: 4px; }
+    @keyframes live-pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.4); opacity: 0; } }
+    @keyframes wobble { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fade-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    .bare-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 32px;
+      max-width: 1280px; margin: 0 auto; width: 100%;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.3px; }
+    .brand-glyph { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-green); color: #000; display: grid; place-items: center; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 8px; display: inline-grid; place-items: center; background: transparent; color: var(--slate); cursor: pointer; border: 1px solid transparent; transition: color 150ms, background 150ms; }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); }
+
+    .error-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 32px 80px; }
+    .error-inner { max-width: 640px; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+    /* Broken monogram — "5" with a strike through */
+    .err-monogram {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(120px, 22vw, 200px);
+      line-height: 0.9;
+      color: var(--brand-warn);
+      letter-spacing: -6px;
+      margin-bottom: 4px;
+      display: flex; align-items: baseline; justify-content: center;
+      position: relative;
+      animation: wobble 3s ease-in-out infinite;
+    }
+    .err-monogram .zero {
+      display: inline-block;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--brand-warn);
+      margin: 0 4px;
+    }
+
+    .err-code {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--brand-warn); text-transform: uppercase; letter-spacing: 0.12em;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 12px;
+      background: var(--brand-warn-soft); border: 1px solid var(--brand-warn);
+      border-radius: 9999px;
+      margin-bottom: 20px;
+    }
+    .err-code .dot {
+      position: relative; width: 5px; height: 5px; border-radius: 9999px; background: var(--brand-warn);
+    }
+    .err-code .dot::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 9999px; background: var(--brand-warn);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+
+    h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.5px;
+      color: var(--ink); margin: 0 0 12px;
+      line-height: 1.2;
+    }
+    h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--brand-warn); }
+
+    .err-sub {
+      font-size: 16px; color: var(--slate); margin: 0 0 24px;
+      max-width: 520px; line-height: 1.55;
+    }
+
+    /* Status card */
+    .status-card {
+      width: 100%; max-width: 480px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .status-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+    .status-row:last-child { border-bottom: 0; }
+    .status-row .status-dot {
+      width: 8px; height: 8px; border-radius: 9999px;
+      background: var(--brand-green); flex: none;
+      position: relative;
+    }
+    .status-row .status-dot.up::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 9999px; background: var(--brand-green);
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+    .status-row .status-dot.down { background: var(--brand-error); }
+    .status-row .status-dot.warn { background: var(--brand-warn); animation: fade-pulse 1.5s ease-in-out infinite; }
+    .status-row .name { flex: 1; text-align: left; font-size: 13px; color: var(--slate); font-weight: 500; }
+    .status-row .state {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .status-row .state.up { background: var(--brand-green-soft); color: var(--brand-green); }
+    .status-row .state.down { background: var(--brand-error-soft); color: var(--brand-error); }
+    .status-row .state.warn { background: var(--brand-warn-soft); color: var(--brand-warn); }
+
+    /* Auto-retry banner */
+    .retry-info {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+      margin-bottom: 24px;
+    }
+    .retry-info .spinner {
+      width: 12px; height: 12px; border-radius: 9999px;
+      border: 2px solid var(--hairline);
+      border-top-color: var(--brand-green);
+      animation: spin 1s linear infinite;
+      flex: none;
+    }
+    .retry-info .n { color: var(--brand-green); font-weight: 500; }
+
+    /* CTA row */
+    .err-cta { display: flex; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500; padding: 10px 18px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+
+    /* Diagnostic details (collapsible) */
+    .diag {
+      width: 100%; max-width: 480px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: left;
+    }
+    .diag summary {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 12px; color: var(--stone); font-weight: 500;
+      list-style: none;
+    }
+    .diag summary::-webkit-details-marker { display: none; }
+    .diag summary .arr {
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .diag[open] summary { border-bottom: 1px solid var(--hairline-soft); }
+    .diag[open] summary .arr { transform: rotate(180deg); }
+    .diag summary:hover { color: var(--brand-green); }
+    .diag .diag-body {
+      padding: 12px 18px 14px;
+      display: flex; flex-direction: column; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--slate);
+    }
+    .diag .diag-body .kv { display: flex; gap: 8px; }
+    .diag .diag-body .kv .k { color: var(--stone); min-width: 100px; }
+    .diag .diag-body .kv .v { color: var(--slate); }
+    .diag .diag-body .kv .v.copy { display: inline-flex; align-items: center; gap: 6px; }
+    .diag .diag-body .kv .v.copy button {
+      background: transparent; border: 0; color: var(--stone); cursor: pointer;
+      padding: 2px; border-radius: 4px; display: grid; place-items: center;
+      transition: color 150ms;
+    }
+    .diag .diag-body .kv .v.copy button:hover { color: var(--brand-green); }
+
+    /* Bare footer */
+    .bare-footer {
+      padding: 20px 32px;
+      max-width: 1280px; margin: 0 auto; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+      border-top: 1px solid var(--hairline-soft);
+    }
+    .bare-footer .links a { color: var(--stone); margin-left: 14px; transition: color 150ms; }
+    .bare-footer .links a:hover { color: var(--brand-green); }
+  </style>
+</head>
+<body>
+
+  <header class="bare-topbar">
+    <a class="brand" href="/">
+      <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+      H-Tech
+    </a>
+    <button class="icon-btn" id="theme-toggle" aria-label="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </header>
+
+  <main class="error-main">
+    <div class="error-inner">
+
+      <div class="err-monogram" aria-hidden="true">
+        5<span class="zero">0</span>0
+      </div>
+
+      <span class="err-code"><span class="dot"></span>Error 500 · Backend unreachable</span>
+
+      <h1>Something on our end <em>broke.</em></h1>
+      <p class="err-sub">
+        We can't reach the catalog service right now. Your session and cart are safe locally — nothing you did caused this.
+      </p>
+
+      <!-- Status card -->
+      <div class="status-card" role="region" aria-label="System status">
+        <div class="status-row">
+          <span class="status-dot up"></span>
+          <span class="name">Website & storefront</span>
+          <span class="state up">Operational</span>
+        </div>
+        <div class="status-row">
+          <span class="status-dot down"></span>
+          <span class="name">Catalog API</span>
+          <span class="state down">Down</span>
+        </div>
+        <div class="status-row">
+          <span class="status-dot warn"></span>
+          <span class="name">Order service</span>
+          <span class="state warn">Degraded</span>
+        </div>
+        <div class="status-row">
+          <span class="status-dot up"></span>
+          <span class="name">Delivery partners</span>
+          <span class="state up">Operational</span>
+        </div>
+      </div>
+
+      <!-- Auto-retry -->
+      <div class="retry-info">
+        <span class="spinner"></span>
+        Auto-retrying in <span class="n">8s</span> · Attempt <span class="n">2/5</span>
+      </div>
+
+      <!-- CTA -->
+      <div class="err-cta">
+        <button class="btn btn-primary" onclick="location.reload()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Retry now
+        </button>
+        <a class="btn btn-secondary" href="/status">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Check status page
+        </a>
+      </div>
+
+      <!-- Diagnostic details -->
+      <details class="diag">
+        <summary>
+          <span>Show technical details</span>
+          <span class="arr"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </summary>
+        <div class="diag-body">
+          <div class="kv"><span class="k">Timestamp</span><span class="v">2026-09-04T15:42:18+01:00</span></div>
+          <div class="kv"><span class="k">Request ID</span><span class="v copy">req_01HW5Y8Z9NKJPQ4TMYK7X2A0EX <button aria-label="Copy request ID"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></span></div>
+          <div class="kv"><span class="k">Endpoint</span><span class="v">GET /api/v1/products?category=graphics-cards</span></div>
+          <div class="kv"><span class="k">Upstream</span><span class="v">catalog-api-primary · timeout after 30s</span></div>
+          <div class="kv"><span class="k">Trace</span><span class="v copy">trace_a1b2c3d4e5f6 <button aria-label="Copy trace ID"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></span></div>
+          <div class="kv"><span class="k">Report</span><span class="v"><a href="mailto:support@h-tech.dz?subject=Error%20500%20-%20req_01HW5Y8Z9NKJPQ4TMYK7X2A0EX" style="color:var(--brand-green);">Include this info when reporting →</a></span></div>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer class="bare-footer">
+    <span>© 2026 H-Tech</span>
+    <div class="links">
+      <a href="/status">Status</a>
+      <a href="mailto:support@h-tech.dz">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+
+    // Retry countdown demo
+    let n = 8;
+    const nEl = document.querySelector('.retry-info .n');
+    setInterval(() => {
+      n = n > 0 ? n - 1 : 8;
+      if (nEl) nEl.textContent = n + 's';
+    }, 1000);
+  </script>
+</body>
+</html>

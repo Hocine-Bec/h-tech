@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Track order HT-4287 · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif','ABC Arizona','Times New Roman',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --surface-3:#1c1c1e; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-error-soft:rgb(226 96 96/.14); --brand-tag-soft:rgb(90 159 242/.14); --shadow-card:0 1px 2px rgb(0 0 0/.4); --shadow-hover:0 1px 2px rgb(0 0 0/.4),0 8px 24px -6px rgb(0 0 0/.5); --nav-bg:rgb(0 0 0/.7); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --surface-3:#e2dfd4; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-error-soft:rgb(184 62 62/.10); --brand-tag-soft:rgb(42 109 184/.10); --shadow-card:0 1px 2px rgb(0 0 0/.04); --shadow-hover:0 1px 2px rgb(0 0 0/.05),0 8px 24px -6px rgb(0 0 0/.08); --nav-bg:rgb(250 249 246/.72); }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px; line-height: 1.55; color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    input { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; border-radius: 4px; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); }
+
+    @keyframes live-pulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0;   }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .container-narrow { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font-ui); font-size: 14px; font-weight: 500; line-height: 1;
+      padding: 10px 20px; border-radius: 9999px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap; text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-accent { background: var(--brand-green); color: #000; }
+    .btn-accent:hover { background: var(--brand-green-deep); }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 8px 12px; border-radius: 8px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-link {
+      background: transparent; padding: 0; border-radius: 0;
+      color: var(--stone); font-size: 13px; font-weight: 500;
+    }
+    .btn-link:hover { color: var(--brand-green); }
+
+    .icon-btn {
+      position: relative;
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--steel);
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms, background 150ms;
+    }
+    .nav-links a:hover { color: var(--brand-green); background: var(--surface-2); }
+    .nav-links a.is-active { color: var(--ink); background: var(--surface-2); }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+
+    /* Breadcrumb strip */
+    .breadcrumb-strip { padding: 20px 0 0; }
+    .breadcrumbs {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--stone);
+    }
+    .breadcrumbs a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumbs a:hover { color: var(--brand-green); }
+    .breadcrumbs .sep { color: var(--muted); }
+    .breadcrumbs .current { color: var(--ink); font-weight: 500; }
+    .breadcrumbs svg { vertical-align: middle; }
+
+    /* Page header */
+    .page-header {
+      padding: 20px 0 32px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(36px, 5vw, 52px);
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--ink); margin: 0 0 8px;
+    }
+    .page-header h1 em { font-style: italic; color: var(--brand-green); }
+    .page-header .sub {
+      font-size: 15px; color: var(--slate); margin: 0;
+      max-width: 520px;
+    }
+
+    /* ==========================================================================
+       Looking-up bar (collapsed form summary)
+       ========================================================================== */
+    .lookup-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .lookup-bar .info {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14px; color: var(--slate);
+    }
+    .lookup-bar .info .search-ico {
+      color: var(--brand-green);
+      display: grid; place-items: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--brand-green-soft);
+      flex: none;
+    }
+    .lookup-bar .info strong { color: var(--ink); font-weight: 500; }
+    .lookup-bar .info .mono { font-family: var(--font-mono); color: var(--ink); }
+    .lookup-bar .info .sep { color: var(--muted); margin: 0 4px; }
+    .lookup-bar .change-btn {
+      background: transparent; border: 1px solid var(--hairline-strong);
+      color: var(--slate); font-family: var(--font-ui); font-size: 13px; font-weight: 500;
+      padding: 8px 14px; border-radius: 9999px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, background 150ms;
+    }
+    .lookup-bar .change-btn:hover { color: var(--brand-green); border-color: var(--brand-green); background: var(--brand-green-soft); }
+
+    /* ==========================================================================
+       Order details layout — two column
+       ========================================================================== */
+    .order-view {
+      display: grid; grid-template-columns: 1fr 340px; gap: 32px;
+      padding-bottom: 48px;
+      align-items: start;
+    }
+
+    /* Left column: timeline + line items */
+    .order-main { display: flex; flex-direction: column; gap: 16px; }
+
+    /* Order state banner (current status) */
+    .state-banner {
+      display: flex; gap: 16px; align-items: center;
+      padding: 20px 24px;
+      background: var(--brand-warn-soft);
+      border: 1px solid var(--brand-warn);
+      border-radius: 14px;
+    }
+    .state-banner .state-ico {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--canvas-elev); border: 1px solid var(--brand-warn);
+      display: grid; place-items: center; color: var(--brand-warn);
+      flex: none;
+    }
+    .state-banner .state-body { flex: 1; }
+    .state-banner .state-eyebrow {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--brand-warn); font-weight: 600;
+      display: block; margin-bottom: 3px;
+    }
+    .state-banner .state-name {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 18px; color: var(--ink); margin: 0;
+      letter-spacing: -0.2px;
+    }
+    .state-banner .state-desc {
+      font-size: 13px; color: var(--slate); margin: 4px 0 0; line-height: 1.5;
+    }
+    .state-banner .state-time {
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+      display: block; margin-top: 4px;
+    }
+
+    /* Order timeline card */
+    .timeline-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 24px 28px;
+    }
+    .timeline-card h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .timeline-card h2 a {
+      font-family: var(--font-ui); font-weight: 500; font-size: 12px;
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .timeline-card h2 a:hover { color: var(--brand-green); }
+
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-step {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 0;
+      position: relative;
+    }
+    .timeline-step:not(:last-child)::before {
+      content: ''; position: absolute; left: 11px; top: 32px; bottom: 0; width: 2px;
+      background: var(--hairline);
+    }
+    .timeline-step.done::before { background: var(--brand-green); }
+    .timeline-step .step-dot {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 600; color: var(--stone);
+      flex: none; z-index: 1; position: relative;
+    }
+    .timeline-step.done .step-dot {
+      background: var(--brand-green); border-color: var(--brand-green); color: #000;
+    }
+    .timeline-step.active .step-dot {
+      background: transparent; border: 2px solid var(--brand-warn); color: var(--brand-warn);
+      position: relative;
+    }
+    .timeline-step.active .step-dot::after {
+      content: ''; position: absolute; inset: -4px;
+      border: 2px solid var(--brand-warn); border-radius: 9999px;
+      animation: live-pulse 2s ease-in-out infinite; opacity: 0;
+    }
+    .timeline-step .body { flex: 1; padding-top: 2px; display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+    .timeline-step .body-left { flex: 1; }
+    .timeline-step .name {
+      font-size: 14px; font-weight: 600; color: var(--ink);
+      display: block; margin-bottom: 2px;
+    }
+    .timeline-step .desc {
+      font-size: 13px; color: var(--stone); line-height: 1.5;
+    }
+    .timeline-step:not(.done):not(.active) .name { color: var(--stone); font-weight: 500; }
+    .timeline-step .time {
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+      white-space: nowrap; flex: none;
+    }
+    .timeline-step.done .time { color: var(--brand-green); }
+
+    /* Items card */
+    .items-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 24px 28px;
+    }
+    .items-card h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 16px;
+    }
+    .item-line {
+      display: grid; grid-template-columns: 56px 1fr auto;
+      gap: 14px; padding: 12px 0;
+      border-top: 1px solid var(--hairline-soft);
+      align-items: center;
+    }
+    .item-line:first-of-type { border-top: 0; }
+    .item-line .thumb {
+      width: 56px; height: 56px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+      position: relative;
+    }
+    .item-line .thumb svg { width: 28px; height: 28px; opacity: 0.7; }
+    .item-line .thumb .qty-pip {
+      position: absolute; top: -6px; right: -6px;
+      min-width: 20px; height: 20px; padding: 0 5px;
+      background: var(--ink); color: var(--canvas);
+      font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      border: 2px solid var(--canvas-elev);
+    }
+    .item-line .body { min-width: 0; }
+    .item-line .brand-name {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--stone);
+    }
+    .item-line .name {
+      display: block; margin-top: 2px;
+      font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.35;
+    }
+    .item-line .sku {
+      font-family: var(--font-mono); font-size: 11px; color: var(--stone);
+      margin-top: 2px;
+    }
+    .item-line .price {
+      font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--ink);
+      white-space: nowrap;
+    }
+    .items-total {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-top: 16px; margin-top: 8px;
+      border-top: 1px solid var(--hairline);
+      font-family: var(--font-ui); font-weight: 600; font-size: 15px; color: var(--ink);
+    }
+    .items-total .v {
+      font-family: var(--font-mono); font-size: 18px;
+    }
+    .items-total .method {
+      font-family: var(--font-ui); font-size: 11px; font-weight: 500;
+      color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.06em;
+      display: block; margin-top: 2px;
+    }
+
+    /* Support callout */
+    .issue-callout {
+      display: flex; gap: 14px; align-items: center;
+      padding: 18px 24px;
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+    }
+    .issue-callout .ico {
+      color: var(--stone); flex: none;
+      display: grid; place-items: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+    }
+    .issue-callout .body { flex: 1; font-size: 13px; color: var(--slate); line-height: 1.5; }
+    .issue-callout .body strong { color: var(--ink); font-weight: 500; }
+    .issue-callout .actions { flex: none; }
+
+    /* Right column: sidebar */
+    .order-side { display: flex; flex-direction: column; gap: 16px; }
+    .side-card {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .side-card h3 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 13px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .side-card h3 .eyebrow {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone); font-weight: 600;
+    }
+
+    .ref-value {
+      font-family: var(--font-mono); font-size: 22px; font-weight: 500;
+      color: var(--ink); letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ref-value button {
+      background: var(--surface); border: 1px solid var(--hairline);
+      color: var(--stone);
+      padding: 6px; border-radius: 6px; cursor: pointer;
+      display: inline-grid; place-items: center;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .ref-value button:hover { color: var(--brand-green); background: var(--brand-green-soft); border-color: var(--brand-green); }
+
+    .side-detail-row {
+      display: flex; flex-direction: column; gap: 3px;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+    .side-detail-row + .side-detail-row { border-top: 1px solid var(--hairline-soft); }
+    .side-detail-row .key {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--stone); font-weight: 600;
+    }
+    .side-detail-row .val { color: var(--ink); line-height: 1.55; }
+    .side-detail-row .val .dim { color: var(--stone); font-family: var(--font-mono); font-size: 12px; }
+
+    /* Footer */
+    footer {
+      background: var(--canvas-elev);
+      border-top: 1px solid var(--hairline);
+      padding: 72px 0 24px;
+      position: relative; overflow: hidden;
+    }
+    footer > .container { position: relative; z-index: 1; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 40px; }
+    .footer-col h5 { margin: 0 0 14px; font-size: 13px; font-weight: 500; color: var(--stone); }
+    .footer-col a {
+      display: block; padding: 5px 0; font-size: 14px; color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .footer-col a:hover { color: var(--brand-green); }
+    .footer-brand { max-width: 320px; }
+    .footer-brand p { font-size: 14px; color: var(--slate); margin: 16px 0 20px; }
+    .footer-mega-bg {
+      position: absolute; left: 0; right: 0; bottom: -6vw;
+      text-align: center;
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: clamp(160px, 26vw, 380px);
+      line-height: 0.85; letter-spacing: -0.04em;
+      color: transparent; -webkit-text-stroke: 2px var(--ink);
+      opacity: 0.10; pointer-events: none; user-select: none;
+      white-space: nowrap; z-index: 0;
+    }
+    .footer-mega-bg em {
+      font-family: var(--font-serif); font-style: italic;
+      color: transparent; -webkit-text-stroke: 2px var(--brand-green);
+    }
+    .footer-bottom {
+      margin-top: 56px; padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--stone);
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .order-view { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .lookup-bar { flex-direction: column; align-items: stretch; }
+      .lookup-bar .change-btn { justify-content: center; }
+      .issue-callout { flex-direction: column; align-items: stretch; text-align: center; }
+      .item-line { grid-template-columns: 56px 1fr; }
+      .item-line .price { grid-column: 2; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav (full storefront nav — support pages get the same chrome) -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/>
+          </svg>
+        </span>
+        H-Tech
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/shop">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support" class="is-active">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+        <a href="/cart" class="icon-btn" aria-label="Cart">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-strip">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" aria-label="Home">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10a2 2 0 0 0 2 2h3v-6h4v6h3a2 2 0 0 0 2-2V10"/></svg>
+        </a>
+        <span class="sep">/</span>
+        <a href="/support">Support</a>
+        <span class="sep">/</span>
+        <span class="current">Track order</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Track your <em>order</em>.</h1>
+      <p class="sub">Real-time status updates. No account needed — just your order number and phone.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <!-- Lookup bar (collapsed form — showing current lookup) -->
+    <div class="lookup-bar">
+      <div class="info">
+        <span class="search-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <span>Looking up <strong class="mono">HT-4287</strong><span class="sep">·</span>Phone <strong class="mono">+213 555 12 34 56</strong></span>
+      </div>
+      <button class="change-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Look up a different order
+      </button>
+    </div>
+
+    <div class="order-view">
+      <!-- Main column -->
+      <div class="order-main">
+
+        <!-- State banner (current status highlighted) -->
+        <div class="state-banner">
+          <span class="state-ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M14 18h6M14 18v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-3M20 18h1a1 1 0 0 0 1-1v-4l-3-4h-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+          </span>
+          <div class="state-body">
+            <span class="state-eyebrow">Current status</span>
+            <p class="state-name">In delivery</p>
+            <p class="state-desc">The courier picked up your order this morning. Expect a call before arrival — please keep your phone nearby.</p>
+            <span class="state-time">Updated 09:20 · today</span>
+          </div>
+        </div>
+
+        <!-- Timeline card -->
+        <div class="timeline-card">
+          <h2>
+            <span>Order timeline</span>
+            <a href="#">See state-change history →</a>
+          </h2>
+
+          <div class="timeline">
+            <div class="timeline-step done">
+              <span class="step-dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <div class="body">
+                <div class="body-left">
+                  <span class="name">Placed</span>
+                  <span class="desc">We received your order and it's in our system.</span>
+                </div>
+                <span class="time">28 Aug · 14:41</span>
+              </div>
+            </div>
+            <div class="timeline-step done">
+              <span class="step-dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <div class="body">
+                <div class="body-left">
+                  <span class="name">Confirmed</span>
+                  <span class="desc">Confirmed by phone. Preparing for handoff to the courier.</span>
+                </div>
+                <span class="time">28 Aug · 16:08</span>
+              </div>
+            </div>
+            <div class="timeline-step active">
+              <span class="step-dot">3</span>
+              <div class="body">
+                <div class="body-left">
+                  <span class="name">In delivery</span>
+                  <span class="desc">With the courier. Expected arrival in the next 24 hours.</span>
+                </div>
+                <span class="time">29 Aug · 09:20</span>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <span class="step-dot">4</span>
+              <div class="body">
+                <div class="body-left">
+                  <span class="name">Delivered</span>
+                  <span class="desc">Inspect the box, then pay the courier in cash.</span>
+                </div>
+                <span class="time">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items card -->
+        <div class="items-card">
+          <h2>Items in this order</h2>
+
+          <div class="item-line">
+            <div class="thumb">
+              <span class="qty-pip">1</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg>
+            </div>
+            <div class="body">
+              <span class="brand-name">NVIDIA</span>
+              <span class="name">GeForce RTX 4070 12GB GDDR6X</span>
+              <span class="sku">SKU: GPU-NV-4070-12G</span>
+            </div>
+            <span class="price">89,900 DA</span>
+          </div>
+
+          <div class="item-line">
+            <div class="thumb">
+              <span class="qty-pip">1</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v8M10 8v8M14 8v8M18 8v8"/></svg>
+            </div>
+            <div class="body">
+              <span class="brand-name">CORSAIR</span>
+              <span class="name">Vengeance DDR5 32GB (2×16) 6000MHz</span>
+              <span class="sku">SKU: RAM-CS-32-6000</span>
+            </div>
+            <span class="price">91,200 DA</span>
+          </div>
+
+          <div class="item-line">
+            <div class="thumb">
+              <span class="qty-pip">1</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="12" rx="1.5"/><circle cx="7" cy="12" r="1"/><path d="M11 10h7M11 14h5"/></svg>
+            </div>
+            <div class="body">
+              <span class="brand-name">SAMSUNG</span>
+              <span class="name">990 Pro 2TB NVMe Gen4 SSD</span>
+              <span class="sku">SKU: SSD-SM-990P-2T</span>
+            </div>
+            <span class="price">34,500 DA</span>
+          </div>
+
+          <div class="items-total">
+            <div>
+              <div>Total</div>
+              <span class="method">Cash on delivery</span>
+            </div>
+            <span class="v">215,600 DA</span>
+          </div>
+        </div>
+
+        <!-- Issue callout — for reporting DOA within window -->
+        <div class="issue-callout">
+          <span class="ico">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          </span>
+          <div class="body">
+            <strong>Something wrong with your order?</strong> Report an issue once it arrives — you have 7 days from delivery for DOA returns.
+          </div>
+          <div class="actions">
+            <a href="/support/contact" class="btn btn-secondary btn-sm">Report an issue</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="order-side">
+        <div class="side-card">
+          <h3>Order reference</h3>
+          <div class="ref-value">
+            <span>HT-4287</span>
+            <button aria-label="Copy order number">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>Delivery</h3>
+          <div class="side-detail-row">
+            <span class="key">Deliver to</span>
+            <div class="val">
+              Yacine Belkacem<br />
+              Rue Larbi Ben M'hidi, N° 42, Bâtiment C, Apt 8<br />
+              Bab El Oued, Alger
+            </div>
+          </div>
+          <div class="side-detail-row">
+            <span class="key">Contact</span>
+            <div class="val"><span class="dim">+213 555 12 34 56</span></div>
+          </div>
+          <div class="side-detail-row">
+            <span class="key">Method</span>
+            <div class="val">Standard · <span style="color: var(--brand-green); font-weight: 500;">24–48h to Alger</span></div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>Payment</h3>
+          <div class="side-detail-row">
+            <span class="key">Method</span>
+            <div class="val">Cash on delivery</div>
+          </div>
+          <div class="side-detail-row">
+            <span class="key">Courier collects</span>
+            <div class="val" style="font-family: var(--font-mono); font-weight: 600; color: var(--brand-green); font-size: 15px;">215,600 DA</div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>Placed on</h3>
+          <div class="ref-value" style="font-size: 15px;">28 August 2026 · 14:41</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-mega-bg" aria-hidden="true">H<em>-</em>Tech</div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-glyph">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg>
+            </span>
+            H-Tech
+          </a>
+          <p>Computer parts & peripherals, delivered anywhere in the country. Cash on delivery. 7-day DOA return.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Shop</h5>
+          <a href="/shop">All products</a>
+          <a href="/bundles">Bundles</a>
+          <a href="/deals">Deals</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="/support/track-order">Track order</a>
+          <a href="/support/returns">Returns</a>
+          <a href="/support/contact">Contact</a>
+          <a href="/support/faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="/about">About</a>
+          <a href="/distributors">Distributors</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+          <a href="/legal/warranty">Warranty</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div>
+          <a href="/status" style="color: var(--stone);">Status</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) {}
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>

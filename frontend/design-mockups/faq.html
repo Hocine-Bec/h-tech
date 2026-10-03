@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>FAQ — H-Tech Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-green:#00d4a4; --brand-green-deep:#00b48a; --font-ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --font-mono:'Geist Mono','SF Mono',Menlo,Consolas,monospace; --font-serif:'Instrument Serif',serif; }
+    [data-theme='dark'] { color-scheme:dark; --canvas:#000; --canvas-elev:#0a0a0a; --surface:#111113; --surface-2:#17171a; --hairline:#1f1f22; --hairline-soft:#17171a; --hairline-strong:#2a2a2e; --ink:#fff; --slate:#d4d4d6; --steel:#a8a8aa; --stone:#7a7a7c; --muted:#5a5a5c; --brand-warn:#c88a3a; --brand-error:#e26060; --brand-tag:#5a9ff2; --brand-green-soft:rgb(0 212 164/.14); --brand-warn-soft:rgb(200 138 58/.14); --brand-tag-soft:rgb(90 159 242/.14); }
+    [data-theme='light'] { color-scheme:light; --canvas:#faf9f6; --canvas-elev:#fff; --surface:#f3f2ec; --surface-2:#eceae2; --hairline:#dcdad0; --hairline-soft:#eeece5; --hairline-strong:#c6c3b6; --ink:#0a0a08; --slate:#2a2926; --steel:#5a5852; --stone:#82807a; --muted:#a8a5a0; --brand-warn:#8a5c1a; --brand-error:#b83e3e; --brand-tag:#2a6db8; --brand-green-soft:rgb(0 180 138/.10); --brand-warn-soft:rgb(138 92 26/.10); --brand-tag-soft:rgb(42 109 184/.10); }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--font-ui); font-size: 15px; line-height: 1.6; color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased; transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+    :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); border-radius: 4px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 20; background: var(--canvas); border-bottom: 1px solid var(--hairline); height: 64px; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -0.3px; }
+    .brand-glyph { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-green); color: #000; display: grid; place-items: center; }
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500; }
+    .nav-links a { color: var(--slate); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .nav-links a:hover { color: var(--brand-green); }
+    .nav-links a.is-active { color: var(--brand-green); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 8px; display: inline-grid; place-items: center; background: transparent; border: 1px solid transparent; color: var(--slate); cursor: pointer; transition: color 150ms, background 150ms; }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 500; line-height: 1; padding: 10px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms; white-space: nowrap; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-sm { padding: 7px 12px; font-size: 13px; }
+
+    .breadcrumb { padding: 16px 0 0; font-size: 12px; color: var(--stone); display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--stone); transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .breadcrumb a:hover { color: var(--brand-green); }
+    .breadcrumb .sep { color: var(--muted); }
+    .breadcrumb .current { color: var(--ink); font-weight: 500; }
+
+    /* Page header */
+    .page-head { padding: 32px 0 8px; max-width: 720px; }
+    .page-head .eyebrow {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .page-head h1 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: clamp(32px, 4vw, 40px); letter-spacing: -0.5px;
+      color: var(--ink); margin: 0 0 12px;
+      line-height: 1.15;
+    }
+    .page-head h1 em {
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      color: var(--brand-green); letter-spacing: -0.5px;
+    }
+    .page-head .lead { font-size: 16px; color: var(--slate); margin: 0; line-height: 1.55; }
+
+    /* Search bar */
+    .faq-search {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      border-radius: 10px;
+      margin: 20px 0 24px;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .faq-search:focus-within { border-color: var(--brand-green); }
+    .faq-search svg { color: var(--stone); flex: none; }
+    .faq-search input {
+      flex: 1; background: transparent; border: 0; outline: none;
+      color: var(--ink); font-size: 15px;
+    }
+    .faq-search input::placeholder { color: var(--stone); }
+    .faq-search .kbd {
+      font-family: var(--font-mono); font-size: 10px; color: var(--slate);
+      padding: 2px 6px; border: 1px solid var(--hairline); border-radius: 4px;
+      background: var(--surface);
+    }
+
+    /* 2-col layout: sticky sidebar + content */
+    .faq-grid {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 40px;
+      padding-bottom: 60px;
+      align-items: flex-start;
+    }
+
+    /* Sticky topic nav */
+    .topic-nav {
+      position: sticky; top: 84px;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .topic-nav .lbl {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 8px 12px 10px;
+    }
+    .topic-nav a {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 8px 12px; border-radius: 6px;
+      font-size: 13px; color: var(--slate); font-weight: 500;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+      border-left: 2px solid transparent;
+    }
+    .topic-nav a:hover { color: var(--brand-green); background: var(--surface); }
+    .topic-nav a.is-active {
+      color: var(--brand-green);
+      background: var(--brand-green-soft);
+      border-left-color: var(--brand-green);
+    }
+    .topic-nav a .cnt {
+      font-family: var(--font-mono); font-size: 10px; color: var(--stone);
+    }
+    .topic-nav a.is-active .cnt { color: var(--brand-green); }
+
+    /* Content */
+    .faq-content {}
+
+    .topic-section { margin-bottom: 48px; scroll-margin-top: 84px; }
+    .topic-section h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 22px; letter-spacing: -0.3px;
+      color: var(--ink); margin: 0 0 4px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .topic-section h2 .topic-ico {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--brand-green-soft); color: var(--brand-green);
+      display: grid; place-items: center;
+    }
+    .topic-section .topic-sub {
+      font-size: 13px; color: var(--stone); margin: 0 0 18px;
+    }
+
+    /* Accordion */
+    .accordion {
+      background: var(--canvas-elev); border: 1px solid var(--hairline);
+      border-radius: 10px; overflow: hidden;
+    }
+    .acc-item { border-bottom: 1px solid var(--hairline-soft); }
+    .acc-item:last-child { border-bottom: 0; }
+    .acc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 18px 22px;
+      cursor: pointer;
+      background: transparent; border: 0; width: 100%; text-align: left;
+      color: var(--ink); font-family: var(--font-ui);
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .acc-header:hover { background: var(--surface); }
+    .acc-header .q { font-size: 15px; font-weight: 500; color: var(--ink); }
+    .acc-header .chev {
+      color: var(--stone); flex: none;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), color 150ms;
+    }
+    .acc-item.is-open .acc-header .chev { transform: rotate(180deg); color: var(--brand-green); }
+    .acc-item.is-open .acc-header .q { color: var(--brand-green); }
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .acc-item.is-open .acc-body { max-height: 800px; }
+    .acc-content {
+      padding: 0 22px 20px;
+      font-size: 14px; color: var(--slate); line-height: 1.65;
+    }
+    .acc-content p { margin: 0 0 12px; }
+    .acc-content p:last-child { margin-bottom: 0; }
+    .acc-content strong { color: var(--ink); font-weight: 600; }
+    .acc-content ul { margin: 0 0 12px; padding-left: 20px; }
+    .acc-content li { margin-bottom: 6px; }
+    .acc-content .callout {
+      background: var(--brand-tag-soft); border-left: 3px solid var(--brand-tag);
+      padding: 10px 14px; border-radius: 4px;
+      color: var(--slate); font-size: 13px;
+      margin: 8px 0 12px;
+    }
+    .acc-content .callout strong { color: var(--brand-tag); }
+    .acc-content .related {
+      margin-top: 14px; padding-top: 12px;
+      border-top: 1px solid var(--hairline-soft);
+      font-size: 12px; color: var(--stone);
+    }
+    .acc-content .related a { color: var(--brand-green); font-weight: 500; margin-left: 6px; }
+    .acc-content .related a:hover { text-decoration: underline; }
+
+    /* Still-need-help block */
+    .still-help {
+      margin-top: 32px; padding: 28px 32px;
+      background: var(--brand-green-soft); border: 1px solid var(--brand-green);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      flex-wrap: wrap;
+    }
+    .still-help .body h3 {
+      font-family: var(--font-ui); font-size: 18px; font-weight: 600;
+      color: var(--ink); margin: 0 0 4px;
+    }
+    .still-help .body p { font-size: 14px; color: var(--slate); margin: 0; }
+    .still-help .actions { display: flex; gap: 8px; }
+
+    /* Footer (minimal) */
+    footer { margin-top: 60px; border-top: 1px solid var(--hairline); padding: 32px 0; background: var(--canvas-elev); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--stone); font-family: var(--font-mono); }
+    .footer-bottom .links a { color: var(--stone); margin-left: 16px; transition: color 150ms; }
+    .footer-bottom .links a:hover { color: var(--brand-green); }
+
+    @media (max-width: 900px) {
+      .faq-grid { grid-template-columns: 1fr; gap: 24px; }
+      .topic-nav { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+      .topic-nav .lbl { display: none; }
+      .topic-nav a { border-left: 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+      .topic-nav a.is-active { border-left: 0; border-bottom-color: var(--brand-green); background: transparent; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+        H-Tech
+      </a>
+      <nav class="nav-links">
+        <a href="/shop">Shop</a>
+        <a href="/deals">Deals</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/guides">Guides</a>
+        <a href="/support" class="is-active">Support</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <a href="/sign-in" class="icon-btn" aria-label="Account"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+        <a href="/cart" class="icon-btn" aria-label="Cart"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
+        <a href="/shop" class="btn btn-primary btn-sm">Shop now</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href="/support">Support</a>
+      <span class="sep">/</span>
+      <span class="current">FAQ</span>
+    </nav>
+
+    <!-- Header -->
+    <section class="page-head">
+      <div class="eyebrow">Frequently asked questions</div>
+      <h1>Questions we get, <em>answered.</em></h1>
+      <p class="lead">Short, honest answers for the things people ask most often. If your question isn't here, WhatsApp is the fastest way to reach a human.</p>
+    </section>
+
+    <!-- Search -->
+    <div class="faq-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search FAQs — try 'delivery time', 'refund', or 'DDR5'" aria-label="Search FAQs" />
+      <span class="kbd">/</span>
+    </div>
+
+    <!-- 2-col grid -->
+    <div class="faq-grid">
+
+      <!-- Sticky sidebar -->
+      <nav class="topic-nav" aria-label="FAQ topics">
+        <span class="lbl">Topics</span>
+        <a href="#orders" class="is-active">Orders & checkout <span class="cnt">6</span></a>
+        <a href="#delivery">Delivery & tracking <span class="cnt">5</span></a>
+        <a href="#payment">Payment & pricing <span class="cnt">4</span></a>
+        <a href="#returns">Returns & warranty <span class="cnt">5</span></a>
+        <a href="#account">Account & privacy <span class="cnt">3</span></a>
+      </nav>
+
+      <!-- Content -->
+      <div class="faq-content">
+
+        <!-- Orders -->
+        <section class="topic-section" id="orders">
+          <h2>
+            <span class="topic-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></span>
+            Orders & checkout
+          </h2>
+          <p class="topic-sub">How we take orders, confirm them, and lock your price.</p>
+
+          <div class="accordion">
+            <div class="acc-item is-open">
+              <button class="acc-header" aria-expanded="true">
+                <span class="q">Do I need an account to order?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>No — guest checkout is available on every order. You'll just need your name, phone number, and delivery address.</p>
+                  <p>Creating an account is optional and takes 30 seconds. Benefits: <strong>saved addresses</strong>, order history in one place, and a wishlist. We don't email you unless you opt in.</p>
+                  <div class="related">Related: <a href="#account">Account & privacy</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">What happens after I place an order?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Within <strong>2 business hours</strong>, someone from our team calls to confirm your order — the items, the address, and the delivery time. This step exists because cash on delivery has no down-payment; we want to be sure the order is real before dispatching.</p>
+                  <p>Once confirmed, we hand your parcel to the courier (Yalidine or Zr Express, depending on your wilaya) the same or next business day.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item" id="price-change">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">The price changed between my cart and checkout — what now?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Prices sync from our distributors 3× daily. If a price changed while your item was in the cart, we show a warning at checkout with the old and new price side by side.</p>
+                  <div class="callout"><strong>Your price is re-locked for 15 minutes</strong> once you reach checkout. Place the order within that window and you pay what you see, even if the distributor bumps the price again mid-checkout.</div>
+                  <p>If a price drops after you place the order but before delivery, the lower price applies automatically.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Can I change my order after placing it?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Yes, up until the confirmation call. Once you confirm on the phone, we hand off to the courier and changes require refusing the delivery + a new order.</p>
+                  <p>Small tweaks (address correction, phone number) can be made anytime — WhatsApp us the order ref.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Do you take bulk / business orders?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Yes. For orders above <strong>500,000 DA</strong>, we can arrange invoicing with your business info (NIF, NIS, AI) and split delivery to multiple sites. Contact us before placing the order so we can prepare the paperwork.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Why did my order get refused?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Three reasons account for almost every refusal: we couldn't reach you after 3 confirmation attempts, an item went out of stock while your order was pending, or the delivery address is outside our courier partners' coverage.</p>
+                  <p>Every refusal comes with a reason on your tracking page. If you disagree with a refusal, WhatsApp us — we can usually reissue the order the same day.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Delivery -->
+        <section class="topic-section" id="delivery">
+          <h2>
+            <span class="topic-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+            Delivery & tracking
+          </h2>
+          <p class="topic-sub">Where we deliver, how fast, and how tracking works.</p>
+
+          <div class="accordion">
+            <div class="acc-item" id="delivery-time">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How long does delivery take?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>From confirmation (not from order placement):</p>
+                  <ul>
+                    <li><strong>Alger and surrounding wilayas</strong> (Blida, Boumerdès, Tipaza): 1–2 business days</li>
+                    <li><strong>Major cities</strong> (Oran, Constantine, Annaba, Sétif, Batna): 2–3 business days</li>
+                    <li><strong>Other wilayas:</strong> 3–4 business days</li>
+                    <li><strong>Deep south</strong> (Tamanrasset, Adrar, Illizi, Tindouf): 5–6 business days</li>
+                  </ul>
+                  <p>The tracking page shows a live ETA once the courier picks up your parcel.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Which wilayas do you deliver to?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>All <strong>48 wilayas</strong> are covered via Yalidine and Zr Express. Home delivery works everywhere; stop-desk pickup is available in wilayas where our courier partners have local offices (currently 41 of 48).</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Is there a delivery fee?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p><strong>Free home delivery on orders above 15,000 DA.</strong> Below that, we charge the courier's flat rate per wilaya (typically 400–800 DA).</p>
+                  <p>Stop-desk pickup is always 100–200 DA cheaper than home delivery.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How do I track my order?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Go to <a href="/support/track-order" style="color:var(--brand-green);">Track order</a> and enter your order number (starts with HT-) + phone number. You'll see the live timeline: placed → confirmed → in delivery → delivered.</p>
+                  <p>We also SMS you at each state change.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Can I change my delivery address after placing?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Yes, before handoff to the courier. Once the parcel is with Yalidine or Zr Express, address changes are up to their policy (usually a small fee).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Payment -->
+        <section class="topic-section" id="payment">
+          <h2>
+            <span class="topic-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+            Payment & pricing
+          </h2>
+          <p class="topic-sub">Cash on delivery, price transparency, and refunds.</p>
+
+          <div class="accordion">
+            <div class="acc-item" id="pay-on-delivery">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Can I inspect the package before paying?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p><strong>Yes.</strong> Every H-Tech order ships with a "cash inspection at door" agreement with our couriers. You can open the box, check that the item is present, in its original packaging, and undamaged before paying.</p>
+                  <div class="callout"><strong>Refuse without penalty</strong> if the box is opened, the item is wrong, or something looks off. The parcel goes back to us and you owe nothing.</div>
+                  <p>You cannot power-test the item at the door — that step happens after delivery. If a powered-on item is dead, our <a href="#doa" style="color:var(--brand-green);">7-day DOA policy</a> covers you.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Do you accept card / bank transfer / CIB?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Not in the current phase. Cash on delivery only. We're evaluating CIB and Edahabia integration for a later phase — the tradeoff is losing the "inspect before paying" step, which our customers consistently rate as the biggest reason they trust us.</p>
+                  <p>For bulk / business orders above 500,000 DA, we accept bank transfer against a proforma invoice.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Are the prices VAT-inclusive?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Yes. Every price shown on H-Tech is <strong>final, VAT included</strong>. No surprises at checkout, no fees added at the door.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How do refunds work?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Since payments are in cash, refunds are also in cash. When we approve a return, we schedule a cash reimbursement at your address (via the same courier, at no cost to you). Typical timeline: <strong>3–5 business days</strong> from approval to cash in hand.</p>
+                  <p>For bank transfer orders, refunds go back to the originating account within 5 business days.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Returns -->
+        <section class="topic-section" id="returns">
+          <h2>
+            <span class="topic-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>
+            Returns & warranty
+          </h2>
+          <p class="topic-sub">The 7-day DOA policy, warranty, and change-of-mind returns.</p>
+
+          <div class="accordion">
+            <div class="acc-item" id="doa">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">What if my item arrives dead or damaged?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>You have <strong>7 days from delivery</strong> to open a Dead-on-Arrival (DOA) return. Go to your order page, click "Return this item," pick the reason, and upload photos of the issue (and the original packaging, if damaged).</p>
+                  <p>Approved DOA returns are refunded in full including the delivery fee. Stock is restored to the catalog once we've received the item back.</p>
+                  <div class="callout"><strong>Keep the original packaging.</strong> Manufacturers require it for DOA claims, and we pass that requirement through.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item" id="warranty">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How does manufacturer warranty work?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Every product ships with its full manufacturer warranty (typically 2 years for peripherals, 3 years for GPUs / motherboards / SSDs, 5 years for high-end memory). Your order confirmation email lists the warranty period per item.</p>
+                  <p>For warranty claims after the 7-day DOA window, we help you file directly with the manufacturer — most brands (MSI, ASUS, Gigabyte, Corsair, Samsung, WD) have regional service partners we've coordinated with before.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Can I return an item just because I changed my mind?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Not by default. Our 7-day return window covers <strong>defective items only</strong> — cash-on-delivery gives you the equivalent of a change-of-mind window at the door: refuse the parcel and you owe nothing.</p>
+                  <p>Exceptions: if an item is sealed and unopened, we may accept a change-of-mind return within 48h of delivery. WhatsApp us to arrange.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">What's not covered by DOA?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Physical damage caused after delivery, missing accessories that weren't part of the retail package, products used against manufacturer guidelines (e.g., DIY delidded CPUs, non-standard voltage), and any item outside the 7-day window.</p>
+                  <p>Post-window issues fall under manufacturer warranty — we still help you file the claim.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How long does a return take to process?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>From opening a return to cash back in your hands: <strong>3–5 business days</strong> on average. Longer if we need to physically inspect the item (e.g., a GPU with an intermittent fault) — typically 7 days end-to-end.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Account -->
+        <section class="topic-section" id="account">
+          <h2>
+            <span class="topic-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            Account & privacy
+          </h2>
+          <p class="topic-sub">Data we keep, data you can delete, and how emails work.</p>
+
+          <div class="accordion">
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">What data do you keep about me?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Only what we need to fulfill orders and satisfy Algerian tax obligations: name, phone, delivery address, and order history. No tracking pixels, no ad networks, no third-party analytics beyond aggregate page visits (self-hosted, no cookies).</p>
+                  <p>Full details in our <a href="/legal/privacy" style="color:var(--brand-green);">Privacy policy</a>.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">How do I delete my account?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Account → Settings → "Delete account." Your personal info is anonymized within 24 hours. Order records (invoices, delivery logs) are retained for 5 years per Algerian tax law but stripped of identifying info.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-item">
+              <button class="acc-header" aria-expanded="false">
+                <span class="q">Will I get marketing emails?</span>
+                <span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+              </button>
+              <div class="acc-body">
+                <div class="acc-content">
+                  <p>Only if you explicitly opt in. Transactional emails (order confirmations, tracking updates, DOA return notices) always go out — those are part of the service, not marketing.</p>
+                  <p>You can unsubscribe from marketing anytime in Account → Settings → Email preferences.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Still need help -->
+        <div class="still-help">
+          <div class="body">
+            <h3>Didn't find what you need?</h3>
+            <p>WhatsApp is the fastest way — we usually reply within 2 business hours.</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://wa.me/213555000000">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              Message us on WhatsApp
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 H-Tech · Algiers, DZ</span>
+        <div class="links">
+          <a href="/support">Support</a>
+          <a href="/legal/terms">Terms</a>
+          <a href="/legal/privacy">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+    const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeIcon.innerHTML = next === 'dark' ? sunSVG : moonSVG;
+    });
+
+    // Accordion toggle
+    document.querySelectorAll('.acc-header').forEach(h => {
+      h.addEventListener('click', () => {
+        const item = h.closest('.acc-item');
+        const expanded = item.classList.toggle('is-open');
+        h.setAttribute('aria-expanded', expanded);
+      });
+    });
+
+    // Topic nav scroll-spy (basic)
+    const topicLinks = document.querySelectorAll('.topic-nav a');
+    topicLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        topicLinks.forEach(l => l.classList.remove('is-active'));
+        link.classList.add('is-active');
+      });
+    });
+  </script>
+</body>
+</html>

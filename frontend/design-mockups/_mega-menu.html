@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>H-Tech · Mega-menu mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       Token layer — kept in sync with globals.css
+       ========================================================================== */
+    :root {
+      --brand-green: #00d4a4;
+      --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', 'ABC Arizona', 'Times New Roman', serif;
+    }
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000000; --canvas-elev: #0a0a0a;
+      --surface: #111113; --surface-2: #17171a; --surface-3: #1c1c1e;
+      --hairline: #1f1f22; --hairline-soft: #17171a; --hairline-strong: #2a2a2e;
+      --ink: #ffffff; --slate: #d4d4d6; --steel: #a8a8aa; --stone: #7a7a7c; --muted: #5a5a5c;
+      --brand-green-soft: rgb(0 212 164 / 0.14);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 48px -12px rgb(0 0 0 / 0.6);
+      --nav-bg: rgb(0 0 0 / 0.7);
+    }
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6; --canvas-elev: #ffffff;
+      --surface: #f3f2ec; --surface-2: #eceae2; --surface-3: #e2dfd4;
+      --hairline: #dcdad0; --hairline-soft: #eeece5; --hairline-strong: #c6c3b6;
+      --ink: #0a0a08; --slate: #2a2926; --steel: #5a5852; --stone: #82807a; --muted: #a8a5a0;
+      --brand-green-soft: rgb(0 180 138 / 0.10);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.05), 0 24px 48px -12px rgb(0 0 0 / 0.15);
+      --nav-bg: rgb(250 249 246 / 0.72);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 15px; line-height: 1.55;
+      color: #d4d4d6; background: #0a0a0a;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* Doc shell (this page's own dark chrome) */
+    .doc-header {
+      padding: 40px 40px 24px;
+      border-bottom: 1px solid #1f1f22;
+      background: #050506;
+    }
+    .doc-header h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: 32px; margin: 0 0 6px; letter-spacing: -0.02em; color: #ffffff;
+    }
+    .doc-header h1 em { font-style: italic; color: var(--brand-green); }
+    .doc-header p { margin: 0; font-size: 14px; color: #7a7a7c; max-width: 720px; }
+
+    .pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: #1f1f22; padding: 1px;
+    }
+    .frame {
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      min-height: 620px;
+      position: relative;
+    }
+    .frame[data-label]::before {
+      content: attr(data-label);
+      position: absolute; top: 12px; left: 16px;
+      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--stone); font-family: var(--font-ui);
+      z-index: 100;
+    }
+
+    /* ==========================================================================
+       Simulated nav (dropped into each theme frame)
+       ========================================================================== */
+    .nav {
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; padding: 0 24px; position: relative;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-links { display: flex; gap: 4px; position: relative; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--steel);
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms, background 150ms;
+    }
+    .nav-links a.is-hovered {
+      color: var(--brand-green); background: var(--surface-2);
+    }
+    .nav-links a.is-hovered::after {
+      content: ''; position: absolute; left: 8px; right: 8px; bottom: -1px;
+      height: 2px; background: var(--brand-green);
+    }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+    }
+
+    /* ==========================================================================
+       Mega-menu — the actual component
+       ========================================================================== */
+    .mega-menu {
+      position: absolute; top: calc(100% - 1px); left: 24px; right: 24px;
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline-strong);
+      border-top: 0;
+      border-radius: 0 0 16px 16px;
+      box-shadow: var(--shadow-hover);
+      padding: 28px 32px 24px;
+      z-index: 50;
+      animation: mega-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes mega-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .mega-menu-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .mega-menu-header .eyebrow {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--stone); font-weight: 600;
+    }
+    .mega-menu-header a.see-all {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 13px; font-weight: 500; color: var(--slate);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-menu-header a.see-all:hover { color: var(--brand-green); }
+    .mega-menu-header a.see-all svg {
+      transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-menu-header a.see-all:hover svg { transform: translateX(2px); }
+
+    .mega-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .mega-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px; border-radius: 10px;
+      cursor: pointer; color: inherit;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-item:hover { background: var(--surface); }
+    .mega-item .ico {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--ink); flex: none;
+      transition: background 150ms, border-color 150ms, color 150ms;
+    }
+    .mega-item:hover .ico {
+      background: var(--brand-green-soft);
+      border-color: var(--brand-green);
+      color: var(--brand-green);
+    }
+    .mega-item .copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .mega-item .name {
+      font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.1px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-item:hover .name { color: var(--brand-green); }
+    .mega-item .desc {
+      font-size: 12px; color: var(--stone); line-height: 1.4;
+    }
+    .mega-item .count {
+      font-family: var(--font-mono); font-size: 10px; color: var(--stone);
+      margin-top: 2px;
+    }
+
+    /* Featured bundles ribbon at the bottom */
+    .mega-bundles {
+      margin-top: 20px; padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: grid; grid-template-columns: auto 1fr 1fr; gap: 16px; align-items: center;
+    }
+    .mega-bundles-label {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .mega-bundles-label .eyebrow {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--brand-green); font-weight: 600;
+    }
+    .mega-bundles-label .name {
+      font-size: 13px; color: var(--slate);
+    }
+    .mega-bundle {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      cursor: pointer; color: inherit;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+    }
+    .mega-bundle:hover {
+      border-color: var(--brand-green); background: var(--brand-green-soft);
+    }
+    .mega-bundle:hover .bundle-title { color: var(--brand-green); }
+    .mega-bundle .bundle-copy { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+    .mega-bundle .bundle-title {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: color 150ms;
+    }
+    .mega-bundle .bundle-price {
+      font-family: var(--font-mono); font-size: 12px; color: var(--stone);
+    }
+    .mega-bundle .bundle-price strong { color: var(--ink); font-family: var(--font-ui); }
+    .mega-bundle .bundle-arrow {
+      color: var(--stone); flex: none;
+      transition: color 150ms, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-bundle:hover .bundle-arrow { color: var(--brand-green); transform: translateX(2px); }
+
+    /* Backdrop when menu is open (dims the page underneath) */
+    .backdrop {
+      position: absolute; top: 60px; left: 0; right: 0; bottom: 0;
+      background: rgb(0 0 0 / 0.35);
+      backdrop-filter: blur(2px);
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    /* Fake page content underneath — just a hint so reviewers see the layering */
+    .page-hint {
+      padding: 96px 24px; text-align: center;
+      color: var(--stone); font-size: 13px;
+    }
+    .page-hint em {
+      font-family: var(--font-serif); font-style: italic; color: var(--stone);
+    }
+
+    /* Doc footer note */
+    .doc-note {
+      padding: 32px 40px;
+      color: #7a7a7c; font-size: 13px;
+      border-top: 1px solid #1f1f22;
+      background: #050506;
+    }
+    .doc-note strong { color: #d4d4d6; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <header class="doc-header">
+    <h1>H-Tech · Mega-menu <em>reveal</em></h1>
+    <p>Nav-hover component for the "Shop" link. Opens on hover, closes on mouse-leave or Esc. Shown in both themes below in its open state. See IA §5.3 for spec.</p>
+  </header>
+
+  <div class="pair">
+
+    <!-- Dark theme -->
+    <div class="frame" data-theme="dark" data-label="DARK · Shop hovered">
+      <header class="nav">
+        <div class="nav-inner">
+          <a class="brand" href="#">
+            <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+            H-Tech
+          </a>
+          <nav class="nav-links">
+            <a href="#" class="is-hovered">Shop</a>
+            <a href="#">Deals</a>
+            <a href="#">Bundles</a>
+            <a href="#">Guides</a>
+            <a href="#">Support</a>
+          </nav>
+          <div class="nav-right">
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Mega menu -->
+        <div class="mega-menu" role="menu" aria-label="Shop categories">
+          <div class="mega-menu-header">
+            <span class="eyebrow">Browse by category</span>
+            <a href="/shop" class="see-all">Browse all products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+
+          <div class="mega-grid">
+            <a class="mega-item" href="/c/monitors">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg></span>
+              <span class="copy"><span class="name">Monitors</span><span class="desc">Gaming, pro, and productivity displays</span><span class="count">142 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/keyboards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="1.5"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span>
+              <span class="copy"><span class="name">Keyboards</span><span class="desc">Mechanical, wireless, low-profile</span><span class="count">184 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/mice">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="3" width="10" height="18" rx="5"/><path d="M12 7v4"/></svg></span>
+              <span class="copy"><span class="name">Mice</span><span class="desc">Gaming, ergonomic, productivity</span><span class="count">128 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/graphics-cards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2"/><circle cx="15" cy="12" r="2"/></svg></span>
+              <span class="copy"><span class="name">Graphics cards</span><span class="desc">NVIDIA, AMD, Intel Arc</span><span class="count">86 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/processors">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx=".5"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2"/></svg></span>
+              <span class="copy"><span class="name">Processors</span><span class="desc">Ryzen and Core, latest gen</span><span class="count">63 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/memory">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v8M10 8v8M14 8v8M18 8v8"/></svg></span>
+              <span class="copy"><span class="name">Memory (RAM)</span><span class="desc">DDR4 and DDR5, 8 GB to 128 GB</span><span class="count">201 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/motherboards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1.5"/><rect x="7" y="7" width="5" height="5" rx=".5"/><path d="M14 8h4M14 11h4M8 15v3M12 15v3M17 15v3"/></svg></span>
+              <span class="copy"><span class="name">Motherboards</span><span class="desc">AM5, AM4, LGA 1700</span><span class="count">98 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/storage">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="1.5"/><circle cx="7" cy="12" r="1"/><path d="M11 10h7M11 14h5"/></svg></span>
+              <span class="copy"><span class="name">Storage</span><span class="desc">NVMe, SATA SSD, enterprise HDDs</span><span class="count">176 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/cases-cooling">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="1.5"/><path d="M9 6h6M9 10h6"/><circle cx="12" cy="17" r="1.5"/></svg></span>
+              <span class="copy"><span class="name">Cases & cooling</span><span class="desc">Cases, air/AIO coolers, fans</span><span class="count">124 products</span></span>
+            </a>
+          </div>
+
+          <div class="mega-bundles">
+            <div class="mega-bundles-label">
+              <span class="eyebrow">Bundles</span>
+              <span class="name">Pre-vetted build combos</span>
+            </div>
+            <a class="mega-bundle" href="/bundles/ryzen-7-starter">
+              <span class="bundle-copy">
+                <span class="bundle-title">Ryzen 7 build starter</span>
+                <span class="bundle-price"><strong>289,400 DA</strong> · save 8%</span>
+              </span>
+              <span class="bundle-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </a>
+            <a class="mega-bundle" href="/bundles/core-i7-starter">
+              <span class="bundle-copy">
+                <span class="bundle-title">Core i7 build starter</span>
+                <span class="bundle-price"><strong>268,900 DA</strong> · save 9%</span>
+              </span>
+              <span class="bundle-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="backdrop" aria-hidden="true"></div>
+      </header>
+      <div class="page-hint"><em>Page content underneath is dimmed by a 35% black backdrop with 2px blur while the menu is open.</em></div>
+    </div>
+
+    <!-- Light theme -->
+    <div class="frame" data-theme="light" data-label="LIGHT · Shop hovered">
+      <header class="nav">
+        <div class="nav-inner">
+          <a class="brand" href="#">
+            <span class="brand-glyph"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/></svg></span>
+            H-Tech
+          </a>
+          <nav class="nav-links">
+            <a href="#" class="is-hovered">Shop</a>
+            <a href="#">Deals</a>
+            <a href="#">Bundles</a>
+            <a href="#">Guides</a>
+            <a href="#">Support</a>
+          </nav>
+          <div class="nav-right">
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+            <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></button>
+          </div>
+        </div>
+
+        <div class="mega-menu" role="menu" aria-label="Shop categories">
+          <div class="mega-menu-header">
+            <span class="eyebrow">Browse by category</span>
+            <a href="/shop" class="see-all">Browse all products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          </div>
+
+          <div class="mega-grid">
+            <a class="mega-item" href="/c/monitors">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></svg></span>
+              <span class="copy"><span class="name">Monitors</span><span class="desc">Gaming, pro, and productivity displays</span><span class="count">142 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/keyboards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="1.5"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span>
+              <span class="copy"><span class="name">Keyboards</span><span class="desc">Mechanical, wireless, low-profile</span><span class="count">184 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/mice">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="3" width="10" height="18" rx="5"/><path d="M12 7v4"/></svg></span>
+              <span class="copy"><span class="name">Mice</span><span class="desc">Gaming, ergonomic, productivity</span><span class="count">128 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/graphics-cards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2"/><circle cx="15" cy="12" r="2"/></svg></span>
+              <span class="copy"><span class="name">Graphics cards</span><span class="desc">NVIDIA, AMD, Intel Arc</span><span class="count">86 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/processors">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx=".5"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2"/></svg></span>
+              <span class="copy"><span class="name">Processors</span><span class="desc">Ryzen and Core, latest gen</span><span class="count">63 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/memory">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v8M10 8v8M14 8v8M18 8v8"/></svg></span>
+              <span class="copy"><span class="name">Memory (RAM)</span><span class="desc">DDR4 and DDR5, 8 GB to 128 GB</span><span class="count">201 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/motherboards">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1.5"/><rect x="7" y="7" width="5" height="5" rx=".5"/><path d="M14 8h4M14 11h4M8 15v3M12 15v3M17 15v3"/></svg></span>
+              <span class="copy"><span class="name">Motherboards</span><span class="desc">AM5, AM4, LGA 1700</span><span class="count">98 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/storage">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="1.5"/><circle cx="7" cy="12" r="1"/><path d="M11 10h7M11 14h5"/></svg></span>
+              <span class="copy"><span class="name">Storage</span><span class="desc">NVMe, SATA SSD, enterprise HDDs</span><span class="count">176 products</span></span>
+            </a>
+            <a class="mega-item" href="/c/cases-cooling">
+              <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="1.5"/><path d="M9 6h6M9 10h6"/><circle cx="12" cy="17" r="1.5"/></svg></span>
+              <span class="copy"><span class="name">Cases & cooling</span><span class="desc">Cases, air/AIO coolers, fans</span><span class="count">124 products</span></span>
+            </a>
+          </div>
+
+          <div class="mega-bundles">
+            <div class="mega-bundles-label">
+              <span class="eyebrow">Bundles</span>
+              <span class="name">Pre-vetted build combos</span>
+            </div>
+            <a class="mega-bundle" href="/bundles/ryzen-7-starter">
+              <span class="bundle-copy">
+                <span class="bundle-title">Ryzen 7 build starter</span>
+                <span class="bundle-price"><strong>289,400 DA</strong> · save 8%</span>
+              </span>
+              <span class="bundle-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </a>
+            <a class="mega-bundle" href="/bundles/core-i7-starter">
+              <span class="bundle-copy">
+                <span class="bundle-title">Core i7 build starter</span>
+                <span class="bundle-price"><strong>268,900 DA</strong> · save 9%</span>
+              </span>
+              <span class="bundle-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="backdrop" aria-hidden="true"></div>
+      </header>
+      <div class="page-hint"><em>Page content underneath is dimmed by a 35% black backdrop with 2px blur while the menu is open.</em></div>
+    </div>
+
+  </div>
+
+  <div class="doc-note">
+    <strong>Behavior:</strong> Opens on mouse-enter of "Shop" in the nav. Closes on mouse-leave (with a small 200ms grace period so the user can cross the gap to the menu). <strong>Esc</strong> closes. <strong>Tab</strong> traps focus inside the menu when open. Backdrop dims the page underneath but doesn't intercept clicks — clicking outside also closes. Reveal animation: 200ms fade + 4px translateY, cubic-bezier(0.16, 1, 0.3, 1). Respects <code style="font-family: var(--font-mono); font-size: 12px; background: #17171a; padding: 1px 4px; border-radius: 3px;">prefers-reduced-motion</code>.
+  </div>
+
+</body>
+</html>

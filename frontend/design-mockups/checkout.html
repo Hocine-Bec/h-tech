@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Checkout · H-Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-green: #00d4a4;
+      --brand-green-deep: #00b48a;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+      --font-serif: 'Instrument Serif', 'ABC Arizona', 'Times New Roman', serif;
+    }
+    [data-theme='dark'] {
+      color-scheme: dark;
+      --canvas: #000000;
+      --canvas-elev: #0a0a0a;
+      --surface: #111113;
+      --surface-2: #17171a;
+      --surface-3: #1c1c1e;
+      --hairline: #1f1f22;
+      --hairline-soft: #17171a;
+      --hairline-strong: #2a2a2e;
+      --ink: #ffffff;
+      --slate: #d4d4d6;
+      --steel: #a8a8aa;
+      --stone: #7a7a7c;
+      --muted: #5a5a5c;
+      --brand-warn: #c88a3a;
+      --brand-error: #e26060;
+      --brand-tag: #5a9ff2;
+      --brand-green-soft: rgb(0 212 164 / 0.14);
+      --brand-warn-soft: rgb(200 138 58 / 0.14);
+      --brand-error-soft: rgb(226 96 96 / 0.14);
+      --brand-tag-soft: rgb(90 159 242 / 0.14);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -6px rgb(0 0 0 / 0.5);
+      --nav-bg: rgb(0 0 0 / 0.7);
+    }
+    [data-theme='light'] {
+      color-scheme: light;
+      --canvas: #faf9f6;
+      --canvas-elev: #ffffff;
+      --surface: #f3f2ec;
+      --surface-2: #eceae2;
+      --surface-3: #e2dfd4;
+      --hairline: #dcdad0;
+      --hairline-soft: #eeece5;
+      --hairline-strong: #c6c3b6;
+      --ink: #0a0a08;
+      --slate: #2a2926;
+      --steel: #5a5852;
+      --stone: #82807a;
+      --muted: #a8a5a0;
+      --brand-warn: #8a5c1a;
+      --brand-error: #b83e3e;
+      --brand-tag: #2a6db8;
+      --brand-green-soft: rgb(0 180 138 / 0.10);
+      --brand-warn-soft: rgb(138 92 26 / 0.10);
+      --brand-error-soft: rgb(184 62 62 / 0.10);
+      --brand-tag-soft: rgb(42 109 184 / 0.10);
+      --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04);
+      --shadow-hover: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 24px -6px rgb(0 0 0 / 0.08);
+      --nav-bg: rgb(250 249 246 / 0.72);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-ui);
+      font-size: 16px; line-height: 1.55; color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    input, select, textarea { font-family: inherit; }
+    ::selection { background: rgb(0 212 164 / 0.30); color: var(--ink); }
+
+    :focus-visible { outline: 2px solid var(--brand-green); outline-offset: 2px; border-radius: 4px; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green);
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--brand-green); }
+
+    @keyframes live-pulse {
+      0%   { transform: scale(1);   opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0;   }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font-ui); font-size: 14px; font-weight: 500; line-height: 1;
+      padding: 10px 20px; border-radius: 9999px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms, color 150ms, transform 100ms;
+      white-space: nowrap; text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    .btn-lg { padding: 14px 28px; font-size: 15px; }
+    .btn-primary { background: var(--ink); color: var(--canvas); }
+    .btn-primary:hover { background: var(--brand-green); color: #000; }
+    .btn-accent { background: var(--brand-green); color: #000; }
+    .btn-accent:hover { background: var(--brand-green-deep); }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+    .btn-secondary:hover { background: var(--brand-green-soft); border-color: var(--brand-green); color: var(--brand-green); }
+    .btn-ghost { background: transparent; color: var(--slate); padding: 8px 12px; border-radius: 8px; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--brand-green); }
+    .btn-link {
+      background: transparent; padding: 0; border-radius: 0;
+      color: var(--stone); font-size: 13px; font-weight: 500;
+    }
+    .btn-link:hover { color: var(--brand-green); }
+
+    .icon-btn {
+      position: relative;
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: inline-grid; place-items: center; cursor: pointer;
+      background: transparent; color: var(--slate);
+      border: 1px solid var(--hairline-strong);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms, border-color 150ms;
+    }
+    .icon-btn:hover { color: var(--brand-green); background: var(--surface); border-color: var(--brand-green); }
+    .icon-btn .count-badge {
+      position: absolute; top: -3px; right: -3px;
+      min-width: 16px; height: 16px; padding: 0 4px;
+      background: var(--brand-green); color: #000;
+      font-family: var(--font-ui); font-size: 10px; font-weight: 700;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      border: 2px solid var(--canvas);
+    }
+
+    /* ==========================================================================
+       Simplified checkout nav — hide category nav to reduce distractions
+       ========================================================================== */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; padding: 0 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 17px; letter-spacing: -0.3px; color: var(--ink);
+    }
+    .brand-glyph {
+      width: 22px; height: 22px; border-radius: 6px;
+      background: var(--brand-green); color: #000;
+      display: grid; place-items: center;
+    }
+    .nav-checkout-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-left: 16px; padding-left: 16px;
+      border-left: 1px solid var(--hairline);
+      font-size: 13px; color: var(--stone);
+    }
+    .nav-checkout-label .lock-ico { color: var(--brand-green); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-right .support-link {
+      font-size: 13px; color: var(--slate); font-weight: 500;
+      padding: 6px 12px; border-radius: 8px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .nav-right .support-link:hover { color: var(--brand-green); background: var(--surface-2); }
+
+    /* ==========================================================================
+       Progress indicator — 3-step horizontal timeline
+       ========================================================================== */
+    .progress-band {
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .progress-timeline {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; max-width: 620px; margin: 0 auto;
+    }
+    .progress-step {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      flex: 1; position: relative;
+    }
+    .progress-step:not(:last-child)::after {
+      content: ''; position: absolute; top: 12px; left: calc(50% + 16px);
+      right: calc(-50% + 16px); height: 2px;
+      background: var(--hairline);
+      z-index: 0;
+    }
+    .progress-step.done::after,
+    .progress-step.done ~ .progress-step.active::before { background: var(--brand-green); }
+    .progress-step .dot {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: var(--surface); border: 1px solid var(--hairline);
+      display: grid; place-items: center;
+      font-family: var(--font-ui); font-size: 11px; font-weight: 600; color: var(--stone);
+      position: relative; z-index: 1;
+    }
+    .progress-step.done .dot { background: var(--brand-green); border-color: var(--brand-green); color: #000; }
+    .progress-step.active .dot {
+      background: transparent; border: 2px solid var(--brand-green); color: var(--ink);
+    }
+    .progress-step.active .dot::after {
+      content: ''; position: absolute; inset: -4px;
+      border: 2px solid var(--brand-green); border-radius: 9999px;
+      animation: live-pulse 2s ease-in-out infinite; opacity: 0;
+    }
+    .progress-step .name {
+      font-size: 12px; font-weight: 500; color: var(--stone);
+      letter-spacing: -0.1px;
+    }
+    .progress-step.active .name, .progress-step.done .name { color: var(--ink); font-weight: 600; }
+    .progress-step .name a {
+      color: inherit;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .progress-step .name a:hover { color: var(--brand-green); }
+
+    /* ==========================================================================
+       Checkout body — 2 column (form + summary)
+       ========================================================================== */
+    .checkout-body {
+      display: grid; grid-template-columns: 1fr 380px; gap: 40px;
+      padding: 40px 0 64px;
+      align-items: start;
+    }
+
+    /* Form section cards */
+    .form-section {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 24px 28px 28px;
+    }
+    .form-section + .form-section { margin-top: 16px; }
+    .form-section-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 6px; gap: 12px;
+    }
+    .form-section h2 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 18px; letter-spacing: -0.2px;
+      color: var(--ink); margin: 0;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .form-section h2 .step-num {
+      display: inline-grid; place-items: center;
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: var(--brand-green-soft); color: var(--brand-green);
+      font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+    }
+    .form-section .head-help {
+      font-size: 12px; color: var(--stone);
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .form-section .head-help a {
+      color: var(--brand-green);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .form-section .head-help a:hover { color: var(--brand-green-deep); }
+    .form-section .section-desc {
+      font-size: 13px; color: var(--slate); margin: 0 0 20px;
+    }
+
+    /* Field grid */
+    .field-grid {
+      display: grid; gap: 16px;
+    }
+    .field-grid.two-col { grid-template-columns: 1fr 1fr; }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: var(--steel);
+    }
+    .field-label .req { color: var(--brand-error); }
+    .field-label .opt { color: var(--stone); font-weight: 400; }
+
+    /* Text inputs */
+    .input {
+      display: block; width: 100%; height: 44px;
+      padding: 10px 14px; border-radius: 8px;
+      font-family: var(--font-ui); font-size: 15px; color: var(--ink);
+      background: var(--canvas); border: 1px solid var(--hairline-strong);
+      outline: none;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms;
+    }
+    .input::placeholder { color: var(--stone); }
+    .input:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+    .input.is-error {
+      border-color: var(--brand-error);
+      box-shadow: 0 0 0 3px var(--brand-error-soft);
+    }
+
+    /* Input with prefix (for phone) */
+    .input-wrap { position: relative; }
+    .input-wrap .prefix {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      left: 14px; color: var(--stone); font-family: var(--font-mono);
+      font-size: 15px; pointer-events: none;
+    }
+    .input.with-prefix { padding-left: 60px; }
+
+    .field-help {
+      font-size: 12px; color: var(--stone); margin-top: 2px;
+    }
+    .field-error {
+      font-size: 12px; color: var(--brand-error); font-weight: 500;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+
+    /* Select */
+    .select {
+      display: block; width: 100%; height: 44px;
+      padding: 0 40px 0 14px;
+      border-radius: 8px; background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      font-family: var(--font-ui); font-size: 15px; color: var(--ink);
+      appearance: none; cursor: pointer; outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a7a7c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms;
+    }
+    .select:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+    .select.is-disabled {
+      background-color: var(--surface); color: var(--muted); cursor: not-allowed;
+    }
+
+    /* Textarea */
+    .textarea {
+      display: block; width: 100%; min-height: 88px;
+      padding: 12px 14px; border-radius: 8px;
+      font-family: var(--font-ui); font-size: 15px; line-height: 1.5; color: var(--ink);
+      background: var(--canvas); border: 1px solid var(--hairline-strong);
+      outline: none; resize: vertical;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms;
+    }
+    .textarea:focus {
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px var(--brand-green-soft);
+    }
+    .textarea::placeholder { color: var(--stone); }
+
+    /* Delivery method radios (cards) */
+    .delivery-methods {
+      display: grid; gap: 10px; margin-top: 4px;
+    }
+    .delivery-method {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline-strong);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms;
+    }
+    .delivery-method:hover { border-color: var(--brand-green); }
+    .delivery-method.is-selected {
+      border-color: var(--brand-green); background: var(--brand-green-soft);
+    }
+    .delivery-method .radio {
+      display: inline-grid; place-items: center;
+      width: 18px; height: 18px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      border: 1.5px solid var(--hairline-strong);
+      flex: none;
+      transition: border-color 150ms;
+    }
+    .delivery-method.is-selected .radio {
+      border-color: var(--brand-green);
+    }
+    .delivery-method.is-selected .radio::after {
+      content: ''; width: 8px; height: 8px; border-radius: 9999px;
+      background: var(--brand-green);
+    }
+    .delivery-method .info { flex: 1; }
+    .delivery-method .name {
+      font-size: 14px; font-weight: 600; color: var(--ink);
+      display: block; margin-bottom: 2px;
+    }
+    .delivery-method .desc {
+      font-size: 12px; color: var(--stone);
+    }
+    .delivery-method .price {
+      font-family: var(--font-mono); font-size: 14px; font-weight: 600;
+      color: var(--ink); white-space: nowrap;
+    }
+    .delivery-method .price.free { color: var(--brand-green); }
+
+    /* Payment method — COD card */
+    .payment-method {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px;
+      background: var(--brand-green-soft);
+      border: 1px solid var(--brand-green);
+      border-radius: 12px;
+    }
+    .payment-method .radio {
+      display: inline-grid; place-items: center;
+      width: 18px; height: 18px; border-radius: 9999px;
+      background: var(--canvas-elev);
+      border: 1.5px solid var(--brand-green);
+      flex: none; margin-top: 2px;
+    }
+    .payment-method .radio::after {
+      content: ''; width: 8px; height: 8px; border-radius: 9999px;
+      background: var(--brand-green);
+    }
+    .payment-method .ico {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--canvas-elev); border: 1px solid var(--brand-green);
+      display: grid; place-items: center; color: var(--brand-green);
+      flex: none;
+    }
+    .payment-method .body { flex: 1; }
+    .payment-method .body h4 {
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 16px; color: var(--ink); margin: 0 0 4px;
+      letter-spacing: -0.1px;
+    }
+    .payment-method .body p {
+      font-size: 13px; color: var(--slate); margin: 0;
+      line-height: 1.55;
+    }
+    .payment-future {
+      margin-top: 12px; padding: 12px 16px;
+      background: var(--surface); border: 1px dashed var(--hairline-strong);
+      border-radius: 10px;
+      display: flex; gap: 10px; align-items: center;
+      font-size: 12px; color: var(--stone);
+    }
+    .payment-future .ico { color: var(--stone); flex: none; }
+
+    /* ==========================================================================
+       Order summary (right column, sticky)
+       ========================================================================== */
+    .summary-wrap {
+      position: sticky; top: 76px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .summary {
+      background: var(--canvas-elev);
+      border: 1px solid var(--hairline);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+    }
+    .summary h3 {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--font-ui); font-weight: 600;
+      font-size: 15px; letter-spacing: -0.1px;
+      color: var(--ink); margin: 0 0 16px;
+    }
+    .summary h3 a {
+      font-family: var(--font-ui); font-weight: 500;
+      font-size: 12px; color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .summary h3 a:hover { color: var(--brand-green); }
+
+    /* Condensed line items in summary */
+    .sum-items {
+      display: flex; flex-direction: column; gap: 10px;
+      padding-bottom: 16px; margin-bottom: 4px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .sum-item {
+      display: grid; grid-template-columns: 48px 1fr auto;
+      gap: 12px; align-items: center;
+    }
+    .sum-item .thumb {
+      width: 48px; height: 48px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--hairline);
+      display: grid; place-items: center; color: var(--stone);
+      position: relative;
+    }
+    .sum-item .thumb svg { width: 24px; height: 24px; opacity: 0.7; }
+    .sum-item .thumb .qty-pip {
+      position: absolute; top: -6px; right: -6px;
+      min-width: 20px; height: 20px; padding: 0 5px;
+      background: var(--ink); color: var(--canvas);
+      font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      border: 2px solid var(--canvas-elev);
+    }
+    .sum-item .body { min-width: 0; }
+    .sum-item .name {
+      font-size: 13px; font-weight: 500; color: var(--ink);
+      line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sum-item .meta { font-size: 11px; color: var(--stone); font-family: var(--font-mono); }
+    .sum-item .price {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* Price-change warning inline */
+    .price-change-warning {
+      margin-top: 10px; padding: 12px 14px;
+      background: var(--brand-warn-soft);
+      border: 1px solid var(--brand-warn);
+      border-radius: 10px;
+      font-size: 12px; color: var(--ink); line-height: 1.5;
+    }
+    .price-change-warning .title {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--brand-warn); font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .price-change-warning .actions {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+    .price-change-warning .actions button {
+      font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+      padding: 6px 10px; border-radius: 6px; cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .price-change-warning .actions .confirm {
+      background: var(--brand-warn); color: #000; border-color: var(--brand-warn);
+    }
+    .price-change-warning .actions .confirm:hover { filter: brightness(1.1); }
+    .price-change-warning .actions .cancel {
+      background: transparent; color: var(--stone); border-color: var(--hairline-strong);
+    }
+    .price-change-warning .actions .cancel:hover { color: var(--ink); }
+
+    /* Summary lines */
+    .summary-line {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px; padding: 6px 0;
+      font-size: 14px; color: var(--slate);
+    }
+    .summary-line .v {
+      font-family: var(--font-mono); font-weight: 500; color: var(--ink);
+      white-space: nowrap;
+    }
+    .summary-line .free-label { color: var(--brand-green); font-weight: 600; }
+
+    /* Total row */
+    .summary-total {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 24px; padding-top: 16px; margin-top: 12px;
+      border-top: 1px solid var(--hairline);
+    }
+    .summary-total .label-block {
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .summary-total .label {
+      font-family: var(--font-ui); font-weight: 600; font-size: 15px; color: var(--ink);
+    }
+    .summary-total .method {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-ui); font-size: 11px; font-weight: 500;
+      color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .summary-total .method svg { color: var(--brand-green); }
+    .summary-total .v {
+      font-family: var(--font-mono); font-size: 24px; font-weight: 600; color: var(--ink);
+      letter-spacing: -0.02em; white-space: nowrap;
+    }
+
+    .place-order-btn {
+      width: 100%; height: 54px; margin-top: 18px;
+      font-size: 15px; font-weight: 600;
+    }
+
+    .terms-line {
+      font-size: 11px; color: var(--stone); line-height: 1.55;
+      margin-top: 12px; text-align: center;
+    }
+    .terms-line a {
+      color: var(--slate); text-decoration: underline; text-underline-offset: 2px;
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .terms-line a:hover { color: var(--brand-green); }
+
+    /* Trust cluster in summary */
+    .trust-cluster {
+      margin-top: 20px; padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .trust-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12px; color: var(--slate);
+    }
+    .trust-row .ico {
+      flex: none; color: var(--brand-green); margin-top: 2px;
+    }
+    .trust-row strong { color: var(--ink); font-weight: 500; display: block; margin-bottom: 1px; }
+    .trust-row span.dim { color: var(--stone); }
+
+    /* Footer — minimal for checkout */
+    footer.checkout-footer {
+      padding: 32px 0 40px;
+      border-top: 1px solid var(--hairline);
+      background: var(--canvas);
+    }
+    .cf-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px; flex-wrap: wrap;
+      font-size: 12px; color: var(--stone);
+    }
+    .cf-inner .cf-links { display: flex; gap: 20px; }
+    .cf-inner a {
+      color: var(--stone);
+      transition: color 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cf-inner a:hover { color: var(--brand-green); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .checkout-body { grid-template-columns: 1fr; }
+      .summary-wrap { position: static; }
+      .field-grid.two-col { grid-template-columns: 1fr; }
+      .nav-checkout-label { display: none; }
+    }
+    @media (max-width: 640px) {
+      .form-section { padding: 20px; }
+      .progress-step .name { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Simplified checkout nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div style="display:flex; align-items:center;">
+        <a class="brand" href="/">
+          <span class="brand-glyph">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 4 L11 4 L11 11 L13 11 L13 4 L16 4 L16 20 L13 20 L13 14 L11 14 L11 20 L8 20 Z"/>
+            </svg>
+          </span>
+          H-Tech
+        </a>
+        <span class="nav-checkout-label">
+          <span class="lock-ico">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          Secure checkout
+        </span>
+      </div>
+      <div class="nav-right">
+        <a href="/support/contact" class="support-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Need help?
+        </a>
+        <a href="/cart" class="icon-btn" aria-label="Cart, 3 items">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="count-badge">3</span>
+        </a>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch to light mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Progress indicator -->
+  <section class="progress-band">
+    <div class="container">
+      <div class="progress-timeline">
+        <div class="progress-step done">
+          <span class="dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="name"><a href="/cart">Cart</a></span>
+        </div>
+        <div class="progress-step active">
+          <span class="dot">2</span>
+          <span class="name">Delivery</span>
+        </div>
+        <div class="progress-step">
+          <span class="dot">3</span>
+          <span class="name">Confirm</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout body -->
+  <div class="container">
+    <div class="checkout-body">
+
+      <!-- Left: form -->
+      <main class="checkout-form">
+
+        <!-- Section 1: Contact -->
+        <section class="form-section">
+          <div class="form-section-head">
+            <h2><span class="step-num">1</span> Contact</h2>
+            <span class="head-help">Have an account? <a href="/sign-in?next=/checkout">Sign in</a></span>
+          </div>
+          <p class="section-desc">We use it to confirm your order by phone or WhatsApp and to keep you posted on delivery.</p>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label" for="fullname">Full name <span class="req">*</span></label>
+              <input class="input" id="fullname" type="text" placeholder="Yacine Belkacem" value="Yacine Belkacem" />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="phone">Phone <span class="req">*</span></label>
+              <div class="input-wrap">
+                <span class="prefix">+213</span>
+                <input class="input with-prefix" id="phone" type="tel" placeholder="5X XXX XX XX" value="555 12 34 56" />
+              </div>
+              <span class="field-help">We call before dispatch to confirm the order.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Delivery -->
+        <section class="form-section">
+          <div class="form-section-head">
+            <h2><span class="step-num">2</span> Delivery address</h2>
+          </div>
+          <p class="section-desc">Where should the courier bring your order?</p>
+
+          <div class="field-grid two-col">
+            <div class="field-group">
+              <label class="field-label" for="wilaya">Wilaya <span class="req">*</span></label>
+              <select class="select" id="wilaya">
+                <option>Alger</option>
+                <option>Oran</option>
+                <option>Constantine</option>
+                <option>Béjaïa</option>
+                <option>Sétif</option>
+                <option>Annaba</option>
+                <option>Tizi Ouzou</option>
+                <option>Blida</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="commune">Commune <span class="req">*</span></label>
+              <select class="select" id="commune">
+                <option>Bab El Oued</option>
+                <option>Hydra</option>
+                <option>El Biar</option>
+                <option>Kouba</option>
+                <option>Bir Mourad Raïs</option>
+                <option>Hussein Dey</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-grid" style="margin-top: 16px;">
+            <div class="field-group">
+              <label class="field-label" for="street">Street address <span class="req">*</span></label>
+              <textarea class="textarea" id="street" placeholder="Number, street, building, floor, apt. Add any notes for the courier.">Rue Larbi Ben M'hidi, N° 42, Bâtiment C, Apt 8 — 3rd floor. Interphone: BELKACEM.</textarea>
+            </div>
+          </div>
+
+          <div class="field-grid" style="margin-top: 20px;">
+            <div class="field-group">
+              <label class="field-label">Delivery method <span class="req">*</span></label>
+              <div class="delivery-methods">
+                <label class="delivery-method is-selected">
+                  <span class="radio"></span>
+                  <div class="info">
+                    <span class="name">Standard delivery — 24–48h</span>
+                    <span class="desc">Free on orders over 50,000 DA</span>
+                  </div>
+                  <span class="price free">Free</span>
+                </label>
+                <label class="delivery-method">
+                  <span class="radio"></span>
+                  <div class="info">
+                    <span class="name">Express delivery — same day</span>
+                    <span class="desc">Alger only, ordered before 14:00</span>
+                  </div>
+                  <span class="price">1,500 DA</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-grid" style="margin-top: 16px;">
+            <div class="field-group">
+              <label class="field-label" for="notes">Order notes <span class="opt">(optional)</span></label>
+              <textarea class="textarea" id="notes" placeholder="Anything the courier should know? E.g., call 10 min before, leave with the concierge, gate code, etc."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Payment -->
+        <section class="form-section">
+          <div class="form-section-head">
+            <h2><span class="step-num">3</span> Payment method</h2>
+          </div>
+          <p class="section-desc">Cash on delivery only — pay when the box arrives.</p>
+
+          <label class="payment-method">
+            <span class="radio"></span>
+            <span class="ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="15" x2="10" y2="15"/></svg>
+            </span>
+            <div class="body">
+              <h4>Cash on delivery</h4>
+              <p>You'll pay the courier in cash when the box arrives. Inspect the product before paying — refuse the delivery if anything's wrong. We'll bring exact change if requested.</p>
+            </div>
+          </label>
+
+          <div class="payment-future">
+            <span class="ico">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </span>
+            <span>Card and EDAHABIA payments are on the roadmap. For now, COD only.</span>
+          </div>
+        </section>
+      </main>
+
+      <!-- Right: summary -->
+      <aside class="summary-wrap">
+        <div class="summary">
+          <h3>Order summary <a href="/cart">Edit cart</a></h3>
+
+          <!-- Condensed line items -->
+          <div class="sum-items">
+            <div class="sum-item">
+              <div class="thumb">
+                <span class="qty-pip">1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="7" width="20" height="10" rx="1.5"/><circle cx="8" cy="12" r="2.2"/><circle cx="15" cy="12" r="2.2"/></svg>
+              </div>
+              <div class="body">
+                <div class="name">GeForce RTX 4070 12GB GDDR6X</div>
+                <div class="meta">NVIDIA · GPU-NV-4070-12G</div>
+              </div>
+              <div class="price">89,900 DA</div>
+            </div>
+
+            <div class="sum-item">
+              <div class="thumb">
+                <span class="qty-pip">1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v8M10 8v8M14 8v8M18 8v8"/></svg>
+              </div>
+              <div class="body">
+                <div class="name">Vengeance DDR5 32GB (2×16) 6000MHz</div>
+                <div class="meta">CORSAIR · RAM-CS-32-6000</div>
+              </div>
+              <div class="price" style="color: var(--brand-warn);">91,200 DA</div>
+            </div>
+
+            <!-- Price-change warning inline (attached to Corsair item above) -->
+            <div class="price-change-warning">
+              <div class="title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Price changed
+              </div>
+              The Corsair DDR5 kit was <strong>42,400 DA</strong> when you added it. Distributor updated the price — it's now <strong>91,200 DA</strong>. Confirm the new price to keep it in the order.
+              <div class="actions">
+                <button class="cancel">Remove from order</button>
+                <button class="confirm">Confirm 91,200 DA</button>
+              </div>
+            </div>
+
+            <div class="sum-item">
+              <div class="thumb">
+                <span class="qty-pip">1</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="12" rx="1.5"/><circle cx="7" cy="12" r="1"/><path d="M11 10h7M11 14h5"/></svg>
+              </div>
+              <div class="body">
+                <div class="name">990 Pro 2TB NVMe Gen4 SSD</div>
+                <div class="meta">SAMSUNG · SSD-SM-990P-2T</div>
+              </div>
+              <div class="price">34,500 DA</div>
+            </div>
+          </div>
+
+          <div class="summary-line">
+            <span>Subtotal (3 items)</span>
+            <span class="v">215,600 DA</span>
+          </div>
+          <div class="summary-line">
+            <span>Delivery to Alger</span>
+            <span class="v free-label">Free</span>
+          </div>
+
+          <div class="summary-total">
+            <div class="label-block">
+              <span class="label">You'll pay in cash</span>
+              <span class="method">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                On delivery
+              </span>
+            </div>
+            <span class="v">215,600 DA</span>
+          </div>
+
+          <button class="btn btn-accent place-order-btn">
+            Place order · 215,600 DA
+          </button>
+
+          <p class="terms-line">
+            By placing this order, you agree to our <a href="/legal/terms">Terms</a> and confirm the delivery address is correct.
+          </p>
+
+          <!-- Trust cluster -->
+          <div class="trust-cluster">
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <div>
+                <strong>Prices locked at this total</strong>
+                <span class="dim">The courier collects only this amount.</span>
+              </div>
+            </div>
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+              <div>
+                <strong>Inspect before paying</strong>
+                <span class="dim">Open the box and check the product at the door.</span>
+              </div>
+            </div>
+            <div class="trust-row">
+              <span class="ico">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              </span>
+              <div>
+                <strong>7-day DOA return</strong>
+                <span class="dim">Full refund or swap on any defective item.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Minimal checkout footer -->
+  <footer class="checkout-footer">
+    <div class="container cf-inner">
+      <span>© 2026 H-Tech · Algiers, DZ</span>
+      <div class="cf-links">
+        <a href="/support/contact">Support</a>
+        <a href="/legal/terms">Terms</a>
+        <a href="/legal/privacy">Privacy</a>
+        <a href="/legal/warranty">Warranty</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById('theme-toggle');
+      var iconSlot = document.getElementById('theme-icon');
+      var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+      var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+      function apply(theme) {
+        root.setAttribute('data-theme', theme);
+        iconSlot.innerHTML = theme === 'dark' ? SUN : MOON;
+        toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+        try { localStorage.setItem('h-tech-theme', theme); } catch (_) {}
+      }
+      try {
+        var stored = localStorage.getItem('h-tech-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        apply(stored || (prefersDark ? 'dark' : 'light'));
+      } catch (_) { apply('dark'); }
+      toggle.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>
